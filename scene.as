@@ -7,6 +7,7 @@
 #include "music.as"
 #include "fx.as"
 #include "entity.as"
+#include "gui.as"
 
 /// \weakgroup Game
 /// \{

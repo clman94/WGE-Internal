@@ -86,7 +86,6 @@ namespace gui
 		                                // You can make it any type (including handles).
 		);
 	
-	
 	```
 	
 	\{

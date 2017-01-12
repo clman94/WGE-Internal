@@ -130,7 +130,7 @@ void remove_entity(entity&in pEntity);
 
 /// Set specific depth of entity. Will automatically disable dynamic depth.
 /// A larger value results in the entity being farther behind.
-// All values are 0-255.
+/// All values are 0-255.
 void set_depth(entity&in pEntity, float pDepth);
 
 /// Set dynamic depth in entity.
@@ -231,7 +231,7 @@ void load_scene(const string &in pPath);
 /// \weakgroup Game
 /// \{
 
-/// Print message for debugging.
+/// Print debug message.
 void dprint(const string &in pMessage);
 
 /// Print error message.
@@ -298,7 +298,7 @@ bool is_slot_used(uint);
 ///    my_type@ data = cast<my_type>(get_shared("mydata"));
 ///    if (data is null) // Failed to retrieve data
 ///    {
-///       eprint("Wrong value!");
+///       eprint("Error!");
 ///       return;
 ///    }
 ///    dprint(formatInt(data.value));

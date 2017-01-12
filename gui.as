@@ -1,27 +1,96 @@
 namespace gui
 {
-/// \weakgroup GUI
-/// Menu system.
-/// Because these gui classes are rather general use,
-/// here are just a few uses:
-/// ```
-/// gui::selection_menu sel_options;
-/// sel_action.add(gui::menu_function("Option1"
-///     , function(pArgs) {
-///         dprint("This is Option1");
-///     }));
-/// 
-/// gui::selection_menu sel_submenu("Sub Menu");
-/// sel_action.add(gui::menu_function("Sub Option1"
-///     , function(pArgs) {
-///         dprint("This is Sub Option1");
-///     }));
-/// sel_options.add(sel_submenu); // Add the sub-menu
-/// 
-/// sel_options.open(); // Start the selection
-/// ```
-/// 
-/// \{
+
+/*! \weakgroup GUI
+	This GUI system is a framework for branching menu systems
+	so then when an option is selected it will open another menu
+	and the user even has the ability to go back to the previous
+	select to select a different option.
+	
+	Everything thing is this framework is a menu item (even the selection menus).
+	
+	Here is a basic example of setting up and opening a selection menu:
+	```
+	// This is a pre-made list selection object.
+	// Although it is limited, you can create your own
+	// by copying the source and modifying it.
+	// This menu will act as the root to all the other menus
+	// (The main menu).
+	gui::selection_menu selection;
+	
+	// Set the root position for the list.
+	selection.set_position(2, 2);
+	
+	// Add a basic menu item to the list.
+	// With all menu item, we specify an id.
+	// This id is the same as the display
+	// test in the list selection.
+	// The id of the item will be "item1" and
+	// the displayed text will be "item1" as well.
+	gui::menu_item item1("item1");
+	
+	selection.add(item1); // Add the item to the list
+	
+	// Lets add a sub menu
+	
+	// Create another list selection menu to be the sub-menu.
+	gui::selection_menu submenu("submenu");
+	
+	submenu.set_position(2, 2); // Set its position
+	
+	gui::menu_item item2("item2"); // Add a menu item
+	
+	submenu.add(item1);  // Add the item to the sub-menu list
+	
+	selection.add(submenu); // Add the sub-menu to the main menu
+	
+	// Start the selection.
+	// This will display the list to choose from
+	// and return the handle of the menu item that was selected.
+	gui::menu@ selected_item = selection.open();
+	dprint("You selected " + selected_item.get_id());
+	
+	// You might have noticed that identifying a menu direction
+	//from its id can be unreliable. For example, you have 2 menu
+	// items with the same id but in different sub-menus.
+	// With this in mind, it is recommended not to use the id to
+	// identify the which item is selected.
+	
+	// This most simple way to identify the selected item is to
+	// check the item itself.
+	item1.is_selected();
+	
+	// However; managing lots of menu items will end up being a
+	// pain when you have to check every single item with an if
+	// statement. this could easily get messy.
+	// So the alternative is menu items that call a function when selected.
+	
+	// Using lambdas (aka anonymous functions; check the angelscript docs
+	// for more info) we can create a block of code that will be called. 
+	gui::menu_function func1("func1"
+		, function(pArgs)
+		{
+			dprint("This item was selected");
+		}
+		);
+	
+	// One thing to note: lambda functions in angelscript can't capture variables
+	// outside of the functions. So you need to add the variable to the parameter list.
+	gui::menu_function func2("func1"
+		, function(pArgs)
+		{
+			int arg1 = int(pArgs["arg1"]);        // Get parameter value
+			dprint("This item was selected and arg1 is " + formatInt(arg1));
+		}
+		, dictionary = {{ "arg1", 10 }} // Add parameter "arg1" with an int value 10
+		                                // You can make it any type (including handles).
+		);
+	
+	
+	```
+	
+	\{
+*/
 
 /// Simple controller for list-based selection
 class selector_control

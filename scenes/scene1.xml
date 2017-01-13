@@ -1,0 +1,45 @@
+<scene name="Scene 1">
+    <boundary w="34" h="20"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="-1">
+            <ground x="1" y="3" w="7" h="3"/>
+        </layer>
+        <layer id="0">
+            <wall_top_ce x="0" y="0" r="2"/>
+            <wall_top x="1" y="0" w="4" r="2"/>
+            <wall_top_c x="5" y="0" r="2"/>
+            <path x="6" y="0" h="4" r="1"/>
+            <wall_top_c x="7" y="0" r="3"/>
+            <wall_top_ce x="8" y="0" r="3"/>
+            <wall_top x="0" y="1" h="5" r="1"/>
+            <full_wall x="1" y="1" w="5"/>
+            <full_wall x="7" y="1"/>
+            <wall_top x="8" y="1" h="5" r="3"/>
+            <path x="1" y="4" w="5"/>
+            <path_c x="6" y="4" r="1"/>
+            <wall_top_ce x="0" y="6" r="1"/>
+            <wall_top x="1" y="6" w="7"/>
+            <wall_top_ce x="8" y="6"/>
+        </layer>
+        <layer id="1">
+            <door x="1" y="1" w="4"/>
+            <lavaout x="5" y="1"/>
+            <sign x="7" y="1"/>
+            <lava x="5" y="2"/>
+            <flowers x="3" y="3"/>
+        </layer>
+        <layer id="2">
+            <vines x="1" y="1" w="4"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <wall x="7" y="0" w="1" h="3"/>
+        <wall x="8" y="3" w="1" h="3"/>
+        <wall x="0" y="3" w="1" h="3"/>
+        <wall x="6" y="-1" w="1" h="1"/>
+        <wall x="1" y="6" w="7" h="1"/>
+        <wall x="5" y="0" w="1" h="3"/>
+        <wall x="1" y="2" w="4" h="1"/>
+    </collisionboxes>
+</scene>

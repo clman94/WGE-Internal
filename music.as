@@ -50,10 +50,9 @@ namespace music
 				const float pSeconds = float(pArgs["pSeconds"]);
 				const float pVolume  =  float(pArgs["pVolume"]);
 				
-				const float first_speed  = pVolume / pSeconds;
-				const float second_speed = _music_get_volume() / pSeconds;
+				const float first_speed  = _music_get_volume() / pSeconds;
+				const float second_speed = pVolume / pSeconds;
 				
-					
 				float timer = 0;
 				
 				float first_volume  = _music_get_volume();
@@ -68,17 +67,13 @@ namespace music
 					
 					timer += delta;
 					
-					if (second_volume > 0)
-					{
-						first_volume -= first_speed*delta;
+					first_volume -= first_speed*delta;
+					if (first_volume > 0)
 						_music_set_volume(first_volume);
-					}
 					
+					second_volume += second_speed*delta;
 					if (second_volume < 100)
-					{
-						second_volume += second_speed*delta;
 						_music_set_second_volume(second_volume);
-					}
 				}
 				
 				// Make the second music the main one

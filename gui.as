@@ -5,7 +5,7 @@ namespace gui
 	This GUI system is a framework for branching menu systems
 	so then when an option is selected it will open another menu
 	and the user even has the ability to go back to the previous
-	select to select a different option.
+	menu to select a different option.
 	
 	Everything thing is this framework is a menu item (even the selection menus).
 	
@@ -22,16 +22,16 @@ namespace gui
 	selection.set_position(2, 2);
 	
 	// Add a basic menu item to the list.
-	// With all menu item, we specify an id.
+	// With all menu items, we specify an id.
 	// This id is the same as the display
-	// test in the list selection.
+	// text in the list selection.
 	// The id of the item will be "item1" and
 	// the displayed text will be "item1" as well.
 	gui::menu_item item1("item1");
 	
 	selection.add(item1); // Add the item to the list
 	
-	// Lets add a sub menu
+	// Lets add a sub-menu
 	
 	// Create another list selection menu to be the sub-menu.
 	gui::selection_menu submenu("submenu");
@@ -51,19 +51,19 @@ namespace gui
 	dprint("You selected " + selected_item.get_id());
 	
 	// You might have noticed that identifying a menu direction
-	//from its id can be unreliable. For example, you have 2 menu
+	// from its id can be unreliable. For example, you have 2 menu
 	// items with the same id but in different sub-menus.
 	// With this in mind, it is recommended not to use the id to
-	// identify the which item is selected.
+	// identify which item is selected.
 	
-	// This most simple way to identify the selected item is to
+	// The most simple way to identify the selected item is to
 	// check the item itself.
 	item1.is_selected();
 	
 	// However; managing lots of menu items will end up being a
 	// pain when you have to check every single item with an if
-	// statement. this could easily get messy.
-	// So the alternative is menu items that call a function when selected.
+	// statement.
+	// So the alternative is a menu item that can call a function when selected.
 	
 	// Using lambdas (aka anonymous functions; check the angelscript docs
 	// for more info) we can create a block of code that will be called. 
@@ -73,13 +73,14 @@ namespace gui
 			dprint("This item was selected");
 		}
 		);
+	// Same as every other menu item, add it to a menu and it will display as "func1"
 	
 	// One thing to note: lambda functions in angelscript can't capture variables
 	// outside of the functions. So you need to add the variable to the parameter list.
 	gui::menu_function func2("func1"
 		, function(pArgs)
 		{
-			int arg1 = int(pArgs["arg1"]);        // Get parameter value
+			int arg1 = int(pArgs["arg1"]); // Get argument (you have to cast it to the type you want)
 			dprint("This item was selected and arg1 is " + formatInt(arg1));
 		}
 		, dictionary = {{ "arg1", 10 }} // Add parameter "arg1" with an int value 10

@@ -1,5 +1,6 @@
 namespace music
 {
+
 	/// \weakgroup Music
 	/// \{
 
@@ -22,6 +23,73 @@ namespace music
 		_music_pause();
 	}
 	
+	// Seamlessly swap out music files.
+	// This will maintain the current position
+	// of the music playing beforehand (Only if
+	// the new music is the same or longer in length).
+	void swap(const string&in pName)
+	{
+		_music_swap(pName);
+	}
+	
+	/// Smoothly fade to a new music
+	void fade(const string&in pName, float pSeconds, float pVolume = 100)
+	{
+		if (pSeconds <= 0)
+		{
+			eprint("Please specify time that is greater than 0");
+			return;
+		}
+		
+		// Start second stream that will fade in
+		_music_start_transition_play(pName);
+		
+		create_thread(
+			function(pArgs)
+			{
+				const float pSeconds = float(pArgs["pSeconds"]);
+				const float pVolume  =  float(pArgs["pVolume"]);
+				
+				const float first_speed  = pVolume / pSeconds;
+				const float second_speed = _music_get_volume() / pSeconds;
+				
+					
+				float timer = 0;
+				
+				float first_volume  = _music_get_volume();
+				float second_volume = 0;
+				
+		        // Smoothly fade the main music out and fade the seconds one in
+				while (timer < pSeconds)
+				{
+					yield();
+					
+					const float delta = get_delta();
+					
+					timer += delta;
+					
+					if (second_volume > 0)
+					{
+						first_volume -= first_speed*delta;
+						_music_set_volume(first_volume);
+					}
+					
+					if (second_volume < 100)
+					{
+						second_volume += second_speed*delta;
+						_music_set_second_volume(second_volume);
+					}
+				}
+				
+				// Make the second music the main one
+				_music_stop_transition_play();
+				_music_set_volume(pVolume);
+			},
+			dictionary = {
+			{"pSeconds", pSeconds},
+			{"pVolume" , pVolume }});
+	}
+	
 	/// Is the song playing?
 	bool playing()
 	{
@@ -39,7 +107,7 @@ namespace music
 	/// \param pVolume A value from 0-100.
 	void volume(float pVolume)
 	{
-		_music_volume(pVolume);
+		_music_set_volume(pVolume);
 	}
 	
 	/// Get duration of music in seconds.
@@ -49,9 +117,15 @@ namespace music
 	}
 	
 	/// Get current position of music in seconds
-	float position()
+	float get_position()
 	{
-		return _music_position();
+		return _music_get_position();
+	}
+	
+	// set the position of the music in seconds
+	void set_position(float pSeconds)
+	{
+		_music_set_position(pSeconds);
 	}
 	
 	/// Open sound file
@@ -84,7 +158,7 @@ namespace music
 		}
 		
 		while (music::playing()
-		&&     music::position() < pSeconds)
+		&&     music::get_position() < pSeconds)
 		{ yield(); }
 	}
 	

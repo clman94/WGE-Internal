@@ -315,3 +315,18 @@ void make_shared(ref@ pData, const string&in pName);
 ref@ get_shared(const string&in pName);
 
 /// \}
+
+
+/// \weakgroup Flags
+/// \{
+
+/// Check if flag exists
+bool has_flag(const string&in pName);
+
+/// Create a new flag. Returns true if th it already exists
+bool set_flag(const string &in pName);
+
+/// Remove a flag. Returns true if there was no flag to remove.
+bool unset_flag(const string &in pName);
+
+/// \}

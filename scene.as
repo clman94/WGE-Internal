@@ -9,33 +9,10 @@
 #include "entity.as"
 #include "gui.as"
 
-/// \weakgroup Game
-/// \{
-
-/// Basic control that is supported in the engine.
-/// There are 2 different types of controls: pressed and held.
-/// Pressed controls are only activated once in only one frame and
-/// in any other frame (even if it's still being held) it will not be considered
-/// activated. Held controls are simply always activated when the key is down.
-/// \see is_triggered
-enum control
-{
-	activate = 0,     ///< Typically the enter and Z key (Pressed)
-	left,             ///< (Held)
-	right,            ///< (Held)
-	up,               ///< (Held)
-	down,             ///< (Held)
-	select_next,      ///< Typically the right key (Pressed)
-	select_previous,  ///< Typically the left key (Pressed)
-	select_up,        ///< Typically the up key (Pressed)
-	select_down,      ///< Typically the down key (Pressed)
-	back,             ///< X key, go back or exit (Pressed)
-	menu,             ///< Typically the M key (Pressed)
-};
 
 namespace player
 {
-	/// \weakgroup Scene
+	/// \weakgroup Player
 	/// \{
 
 	/// Set whether or not the player character will receive
@@ -46,6 +23,7 @@ namespace player
 		_set_player_locked(pIs_locked);
 	}
 	
+	/// Check if player is locked
 	bool is_locked()
 	{
 		return _get_player_locked();
@@ -70,16 +48,45 @@ namespace player
 	/// \}
 }
 
+/// \weakgroup Game
+/// \{
+
+/// Basic control that is supported in the engine.
+/// There are 2 different types of controls: pressed and held.
+/// Pressed controls are only activated once in only one frame and
+/// in any other frame (even if it's still being held) it will not be considered
+/// activated. Held controls are simply always activated when the key is down.
+/// \see is_triggered
+enum control
+{
+	activate = 0,     ///< Typically the enter and Z key (Pressed)
+	left,             ///< (Held)
+	right,            ///< (Held)
+	up,               ///< (Held)
+	down,             ///< (Held)
+	select_next,      ///< Typically the right key (Pressed)
+	select_previous,  ///< Typically the left key (Pressed)
+	select_up,        ///< Typically the up key (Pressed)
+	select_down,      ///< Typically the down key (Pressed)
+	back,             ///< X key, go back or exit (Pressed)
+	menu,             ///< Typically the M key (Pressed)
+};
+
 /// Check if a control as been activated
 bool is_triggered(control pControls)
 {
 	return _is_triggered(pControls);
 }
+/// \}
 
-/// Exit thread if flag exist otherwise create the flag and continue.
-/// This is useful in situations when you want a trigger to be activated once.
-/// \param pFlag Keyboard smash if you have no farther use for it
-void once_flag(const string&in pFlag)
+/// \weakgroup Flags
+/// \{
+
+
+/// Exit thread if flag exists otherwise create the flag and continue.
+/// This is useful in situations when you do not want a trigger to be activated more than one time.
+/// \param pFlag Keyboard smash if you have no further use for it
+void once_flag(const string&in pName)
 {
 	if (has_flag(pFlag))
 		abort();
@@ -87,3 +94,4 @@ void once_flag(const string&in pFlag)
 }
 
 /// \}
+

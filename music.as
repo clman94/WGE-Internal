@@ -23,10 +23,10 @@ namespace music
 		_music_pause();
 	}
 	
-	// Seamlessly swap out music files.
-	// This will maintain the current position
-	// of the music playing beforehand (Only if
-	// the new music is the same or longer in length).
+	/// Seamlessly swap out music files.
+	/// This will maintain the current position
+	/// of the music playing beforehand (Only if
+	/// the new music is the same or longer in length).
 	void swap(const string&in pName)
 	{
 		_music_swap(pName);
@@ -117,7 +117,7 @@ namespace music
 		return _music_get_position();
 	}
 	
-	// set the position of the music in seconds
+	/// set the position of the music in seconds
 	void set_position(float pSeconds)
 	{
 		_music_set_position(pSeconds);

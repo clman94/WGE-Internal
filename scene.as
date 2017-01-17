@@ -88,9 +88,9 @@ bool is_triggered(control pControls)
 /// \param pFlag Keyboard smash if you have no further use for it
 void once_flag(const string&in pName)
 {
-	if (has_flag(pFlag))
+	if (has_flag(pName))
 		abort();
-	set_flag(pFlag);
+	set_flag(pName);
 }
 
 /// \}

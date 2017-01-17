@@ -323,7 +323,7 @@ ref@ get_shared(const string&in pName);
 /// Check if flag exists
 bool has_flag(const string&in pName);
 
-/// Create a new flag. Returns true if th it already exists
+/// Create a new flag. Returns true if the flag already exists
 bool set_flag(const string &in pName);
 
 /// Remove a flag. Returns true if there was no flag to remove.

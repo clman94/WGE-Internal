@@ -14,9 +14,10 @@ vec pixel(vec pVec)
 	return pVec/32;
 }
 
-/// \}
-
+/// Convenience function for moving a vector towards another at a specific speed.
 vec move_towards(const vec&in pTarget, const vec&in pFollower, float pSpeed = 1)
 {
 	return pFollower + ((pTarget - pFollower).normalize()*get_delta()*pSpeed);
 }
+
+/// \}

@@ -92,7 +92,8 @@ void move(entity pEntity, vec pTo, float pSeconds)
 {
 	vec initual_position = get_position(pEntity);
 	
-	set_direction(pEntity, pTo);
+	if (is_character(pEntity))
+		set_direction(pEntity, pTo);
 	
 	float distance = initual_position.distance(pTo);
 	vec velocity = ((pTo - initual_position))/pSeconds;
@@ -100,7 +101,9 @@ void move(entity pEntity, vec pTo, float pSeconds)
 	vec position = initual_position;
 	
 	float timer = 0;
-	start_animation(pEntity);
+	
+	if (is_character(pEntity))
+		start_animation(pEntity);
 	while (timer < pSeconds)
 	{
 		float delta = get_delta();
@@ -110,7 +113,8 @@ void move(entity pEntity, vec pTo, float pSeconds)
 		yield();
 	}
 	set_position(pEntity, initual_position + (velocity*pSeconds)); // Ensure position
-	stop_animation(pEntity);
+	if (is_character(pEntity))
+		stop_animation(pEntity);
 }
 
 /// Move an entity to a position at a constant speed.
@@ -125,7 +129,8 @@ void move(entity pEntity, vec pTo, speed pSpeed)
 /// Move in a direction at x distance in y seconds
 void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 {
-	set_direction(pEntity, pDirection);
+	if (is_character(pEntity))
+		set_direction(pEntity, pDirection);
 	
 	vec velocity;
 	
@@ -143,7 +148,9 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 	vec position = initual_position;
 	
 	float timer = 0;
-	start_animation(pEntity);
+	
+	if (is_character(pEntity))
+		start_animation(pEntity);
 	while (timer < pSeconds)
 	{
 		float delta = get_delta();
@@ -153,7 +160,8 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 		yield();
 	}
 	set_position(pEntity, initual_position + (velocity*pSeconds));  // Ensure position
-	stop_animation(pEntity);
+	if (is_character(pEntity))
+		stop_animation(pEntity);
 }
 
 /// Move in a direction at x distance at y speed

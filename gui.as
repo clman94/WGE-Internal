@@ -406,6 +406,7 @@ class empty_menu_item : menu_item
 /// Function definition of callback
 funcdef void menu_function_t(dictionary@);
 
+
 /// Menu that calls a function when selected
 /// 
 /// Ex.

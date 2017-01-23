@@ -12,10 +12,11 @@
             <wall_top_ce x="-1" y="-2" r="2"/>
             <wall_top x="0" y="-2" w="6" r="2"/>
             <wall_top_ce x="6" y="-2" r="3"/>
-            <wall_top x="-1" y="-1" h="2" r="1"/>
+            <wall_top x="-1" y="-1" r="1"/>
             <cell_wall x="0" y="-1" w="6"/>
             <wall_top x="6" y="-1" h="6" r="3"/>
-            <wall_top_c x="-1" y="1" r="2"/>
+            <wall_top_c x="-1" y="0" r="2"/>
+            <cell_wall x="-1" y="1"/>
             <wall_top_c x="-1" y="3" r="1"/>
             <wall_top x="-1" y="4" r="1"/>
             <wall_top_ce x="-1" y="5" r="1"/>

@@ -214,10 +214,10 @@ vec get_boundary_position();
 vec get_boundary_size();
 
 /// Set position of boundary region.
-void get_boundary_position(vec pPosition);
+void set_boundary_position(vec pPosition);
 
 /// set size of boundary region.
-void get_boundary_size(vec pSize);
+void set_boundary_size(vec pSize);
 
 /// Set whether or not the boundary is used.
 void set_boundary_enable(bool pIs_enabled);

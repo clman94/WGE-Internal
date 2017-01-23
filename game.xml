@@ -1,15 +1,15 @@
 <game>
-	<scene  name="scene1"/>
+	<scene  name="room"/>
 	
 	<player texture="somedude1"/>
 	
 	<narrative>
-		<box texture="NarrativeBox" atlas="NarrativeBox"/>
+		<box  texture="NarrativeBox" atlas="NarrativeBox"/>
 		
 		<expressions>
-			<yay texture="someexpression" atlas="yay"/>
+			<yay             texture="someexpression"      atlas="yay"/>
 			<voidian_neutral texture="voidian_expressions" atlas="neutral"/>
-			<voidian_angry texture="voidian_expressions" atlas="angry"/>
+			<voidian_angry   texture="voidian_expressions" atlas="angry"/>
 		</expressions>
 	</narrative>
 	

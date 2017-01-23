@@ -1,8 +1,12 @@
+#include "backend/user_data.as"
+
+player_data@ player;
 
 [start]
 void start() {
   set_position(get_player(), vec(0.5, 3));
   set_focus(vec(2.5, 4));
+  //player = get_player_data();
 }
 
 [start]

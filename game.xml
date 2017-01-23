@@ -1,5 +1,5 @@
 <game>
-	<scene  name="room"/>
+	<scene  name="room1"/>
 	
 	<player texture="somedude1"/>
 	

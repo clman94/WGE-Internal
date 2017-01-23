@@ -6,11 +6,16 @@ void start() {
 }
 
 [start]
+void door_collision() {
+  if(has_flag("room1_open")) {
+    set_wall_group_enabled("door", false);
+  }
+}
+
+[start]
 void food_drop() {
-  
   entity food = add_entity("dungeon", "food");
   set_visible(food, false);
-  
   if(!has_flag("food")) {
     wait(10);
     set_position(food, vec(1, 0.05));

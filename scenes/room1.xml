@@ -1,4 +1,4 @@
-<scene name="Room">
+<scene name="Room 1">
     <boundary w="6" h="7"/>
     <map>
         <texture>dungeon</texture>
@@ -26,6 +26,7 @@
         </layer>
     </map>
     <collisionboxes>
+        <door x="6.5" y="4" w="1" h="2" name="door_room1" scene="hallway" destination="room1_door" offsetx="-1" offsety="-.15"/>
         <wall x="0" y="1" w="6" h="1"/>
         <wall x="0" y="7" w="6" h="1"/>
         <wall x="-1" y="2" w="1" h="5"/>

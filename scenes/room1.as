@@ -14,25 +14,23 @@ void door_collision() {
 
 [start]
 void food_drop() {
-  entity food = add_entity("dungeon", "food");
-  set_visible(food, false);
   if(!has_flag("food")) {
     wait(10);
+    entity food = add_entity("dungeon", "food");
     set_position(food, vec(1, 0.05));
     set_visible(food, true);
     set_depth(food, 0);
     move(food, vec(1.5, 5), 5);
     set_depth(food, 255);
     set_flag("food");
-  } else {
-    set_visible(food, true);
-    set_position(food, vec(1.5, 5));
   }
 }
 
-[trigger x=1 y=4 w=1 h=1]
-void break_wall() {
+[button x=1 y=4 w=1 h=1]
+void get_food() {
   if(has_flag("food") and not has_flag("wall_broken")) {
+    //say("You got a food!");
+    
     say("rumble rumble");
     narrative::hide();
     player::lock(false);

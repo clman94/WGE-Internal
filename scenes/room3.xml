@@ -1,3 +1,35 @@
-<scene>
-
+<scene name="Room 3">
+    <boundary w="6" h="5"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="-1">
+            <ground x="0" y="0" w="6" h="2"/>
+            <ground x="-1" y="2" w="7"/>
+            <ground x="0" y="3" w="6"/>
+            <ground x="0" y="4" w="6"/>
+        </layer>
+        <layer id="0">
+            <wall_top_ce x="-1" y="-2" r="2"/>
+            <wall_top x="0" y="-2" w="6" r="2"/>
+            <wall_top_ce x="6" y="-2" r="3"/>
+            <wall_top x="-1" y="-1" h="2" r="1"/>
+            <cell_wall x="0" y="-1" w="6"/>
+            <wall_top x="6" y="-1" h="6" r="3"/>
+            <wall_top_c x="-1" y="1" r="2"/>
+            <wall_top_c x="-1" y="3" r="1"/>
+            <wall_top x="-1" y="4" r="1"/>
+            <wall_top_ce x="-1" y="5" r="1"/>
+            <wall_top x="0" y="5" w="6"/>
+            <wall_top_ce x="6" y="5"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <door x="-1.5" y="2" w="1" h="1" name="door_room3" scene="hallway" destination="room3_door" offsetx="1" offsety=".35"/>
+        <wall x="-2" y="2" w="1" h="1"/>
+        <wall x="-1" y="3" w="1" h="2"/>
+        <wall x="0" y="5" w="6" h="1"/>
+        <wall x="6" y="-1" w="1" h="6"/>
+        <wall x="0" y="-2" w="6" h="1"/>
+        <wall x="-1" y="-1" w="1" h="3"/>
+    </collisionboxes>
 </scene>

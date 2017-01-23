@@ -39,15 +39,17 @@ shared class inventory_item
 	{
 		return mCount;
 	}
+  
 	void set_count(int pCount) final
 	{
 		mCount = pCount;
 	}
+  
 	void add_count(int pAmount = 1) final
 	{
 		mCount += pAmount;
 	}
-	
+  
 	private int mCount;
 };
 
@@ -93,7 +95,7 @@ shared class player_data
 	{
 		mHP = 10;
 		mHP_max = 10;
-		mDP = 2;
+		mAtk = 2;
 		add_inventory_item(crusty_bread_item());
 		add_inventory_item(crusty_bread_item());
 		add_inventory_item(crusty_knife_item());
@@ -103,6 +105,7 @@ shared class player_data
 	{
 		return mHP;
 	}
+  
 	void set_hp(int pHP)
 	{
 		mHP = pHP;
@@ -118,14 +121,14 @@ shared class player_data
 		mHP_max = pMax;
 	}
 	
-	int get_dp()
+	int get_atk()
 	{
-		return mDP;
+		return mAtk;
 	}
 	
-	void set_dp(int pDP)
+	void set_atk(int pAtk)
 	{
-		mDP = pDP;
+		mAtk = pAtk;
 	}
 	
 	void add_inventory_item(inventory_item@ mItem)
@@ -164,14 +167,14 @@ shared class player_data
 	
 	private int mHP;
 	private int mHP_max;
-	private int mDP;
+	private int mAtk;
 	private array<inventory_item@> mInventory;
 };
 
 shared player_data@ get_player_data()
 {
 	ref@ s_data = get_shared("player_data");
-	if (s_data is null) // Create new data if none exist
+	if (s_data is null) // Create new data if none exists
 	{
 		player_data new_data();
 		make_shared(@new_data, "player_data");

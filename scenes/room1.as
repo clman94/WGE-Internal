@@ -6,7 +6,7 @@ player_data@ player;
 void start() {
   set_position(get_player(), vec(0.5, 3));
   set_focus(vec(2.5, 4));
-  //player = get_player_data();
+  set_wall_group_enabled("food", false);
 }
 
 [start]
@@ -27,10 +27,11 @@ void food_drop() {
     move(food, vec(1.5, 5), 5);
     set_depth(food, 255);
     set_flag("food");
+    set_wall_group_enabled("food", true);
   }
 }
 
-[button x=1 y=4 w=1 h=1]
+[group food]
 void get_food() {
   if(has_flag("food") and not has_flag("wall_broken")) {
     //say("You got a food!");
@@ -39,10 +40,11 @@ void get_food() {
     narrative::hide();
     player::lock(false);
     set_flag("wall_broken");
+    set_wall_group_enabled("wall_crack", true);
   }
 }
 
-[button x=3 y=1 w=1 h=1]
+[group wall_crack]
 void wall_crack() {
   if(not has_flag("wall_broken")) {
     say("A totally unsuspicious crack\nin the wall.");

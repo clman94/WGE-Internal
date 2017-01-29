@@ -8,7 +8,7 @@ void start()
 [start]
 void door_collision() {
   if(has_flag("room1_open")) {
-    set_wall_group_enabled("door", false);
+    group::enable("door", false);
   }
 }
 
@@ -17,7 +17,7 @@ void open_door() {
   if(!has_flag("room1_open")) {
     say("click");
     set_flag("room1_open");
-    set_wall_group_enabled("door", false);
+    group::enable("door", false);
     narrative::end();
   }
 }

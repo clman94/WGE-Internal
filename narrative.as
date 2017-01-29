@@ -1,5 +1,9 @@
-/// \weakgroup Narrative
-/// \{
+/*! \weakgroup Narrative
+
+
+
+ \{
+ */
 
 /// A return from a 2 choice selection.
 /// \see select

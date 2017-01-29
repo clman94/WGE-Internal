@@ -100,6 +100,14 @@ void set_position(entity&in pEntity, const vec&in pVec);
 /// Get position of entity.
 vec get_position(entity&in pEntity);
 
+/// Set the vertical position of an entity.
+/// The entity retains its current position and its depth but the object that is displayed
+/// is move either up or down. Useful when you want a floating character or something similar.
+void set_z(entity&in pEntity, float pZ);
+
+/// Get Z position of entity.
+float get_z(entity&in pEntity);
+
 /// Set the direction of a character entity.
 void set_direction(entity&in pEntity, direction pDirection);
 

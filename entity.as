@@ -230,4 +230,24 @@ void pathfind_move(entity pEntity, vec pDestination, float pSpeed, float pWait_f
 	}
 }
 
+
+/// Move entity up or down at a specific speed
+void move_z(entity pEntity, float pToZ, float pSpeed)
+{
+	const float distance = abs(pToZ - get_z(pEntity));
+	const float duration = distance / pSpeed;
+	
+	const float velocity = (pToZ < get_z(pEntity) ? -pSpeed : pSpeed);
+	
+	float timer = 0;
+	while (timer <= duration)
+	{
+		yield();
+		const float delta = get_delta();
+		timer += delta;
+		set_z(pEntity, get_z(pEntity) + (velocity*delta));
+	}
+	set_z(pEntity, pToZ);
+}
+
 /// \}

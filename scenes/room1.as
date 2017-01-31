@@ -6,13 +6,13 @@ player_data@ player;
 void start() {
   set_position(get_player(), vec(0.5, 3));
   set_focus(vec(2.5, 4));
-  set_wall_group_enabled("food", false);
+  group::enable("food", false);
 }
 
 [start]
 void door_collision() {
   if(has_flag("room1_open")) {
-    set_wall_group_enabled("door", false);
+    group::enable("door", false);
   }
 }
 
@@ -27,7 +27,7 @@ void food_drop() {
     move(food, vec(1.5, 5), 5);
     set_depth(food, 255);
     set_flag("food");
-    set_wall_group_enabled("food", true);
+    group::enable("food", true);
   }
 }
 
@@ -40,7 +40,7 @@ void get_food() {
     narrative::hide();
     player::lock(false);
     set_flag("wall_broken");
-    set_wall_group_enabled("wall_crack", true);
+    group::enable("wall_crack", true);
   }
 }
 

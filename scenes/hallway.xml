@@ -68,16 +68,15 @@
         <wall x="9" y="8" w="1" h="1"/>
         <wall x="9" y="10" w="1" h="1"/>
         <wall x="10" y="9" w="1" h="1"/>
-        <wall x="3" y="13" w="1" h="1"/>
-        <wall x="5" y="13" w="1" h="1"/>
-        <wall x="4" y="14" w="1" h="1"/>
         <wall x="-1" y="8" w="1" h="1"/>
         <wall x="-2" y="9" w="1" h="1"/>
         <wall x="-1" y="10" w="1" h="1"/>
         <wall x="8" y="3" w="1" h="2"/>
         <wall x="0" y="3" w="1" h="1"/>
         <wall x="1" y="2" w="7" h="1"/>
-        <wall x="-0.49" y="9" w="1" h="1" group="door"/>
-        <button x="-0.49" y="9" w="1" h="1" group="door"/>
+        <wall x="-0.49000001" y="9" w="1" h="1" group="door"/>
+        <button x="-0.49000001" y="9" w="1" h="1" group="door"/>
+        <wall x="4" y="13" w="1" h="1"/>
+        <door x="4" y="12" w="1" h="1" group="freedom" name="outside" destination="inside" scene="outside" offsetx="0" offsety="-1"/>
     </collisionboxes>
 </scene>

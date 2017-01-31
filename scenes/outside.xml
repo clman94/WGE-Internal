@@ -1,0 +1,9 @@
+<scene name="outside">
+  <boundary w="50" h="100"/>
+  <map>
+    <texture>dungeon</texture>
+  </map>
+  <collisionboxes>
+    <door x="7" y="20" w="1" h="1" name="inside" destination="outside" scene="hallway" offsetx="0" offsety="1"/>
+  </collisionboxes>
+</scene>

@@ -2,7 +2,7 @@
 [start]
 void start()
 {
-	set_position(get_player(), vec(1,5.85));
+  set_position(get_player(), vec(4.5, 12));
 }
 
 [start]

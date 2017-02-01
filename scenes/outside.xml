@@ -1,9 +1,31 @@
 <scene name="outside">
-  <boundary w="50" h="100"/>
-  <map>
-    <texture>dungeon</texture>
-  </map>
-  <collisionboxes>
-    <door x="7" y="20" w="1" h="1" name="inside" destination="outside" scene="hallway" offsetx="0" offsety="1"/>
-  </collisionboxes>
+    <boundary w="50" h="100"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="0">
+            <ground x="0" y="19" w="27"/>
+            <ground x="0" y="20" w="21"/>
+            <ground x="22" y="20" w="5"/>
+            <ground x="0" y="21" w="50" h="2"/>
+            <ground x="0" y="23" w="50"/>
+        </layer>
+        <layer id="1">
+            <full_wall x="-1" y="19" w="32"/>
+            <full_wall x="37" y="19" w="13"/>
+            <full_wall x="-1" y="20" h="2"/>
+            <full_wall x="-1" y="22"/>
+        </layer>
+        <layer id="2">
+            <door x="7" y="20"/>
+            <door x="23" y="20"/>
+            <door x="44" y="20"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <door x="7" y="20" w="1" h="1" name="inside" destination="outside" scene="hallway" offsetx="0" offsety="1"/>
+        <button x="7" y="20" w="1" h="1" group="funtimes"/>
+        <wall x="0" y="20" w="27" h="1" group="buildawall"/>
+        <wall x="0" y="24" w="27" h="1"/>
+        <wall x="-1" y="21" w="1" h="3"/>
+    </collisionboxes>
 </scene>

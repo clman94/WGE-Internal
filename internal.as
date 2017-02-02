@@ -234,6 +234,17 @@ void set_boundary_enable(bool pIs_enabled);
 /// \param pPath Path to XML file
 void load_scene(const string &in pPath);
 
+/// Load scene
+/// \param pPath Path to XML file
+void load_scene(const string &in pPath);
+
+/// Load scene and move player to door
+/// \param pPath Path to XML file
+void load_scene(const string &in pPath, const string &in pDoor);
+
+/// Load scene and nove player to position
+/// \param pPath Path to XML file
+void load_scene(const string &in pPath, vec pPosition);
 
 /// \}
 

@@ -234,10 +234,6 @@ void set_boundary_enable(bool pIs_enabled);
 /// \param pPath Path to XML file
 void load_scene(const string &in pPath);
 
-/// Set all walls in group to be enables or disabled.
-/// **NOTE: This may be subjected to change.**
-void set_wall_group_enabled(const string&in pName, bool pEnabled);
-
 
 /// \}
 

@@ -42,5 +42,9 @@
         <wall x="0" y="7" w="16" h="1"/>
         <wall x="15" y="0" w="1" h="7"/>
         <wall x="21" y="0" w="1" h="7"/>
+        <trigger x="5" y="22" w="1" h="1" group="to_spoop"/>
+        <wall x="0" y="24" w="50" h="1"/>
+        <wall x="50" y="21" w="1" h="3"/>
+        <trigger x="16" y="6" w="5" h="1" group="spoop"/>
     </collisionboxes>
 </scene>

@@ -48,7 +48,7 @@ namespace priv
 	/// \{
 	
 	/// Set the sound effect for reveal text.
-	void set_dialog_sound(string &in pName)
+	void set_dialog_sound(const string &in pName)
 	{
 		narrative::priv::current_dialog_sound = pName;
 	}

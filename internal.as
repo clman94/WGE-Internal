@@ -122,7 +122,7 @@ void start_animation(entity&in pEntity);
 void stop_animation(entity&in pEntity);
 
 /// Set animation/atlas of entity.
-void set_animation(entity&in pEntity, const string &in pAtlas);
+void set_atlas(entity&in pEntity, const string &in pAtlas);
 
 /// Find an entity by its name.
 /// \see set_name

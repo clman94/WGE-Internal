@@ -230,10 +230,6 @@ void set_boundary_size(vec pSize);
 /// Set whether or not the boundary is used.
 void set_boundary_enable(bool pIs_enabled);
 
-/// Load scene from file
-/// \param pPath Path to XML file
-void load_scene(const string &in pPath);
-
 /// Load scene
 /// \param pPath Path to XML file
 void load_scene(const string &in pPath);

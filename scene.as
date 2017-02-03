@@ -13,3 +13,4 @@
 #include "player.as"
 #include "flags.as"
 #include "game.as"
+#include "focus.as"

@@ -17,22 +17,5 @@ namespace player
 	{
 		return _get_player_locked();
 	}
-	
-	/// Set the focus of the camera to either focus on the player
-	/// or freely move around. When function like set_focus are used,
-	/// the focus on the player is automatically removed.
-	///
-	/// This function can be called without any parameters to focus on player.
-	void focus(bool pIs_focus = true)
-	{
-		focus_player(pIs_focus);
-	}
-	
-	/// Unfocus player.
-	void unfocus()
-	{
-		focus_player(false);
-	}
-	
 	/// \}
 }

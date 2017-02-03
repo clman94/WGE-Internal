@@ -21,7 +21,7 @@ namespace fx
 	/// Shake camera. Kind-of like a rumble effect.
 	void shake(float pSeconds, float pAmount)
 	{
-		const vec original_focus = get_focus();
+		const vec original_focus = _get_focus();
 		
 		float timer = 0;
 		float shake_timer = 0;
@@ -34,12 +34,12 @@ namespace fx
 			if (shake_timer >= 0.07)
 			{
 				shake_timer = 0;
-				set_focus(original_focus + vec(pAmount, 0).rotate(random(0, 360)));
+				_set_focus(original_focus + vec(pAmount, 0).rotate(random(0, 360)));
 			}
 			
 			yield();
 		}
-		set_focus(original_focus);
+		_set_focus(original_focus);
 	}
 		
 	/// Fade in to scene

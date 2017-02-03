@@ -194,14 +194,6 @@ entity get_player();
 /// \weakgroup Scene
 /// \{
 
-/// Set location for camera to focus on.
-/// The camera will automatically stay within the boundaries of the scene.
-/// Automatically sets player::focus to false.
-void set_focus(vec pPosition);
-
-/// Get focus of camera.
-vec get_focus();
-
 /// Set a tile in the tilemap.
 /// Any overlapping tiles will be replaced.
 /// The tilemap is optimized for speed and not flexibility so it is recommended
@@ -238,7 +230,7 @@ void load_scene(const string &in pPath);
 /// \param pPath Path to XML file
 void load_scene(const string &in pPath, const string &in pDoor);
 
-/// Load scene and nove player to position
+/// Load scene and move player to position
 /// \param pPath Path to XML file
 void load_scene(const string &in pPath, vec pPosition);
 

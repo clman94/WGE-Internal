@@ -90,13 +90,11 @@ void set_direction(entity pEntity, vec pTowards)
 /// Move entity to (pTo) position in (pSeconds) seconds
 void move(entity pEntity, vec pTo, float pSeconds)
 {
-	vec initual_position = get_position(pEntity);
-	
 	if (is_character(pEntity))
 		set_direction(pEntity, pTo);
-	
-	float distance = initual_position.distance(pTo);
-	vec velocity = ((pTo - initual_position))/pSeconds;
+		
+	const vec initual_position = get_position(pEntity);
+	const vec velocity = ((pTo - initual_position))/pSeconds;
 	
 	vec position = initual_position;
 	
@@ -106,7 +104,7 @@ void move(entity pEntity, vec pTo, float pSeconds)
 		start_animation(pEntity);
 	while (timer < pSeconds)
 	{
-		float delta = get_delta();
+		const float delta = get_delta();
 		timer += delta;
 		position += velocity*delta;
 		set_position(pEntity, position);
@@ -144,7 +142,7 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 	
 	velocity *= pDistance/pSeconds;
 	
-	vec initual_position = get_position(pEntity);
+	const vec initual_position = get_position(pEntity);
 	vec position = initual_position;
 	
 	float timer = 0;
@@ -168,25 +166,6 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 void move(entity pEntity, direction pDirection, float pDistance, speed pSpeed)
 {
 	move(pEntity, pDirection, pDistance, pSpeed.get_time(pDistance));
-}
-
-/// Gradually move focus point to position in x seconds
-void move_focus(vec pPosition, float pSeconds)
-{
-	vec focus = get_focus();
-	float distance = focus.distance(pPosition);
-	vec velocity = (pPosition - focus)/pSeconds;
-	
-	float timer = 0;
-	while (timer < pSeconds)
-	{
-		float delta = get_delta();
-		timer += delta;
-		focus += velocity*delta;
-		set_focus(focus);
-		yield();
-	}
-	set_focus(pPosition); // Ensure position
 }
 
 /// Set color of entity with A at 100%
@@ -216,8 +195,8 @@ void pathfind_move(entity pEntity, vec pDestination, float pSpeed, float pWait_f
 	{
 		if (pWait_for_player != 0)
 		{
-			vec player_position = get_position(get_player());
-			vec position = get_position(pEntity);
+			const vec player_position = get_position(get_player());
+			const vec position = get_position(pEntity);
 			
 			while (get_position(get_player()).distance(position) >= pWait_for_player)
 			{

@@ -21,6 +21,7 @@
             <full_wall x="-1" y="22"/>
         </layer>
         <layer id="2">
+            <sign x="14" y="6"/>
             <door x="7" y="20"/>
             <door x="23" y="20"/>
             <door x="44" y="20"/>
@@ -46,5 +47,6 @@
         <wall x="0" y="24" w="50" h="1"/>
         <wall x="50" y="21" w="1" h="3"/>
         <trigger x="16" y="6" w="5" h="1" group="spoop"/>
+        <button x="14" y="7" w="1" h="1" group="magical"/>
     </collisionboxes>
 </scene>

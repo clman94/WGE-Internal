@@ -38,7 +38,7 @@ vec get()
 }
 
 /// Focus on player
-void player(bool pFocus_player)
+void player(bool pFocus_player = true)
 {
 	_focus_player(pFocus_player);
 }

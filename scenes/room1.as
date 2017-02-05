@@ -56,7 +56,8 @@ void wall_crack() {
   }
 }
 
-[trigger x=3 y=1 w=1 h=0.95]
-void next_room() {
-  load_scene("room2");
+[group testing]
+void test_room() {
+  load_scene("test");
 }
+

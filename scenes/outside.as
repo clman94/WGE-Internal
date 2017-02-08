@@ -90,6 +90,7 @@ void spoop() {
   focus::move(get_position(get_player()), .15 * pl_pos.distance(mid));
   focus::player();
   group::enable("spoop", false);
+  remove_entity(spoopy);
   narrative::set_skip(false);
   player::lock(false);
 }

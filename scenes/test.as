@@ -23,3 +23,8 @@ void lets_bounce() {
   }while(yield());
 }
 
+[start]
+void alpa() {
+  entity alpa = add_entity("alpa");
+  set_position(alpa, vec(3,5));
+}

@@ -72,3 +72,4 @@ void check_buttons() {
   }
   group::enable("freedom", false);
 }
+

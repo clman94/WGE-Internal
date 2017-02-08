@@ -1,5 +1,5 @@
 
-float g = -1;
+float g = -5;
 
 void accelerate_z(entity pEntity, float pTime, float pAccel, float pVel = 0) {
   
@@ -7,7 +7,7 @@ void accelerate_z(entity pEntity, float pTime, float pAccel, float pVel = 0) {
   
   for(float t = 0; t <= pTime; t += get_delta()) {
     
-    set_z(get_player(), get_z(get_player()) + z_vel * get_delta() + (1/2) * pAccel * pow(get_delta(), 2));
+    set_z(get_player(), get_z(get_player()) + z_vel * get_delta() + (1.f/2) * pAccel * pow(get_delta(), 2));
     
     z_vel += pAccel * get_delta();
     
@@ -22,6 +22,7 @@ void bounce(float pHeight, float pTime) {
   
   accelerate_z(get_player(), pTime, g, velocity);
   
+  set_z(get_player(), 0);
 }
 
 void bounce(float pVel) {
@@ -30,5 +31,6 @@ void bounce(float pVel) {
   
   accelerate_z(get_player(), t, g, pVel);
   
+  set_z(get_player(), 0);
 }
 

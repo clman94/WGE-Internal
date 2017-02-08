@@ -18,9 +18,8 @@ void shadow() {
 
 [start]
 void lets_bounce() {
-  while(true) {
-    bounce(3);
-    yield();
-  }
+  do {
+    bounce(9);
+  }while(yield());
 }
 

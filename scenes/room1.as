@@ -6,6 +6,7 @@ player_data@ player;
 void start() {
   set_position(get_player(), vec(0.5, 3));
   group::enable("food", false);
+  set_z(get_player(), 0);
 }
 
 [start]

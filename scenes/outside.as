@@ -37,6 +37,8 @@ void spoop() {
   
   player::lock(true);
   
+  narrative::set_skip(false);
+  
   vec pl_pos = get_position(get_player());
   vec mid = vec(get_position(spoopy).x, pl_pos.y);
   
@@ -51,12 +53,11 @@ void spoop() {
   narrative::set_speaker(spoopy);
   set_atlas(spoopy, "talk_blank");
   fsay("...Hmm?");
-  wait(.3);
-  keywait();
+  wait(.7);
   
   fsay("Oh.\n");
   wait(1);
-  append("One of them managed to get out.");
+  fappend("One of them managed to get out.");
   narrative::hide();
   
   wait(.7644);
@@ -74,6 +75,7 @@ void spoop() {
   
   narrative::set_speaker(spoopy);
   fsay("I guess I should take care of\nthis.");
+  wait(1.5);
   narrative::end();
   
   wait(1);
@@ -88,6 +90,7 @@ void spoop() {
   focus::move(get_position(get_player()), .15 * pl_pos.distance(mid));
   focus::player();
   group::enable("spoop", false);
+  narrative::set_skip(false);
   player::lock(false);
 }
 

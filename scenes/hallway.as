@@ -28,7 +28,11 @@ void open_door() {
 void make_buttons() {
   buttons.resize(3);
   for(int i = 0; i < 3; i++) {
-    buttons[i] = add_entity("dungeon", "button");
+    if(has_flag("button" + i)) {
+      buttons[i] = add_entity("dungeon", "button_p");
+    } else {
+      buttons[i] = add_entity("dungeon", "button");
+    }
     set_position(buttons[i], vec(1.5 + 3 * i, 3));
   }
 }

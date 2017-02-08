@@ -11,11 +11,11 @@
             <cell_wall_2 x="3" y="1"/>
             <cell_wall x="4" y="1" w="2"/>
             <wall_top x="6" y="1" r="3"/>
-            <wall_markings x="-2" y="2"/>
-            <ground x="0" y="2" w="6" h="5"/>
+            <ground x="0" y="2" w="6" h="2"/>
             <wall_top_c x="6" y="2" r="3"/>
             <cell_wall x="6" y="3"/>
-            <ground x="6" y="4"/>
+            <ground x="0" y="4" w="7"/>
+            <ground x="0" y="5" w="6" h="2"/>
             <wall_top_c x="6" y="5"/>
             <wall_top x="6" y="6" r="3"/>
             <wall_top_ce x="-1" y="7" r="1"/>

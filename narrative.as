@@ -42,6 +42,8 @@ namespace priv
 	bool randomized_dialog_sound = false;
 	
 	bool player_already_locked = false;
+  
+  bool skip = true;
 }
 	
 	/// \addtogroup Narrative
@@ -101,6 +103,7 @@ namespace priv
 			player::lock(!pUnlock_player);
 		narrative::priv::current_dialog_sound = "dialog_sound";
 		narrative::priv::randomized_dialog_sound = false;
+    narrative::priv::skip = true;
 		_end_narrative();
 	}
 	
@@ -141,6 +144,11 @@ namespace priv
 		_set_expression(pName);
 	}
 	
+  void set_skip(bool pSkip)
+  {
+    narrative::priv::skip = pSkip;
+  }
+  
 	/// \}
 }
 
@@ -158,7 +166,7 @@ void _wait_dialog_reveal(bool pSkip = false)
 				fx::sound(narrative::priv::current_dialog_sound);
 		}
 		
-		if (is_triggered(control::activate))
+		if (is_triggered(control::activate) && narrative::priv::skip)
 			_skip_reveal();
 	} while (_is_revealing());
 	_stop_expression_animation();

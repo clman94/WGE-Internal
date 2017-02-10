@@ -3,6 +3,8 @@
 	
 	<player texture="somedude1"/>
 	
+	<tile_size pixels="32"/>
+	
 	<narrative>
 		<box  texture="NarrativeBox" atlas="NarrativeBox"/>
 		

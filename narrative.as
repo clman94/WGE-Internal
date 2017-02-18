@@ -48,6 +48,26 @@ namespace priv
 	
 	entity box;
 	entity main_text;
+	
+	void create_narrative()
+	{
+		// Create box
+		narrative::priv::box = add_entity("NarrativeBox", "NarrativeBox");
+		entity box = narrative::priv::box;
+		make_gui(box, 10);
+		set_anchor(box, anchor::topleft);
+		set_position(box, pixel((get_display_size()*vec(0.5, 1))
+			- (get_size(box)*vec(0.5, 1))
+			- vec(0, 5))); // 5px margin from bottom
+		
+		// Create text
+		narrative::priv::main_text = _add_dialog_text();
+		entity main_text = narrative::priv::main_text;
+		make_gui(main_text, 11);
+		set_position(main_text, get_position(box)
+			+ pixel(10, 10)); // 10px margin
+		_set_interval(main_text, 30);
+	}
 }
 	
 	/// \addtogroup Narrative
@@ -87,21 +107,7 @@ namespace priv
 		player::lock(true);
 		if (!narrative::priv::is_session_open)
 		{
-			// Create box
-			narrative::priv::box = add_entity("NarrativeBox", "NarrativeBox");
-			entity box = narrative::priv::box;
-			make_gui(box, 10);
-			set_position(box, pixel((get_display_size()*vec(0.5, 1)) - (get_size(box)*vec(0.5, 1))));
-			
-			dprint(formatFloat(get_position(narrative::priv::box).x));
-			
-			// Create text
-			narrative::priv::main_text = _add_dialog_text();
-			entity main_text = narrative::priv::main_text;
-			make_gui(main_text, 11);
-			set_position(main_text, get_position(box));
-			_set_interval(main_text, 25);
-			
+			narrative::priv::create_narrative();
 			narrative::priv::is_session_open = true;
 		}
 		

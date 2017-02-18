@@ -1,4 +1,5 @@
 #include "backend/bounce.as"
+#include "entities/floatythingy.as"
 
 [start]
 void start() {
@@ -16,15 +17,10 @@ void shadow() {
   }
 }
 
-[start]
+[group boonce]
 void lets_bounce() {
   do {
     bounce(9);
   }while(yield());
 }
 
-[start]
-void alpa() {
-  entity alpa = add_entity("alpa");
-  set_position(alpa, vec(3,5));
-}

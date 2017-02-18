@@ -40,10 +40,14 @@ namespace priv
 	
 	string current_dialog_sound = "dialog_sound";
 	bool randomized_dialog_sound = false;
-	
 	bool player_already_locked = false;
-  
-  bool skip = true;
+	bool skip = true;
+	
+	bool is_shown = true;
+	bool is_session_open = false;
+	
+	entity box;
+	entity main_text;
 }
 	
 	/// \addtogroup Narrative
@@ -64,7 +68,7 @@ namespace priv
 	/// Remove all entities that are to "speak"
 	void clear_speakers()
 	{
-		uint size = narrative::priv::speakers.length();
+		const uint size = narrative::priv::speakers.length();
 		narrative::priv::speakers.removeRange(0, size);
 	}
 	
@@ -81,8 +85,30 @@ namespace priv
 	{
 		narrative::priv::player_already_locked = player::is_locked();
 		player::lock(true);
-		if (!_is_box_open())
-			_showbox();
+		if (!narrative::priv::is_session_open)
+		{
+			// Create box
+			narrative::priv::box = add_entity("NarrativeBox", "NarrativeBox");
+			entity box = narrative::priv::box;
+			make_gui(box, 10);
+			set_position(box, pixel((get_display_size()*vec(0.5, 1)) - (get_size(box)*vec(0.5, 1))));
+			
+			dprint(formatFloat(get_position(narrative::priv::box).x));
+			
+			// Create text
+			narrative::priv::main_text = _add_dialog_text();
+			entity main_text = narrative::priv::main_text;
+			make_gui(main_text, 11);
+			set_position(main_text, get_position(box));
+			_set_interval(main_text, 25);
+			
+			narrative::priv::is_session_open = true;
+		}
+		
+		// Ensure visible
+		set_visible(narrative::priv::box, true);
+		set_visible(narrative::priv::main_text, true);
+		narrative::priv::is_shown = true;
 	}
 	
 	/// Hide the dialog box. The current session is not closed
@@ -90,7 +116,10 @@ namespace priv
 	/// \see narrative::show
 	void hide()
 	{
-		_hidebox();
+		// Hide the stuff
+		set_visible(narrative::priv::box, false);
+		set_visible(narrative::priv::main_text, false);
+		narrative::priv::is_shown = false;
 	}
 	
 	/// End the dialog session.
@@ -98,38 +127,30 @@ namespace priv
 	/// made to the narrative box and speakers added.
 	void end(bool pUnlock_player = true)
 	{
+		// Reset everything
 		clear_speakers();
 		if (!narrative::priv::player_already_locked)
 			player::lock(!pUnlock_player);
 		narrative::priv::current_dialog_sound = "dialog_sound";
 		narrative::priv::randomized_dialog_sound = false;
-    narrative::priv::skip = true;
-		_end_narrative();
-	}
-	
-	/// Position to place the narrative box.
-	enum box
-	{
-		top = 0,
-		bottom
-	};
-	
-	/// Changes the position of the dialogue box
-	void move_box(box pPosition)
-	{
-		_set_box_position(int(pPosition));
+		narrative::priv::skip = true;
+		narrative::priv::is_session_open = false;
+		
+		// Remove the entities
+		remove_entity(narrative::priv::box);
+		remove_entity(narrative::priv::main_text);
 	}
 	
 	/// Get entity referencing the box of the narrative box.
-	entity get_box()
+	entity& get_box()
 	{
-		return _get_narrative_box();
+		return narrative::priv::box;
 	}
 	
 	/// Set the interval between each character
 	void set_interval(float ms)
 	{
-		_set_interval(ms);
+		_set_interval(narrative::priv::main_text, ms);
 	}
 	
 	/// Set interval between each character based on characters per second
@@ -138,16 +159,10 @@ namespace priv
 		set_interval(1000.f/pSpeed);
 	}
 	
-	/// Set the expression of be shown in the left of the dialog box
-	void set_expression(const string&in pName)
+	void set_skip(bool pSkip)
 	{
-		_set_expression(pName);
+		narrative::priv::skip = pSkip;
 	}
-	
-  void set_skip(bool pSkip)
-  {
-    narrative::priv::skip = pSkip;
-  }
   
 	/// \}
 }
@@ -155,10 +170,9 @@ namespace priv
 void _wait_dialog_reveal(bool pSkip = false)
 {
 	narrative::priv::start_speakers();
-	_start_expression_animation();
 	do {
 		yield();
-		if (_has_displayed_new_character())
+		if (_has_displayed_new_character(narrative::priv::main_text))
 		{
 			if (narrative::priv::randomized_dialog_sound)
 				fx::sound(narrative::priv::current_dialog_sound, 100, random(80, 110)*0.01);
@@ -167,9 +181,8 @@ void _wait_dialog_reveal(bool pSkip = false)
 		}
 		
 		if (is_triggered(control::activate) && narrative::priv::skip)
-			_skip_reveal();
-	} while (_is_revealing());
-	_stop_expression_animation();
+			_skip_reveal(narrative::priv::main_text);
+	} while (_is_revealing(narrative::priv::main_text));
 	narrative::priv::stop_speakers();
 }
 
@@ -187,7 +200,7 @@ void keywait(int pControl = control::activate)
 void fsay(const string&in msg)
 {
 	narrative::show();
-	_say(msg, false);
+	_reveal(narrative::priv::main_text, msg, false);
 	_wait_dialog_reveal();
 }
 
@@ -202,7 +215,7 @@ void say(const string&in msg)
 /// The dialogue is required to be open for this to work properly.
 void fappend(const string&in msg)
 {
-	_say(msg, true);
+	_reveal(narrative::priv::main_text, msg, true);
 	_wait_dialog_reveal();
 }
 
@@ -245,65 +258,11 @@ void nl(const string&in msg)
 	newline(msg);
 }
 
-/// Opens the selection textbox and allows user to choose between unlimited options.
-/// NOTE: This might change very soon.
-/// \see select
-int multiselect(const array<string>&in pSelections)
-{
-	int val = 0;
-	_show_selection();
-	_set_selection(pSelections[val]);
-	do {
-		if (_is_triggered(control::select_next))
-		{
-			++val;
-			val %= pSelections.length();
-			_set_selection(pSelections[val]);
-		}
-		if (_is_triggered(control::select_previous))
-		{
-			--val;
-			val = abs(val);
-			val %= pSelections.length();
-			_set_selection(pSelections[val]);
-		}
-		yield();
-	} while (!_is_triggered(control::activate));
-	_hide_selection();
-	return val;
-}
-
-/// Opens the selection textbox and allows user to choose between 2 options.
-/// NOTE: This might change very soon.
-/// \see multiselect
-option select(const string&in pOption1, const string&in pOption2)
-{
-	option val = option::first;
-	_show_selection();
-	_set_selection("*" + pOption1 + "   " + pOption2);
-	do {
-		if (_is_triggered(control::select_next))
-		{
-			val = option::second;
-			_set_selection(" " + pOption1 + "  *" + pOption2);
-		}
-		if (_is_triggered(control::select_previous))
-		{
-			val = option::first;
-			_set_selection("*" + pOption1 + "   " + pOption2);
-		}
-		yield();
-	} while (!_is_triggered(control::activate));
-	_hide_selection();
-	return val;
-}
-
 /// Wait for a specific amount of seconds.
 void wait(float pSeconds)
 {
 	_timer_start(pSeconds);
-	while (!_timer_reached())
-	{ yield(); }
+	while (!_timer_reached() && yield());
 }
 
 /// \}

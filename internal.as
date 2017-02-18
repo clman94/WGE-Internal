@@ -100,6 +100,10 @@ void set_position(entity&in pEntity, const vec&in pVec);
 /// Get position of entity.
 vec get_position(entity&in pEntity);
 
+/// Get size of sprite-based entity in pixels.
+/// Convert to world coordinates with `pixel()`.
+vec get_size(entity&in pEntity);
+
 /// Set the vertical position of an entity.
 /// The entity retains its current position and its depth but the object that is displayed
 /// is move either up or down. Useful when you want a floating character or something similar.

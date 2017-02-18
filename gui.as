@@ -242,15 +242,18 @@ class basic_text_selection
 		
 		do
 		{
+			// Set selection for the frame
 			mSelector.tick();
 			
+			// Get entity for current selection
 			@current_entity = mEntities[mSelector.get_selection()];
 			
+			// Set cursor to the position of the text entity
 			::set_position(cursor, get_position(current_entity));
 			
 			yield();
 			
-			if (is_triggered(control::back))
+			if (is_triggered(control::back)) // Go back
 			{
 				set_visible(false);
 				return -1;
@@ -287,9 +290,9 @@ class basic_text_selection
 			return;
 		for (uint i = 0; i < mEntities.length(); i++)
 		{
-			const vec position = mBase_position 
-			+ vec(floor(i/mSelector.get_column_height())*mSeperation.x // Columns
-			, mSeperation.y * (i % mSelector.get_column_height())); // Rows
+			const vec position = mBase_position
+				+ vec(floor(i/mSelector.get_column_height())*mSeperation.x // Columns
+				, mSeperation.y * (i % mSelector.get_column_height())); // Rows
 			::set_position(mEntities[i], position);
 		}
 	}
@@ -310,12 +313,16 @@ class basic_text_selection
 
 
 /// Base for a menu.
-class menu
+class menu_item
 {
-	menu(){}
-	menu(const string&in pId)
+	menu_item()
+	{
+		mIs_selected = false;
+	}
+	menu_item(const string&in pId)
 	{
 		mMenu_id = pId;
+		mIs_selected = false;
 	}
 	
 	/// Open the menu
@@ -331,10 +338,14 @@ class menu
 	///                      // the caller before it will have to handle this as well.
 	/// return ret;
 	/// ```
-	menu@ open(){ return @this; }
+	menu_item@ open()
+	{
+		mIs_selected = true;
+		return @this;
+	}
 	
 	/// Get identification of menu
-	string get_id()
+	const string& get_id() const
 	{
 		return mMenu_id;
 	}
@@ -345,29 +356,6 @@ class menu
 	void set_id(const string&in pId)
 	{
 		mMenu_id = pId;
-	}
-	
-	private string mMenu_id;
-};
-
-/// A menu item that is selected.
-class menu_item : menu
-{
-	menu_item()
-	{
-		mIs_selected = false;
-	}
-	
-	menu_item(const string&in pId)
-	{
-		set_id(pId);
-		mIs_selected = false;
-	}
-	
-	menu@ open()
-	{
-		mIs_selected = true;
-		return @this;
 	}
 	
 	/// Check if this menu has been selected
@@ -381,6 +369,7 @@ class menu_item : menu
 		return mIs_selected;
 	}
 	
+	private string mMenu_id;
 	protected bool mIs_selected;
 };
 
@@ -396,7 +385,7 @@ class empty_menu_item : menu_item
 		super(pId);
 	}
 	
-	menu@ open()
+	menu_item@ open()
 	{
 		mIs_selected = true;
 		return null;
@@ -444,12 +433,10 @@ class menu_function : menu_item
 		@mParam = pParam;
 	}
 	
-	menu@ open()
+	menu_item@ open()
 	{
 		if (mCallback !is null)
-		{
-			mCallback(mParam);
-		}
+			mCallback(mParam); // call the function
 		mIs_selected = true;
 		return @this;
 	}
@@ -458,25 +445,26 @@ class menu_function : menu_item
 	private dictionary@ mParam;
 };
 
-/// Mixin for creating branches 
+/// Mixin for creating branches.
+/// This handles all submenus
 mixin class menu_branch
 {
 	/// Add a menu to the branch
-	void add(menu@ pMenu) final
+	void add(menu_item@ pMenu) final
 	{
 		mSub_menus.insertLast(pMenu);
 		menu_added(pMenu);
 	}
 	
 	/// Remove a specific menu
-	void remove(menu@ pMenu) final
+	void remove(menu_item@ pMenu) final
 	{
 		for (uint i = 0; i < mSub_menus.length(); i++)
 		{
-			if (mSub_menus[i] is pMenu)
+			if (mSub_menus[i] is pMenu) // Find menu item in array
 			{
 				mSub_menus.removeAt(i);
-				menu_removed(pMenu, i);
+				menu_removed(pMenu, i); // Make sure everything is aware
 				return;
 			}
 		}
@@ -496,7 +484,7 @@ mixin class menu_branch
 	}
 	
 	/// Get menu at index
-	menu@ get_menu(uint pIndex) final
+	menu_item@ get_menu(uint pIndex) final
 	{
 		if (pIndex >= mSub_menus.length())
 			return null;
@@ -504,19 +492,19 @@ mixin class menu_branch
 	}
 	
 	/// Callback when a new menu is added
-	protected void menu_added(menu@ pMenu){ }
+	protected void menu_added(menu_item@ pMenu){ }
 	
 	/// Callback when a menu is deleted
-	protected void menu_removed(menu@ pMenu, uint pIndex){ }
+	protected void menu_removed(menu_item@ pMenu, uint pIndex){ }
 	
 	/// Callback when all sub-menus are deleted
 	protected void menu_removed_all(){ }
 	
-	private array<menu@> mSub_menus;
+	private array<menu_item@> mSub_menus;
 };
 
 /// Selection menu for a list of text
-class selection_menu : menu, menu_branch
+class selection_menu : menu_item, menu_branch
 {
 	selection_menu()
 	{
@@ -528,40 +516,41 @@ class selection_menu : menu, menu_branch
 		mCan_return = true;
 	}
 	
-	protected void menu_added(menu@ pMenu) 
+	protected void menu_added(menu_item@ pMenu)
 	{
 		mSelector.add(pMenu.get_id());
 	}
 	
-	protected void menu_removed(menu@ pMenu, uint pIndex) 
+	protected void menu_removed(menu_item@ pMenu, uint pIndex)
 	{
 		mSelector.remove(pIndex);
 	}
 	
-	protected void menu_removed_all() 
+	protected void menu_removed_all()
 	{
 		mSelector.remove_all();
 	}
 	
 	/// Start selection
-	menu@ open()
+	menu_item@ open()
 	{
-		menu@ ret;
+		menu_item@ ret;
 		do {
 			int index = mSelector.start();
-			if (index == -1)
+			if (index == -1) // No item selected
 			{
 				if (mCan_return)
-					return null;
-				else continue;
+					return null; // Return nothing
+				else continue; // Jump to beginning of loop
+				               // to start selection again
 			}
 			
-			@ret = get_menu(index).open();
-		} while(ret is null);
+			@ret = get_menu(index).open(); // Open submenu
+		} while(ret is null); // Loop until an item is selected
 		return ret;
 	}
 	
-	/// Set_ position of list
+	/// Set position of list
 	void set_position(vec pPosition)
 	{
 		mSelector.set_position(pPosition);

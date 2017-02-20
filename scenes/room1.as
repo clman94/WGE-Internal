@@ -79,3 +79,8 @@ void test_room() {
   load_scene("test");
 }
 
+[group extra]
+void extra_room() 
+{
+	load_scene("Dark_Room");
+}

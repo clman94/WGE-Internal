@@ -216,14 +216,9 @@
     y="224"
     w="32"
     h="32"/>
-  <wall_crack
+  <cell_wall_2
     x="128"
     y="192"
-    w="32"
-    h="32"/>
-  <wall_crack_2
-    x="32"
-    y="224"
     w="32"
     h="32"/>
   <cell_wall
@@ -242,4 +237,14 @@
     w="32"
     h="32"
     frames="4" interval="150" loop="1"/>
+	<stairs
+    x="0"
+    y = "256"
+    w="32"
+    h="32"/>
+	<darkness
+    x="32"
+    y="256"
+    w="32"
+    h="32"/>
 </atlas>

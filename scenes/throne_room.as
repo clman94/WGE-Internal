@@ -57,6 +57,15 @@ void create_torches()
 		torches[k].left = create_torch(vec(3.5, (k*2) + 11));
 		torches[k].right = create_torch(vec(5.5, (k*2) + 11));
 	}
+	
+	entity left_torch   = create_torch(vec(3.5, 3.5));
+	entity right_torch = create_torch(vec(5.5, 3.5));
+	
+	set_atlas(left_torch, "light");
+	set_atlas(right_torch, "light");
+	
+	start_animation(left_torch);
+	start_animation(right_torch);
 }
 
 void light_torch(int k)

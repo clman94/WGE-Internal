@@ -236,4 +236,10 @@
     y="224"
     w="32"
     h="32"/>
+  <portal
+    x="256"
+    y="0"
+    w="32"
+    h="32"
+    frames="4" interval="150" loop="1"/>
 </atlas>

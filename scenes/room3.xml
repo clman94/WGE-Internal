@@ -16,6 +16,7 @@
             <cell_wall x="0" y="-1" w="6"/>
             <wall_top x="6" y="-1" h="6" r="3"/>
             <wall_top_c x="-1" y="0" r="2"/>
+            <portal x="5" y="0"/>
             <cell_wall x="-1" y="1"/>
             <wall_top_c x="-1" y="3" r="1"/>
             <wall_top x="-1" y="4" r="1"/>
@@ -32,5 +33,6 @@
         <wall x="6" y="0" w="1" h="5"/>
         <wall x="0" y="-1" w="6" h="1"/>
         <wall x="-1" y="0" w="1" h="2"/>
+        <trigger x="5" y="0" w="1" h="1" group="portal"/>
     </collisionboxes>
 </scene>

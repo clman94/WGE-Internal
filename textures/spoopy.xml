@@ -86,6 +86,11 @@
 		x="405"
 		y="0" 
 		w="15" 
-		h="26"
-		frames="2" interval="200" loop="1"/>
+		h="26"/>
+  <back_up_talk
+    x="510"
+    y="0"
+    w="15"
+    h="26"
+    frames="2" interval="200" loop="1"/>
 </atlas>

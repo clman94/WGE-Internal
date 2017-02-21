@@ -52,7 +52,6 @@ void wall() {
 void get_food() {
   if(has_flag("food") and not has_flag("wall_broken")) {
     //say("You got a food!");
-    
     say("rumble rumble");
     set_flag("wall_broken");
     group::enable("wall_crack", true);

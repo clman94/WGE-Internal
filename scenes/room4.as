@@ -18,3 +18,4 @@ void echo() {
   player::lock(false);
   narrative::end();
 }
+

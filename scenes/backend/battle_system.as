@@ -164,10 +164,9 @@ class guy_enemy : enemy
 
 class battle_system
 {
-	void set_enemy(enemy@ pEnemy)
-	{
-		@mEnemy = @pEnemy;
-	}
+	void add_enemy(enemy@ pEnemy) {
+    mEnemies.insertLast(pEnemy);
+  }
 
 	void start()
 	{
@@ -307,7 +306,7 @@ class battle_system
 				break;
 			}
 			
-			// Enemy attacks if after you attack
+			// Enemy attacks after you attack
 			// This is down here so that the loop can end when you finished him off
 			// before he attacks again (obviously he cant when ded so it down here)
 			if (attack_action.is_selected())
@@ -344,7 +343,7 @@ class battle_system
 	}
 	
 	private string mMusic;
-	private enemy@ mEnemy;
+	private array<enemy@> mEnemies;
 };
 
 void start_test_battle_system()

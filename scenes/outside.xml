@@ -48,5 +48,7 @@
         <wall x="50" y="21" w="1" h="3"/>
         <button x="14" y="7" w="1" h="1" group="magical"/>
         <trigger x="23" y="8" w="1" h="3" group="alpa"/>
+        <trigger x="16" y="0" w="5" h="1" group="fin"/>
+        <trigger x="9" y="22" w="1" h="1" group="skip_thing"/>
     </collisionboxes>
 </scene>

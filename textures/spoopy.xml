@@ -93,4 +93,10 @@
     w="15"
     h="26"
     frames="2" interval="200" loop="1"/>
+  <back_up
+    x="540"
+    y="0"
+    w="15"
+    h="26"
+    frames="2" interval="300" loop="1"/>
 </atlas>

@@ -1,10 +1,7 @@
 
-#include "backend/user_data.as"
-
-player_data@ player;
-
 entity crack;
 entity door;
+entity food1;
 
 [start]
 void start() {
@@ -27,12 +24,12 @@ void door_collision() {
 void food_drop() {
   if(!has_flag("food")) {
     wait(10);
-    entity food = add_entity("dungeon", "food");
-    set_position(food, vec(1, 0.05));
-    set_visible(food, true);
-    set_depth(food, 0);
-    move(food, vec(1.5, 5), 5);
-    set_depth(food, 255);
+    food1 = add_entity("dungeon", "food");
+    set_position(food1, vec(1, 0.05));
+    set_visible(food1, true);
+    set_depth(food1, 0);
+    move(food1, vec(1.5, 5), 5);
+    set_depth(food1, 255);
     set_flag("food");
     group::enable("food", true);
   }
@@ -46,6 +43,7 @@ void wall() {
     crack = add_entity("dungeon", "wall_crack_2");
   }
   set_position(crack, vec(3.5, 2));
+  set_depth(crack, 255);
 }
 
 [group food]
@@ -56,6 +54,7 @@ void get_food() {
     set_flag("wall_broken");
     group::enable("wall_crack", true);
     set_atlas(crack, "wall_crack_2");
+    remove_entity(food1);
     narrative::end();
   }
 }

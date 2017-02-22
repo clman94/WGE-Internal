@@ -1,0 +1,6 @@
+<scene name="Fin">
+    <map>
+        <texture>dungeon</texture>
+    </map>
+    <collisionboxes/>
+</scene>

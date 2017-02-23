@@ -24,13 +24,12 @@ void move(vec pPosition, float pSeconds)
 
 void move(entity pEntity, vec pTo, speed pSpeed)
 {
-	move(pTo, pSpeed.get_time(get_focus().distance(pTo)));
+	move(pTo, pSpeed.get_time(_get_focus().distance(pTo)));
 }
 
 /// Move in a direction at x distance in y seconds
-void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
+void move(direction pDirection, float pDistance, float pSeconds)
 {
-	
 	vec velocity;
 	
 	switch(pDirection)
@@ -43,7 +42,7 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 	
 	velocity *= pDistance/pSeconds;
 	
-	const vec initual_position = get_position(pEntity);
+	const vec initual_position = _get_focus();
 	vec position = initual_position;
 	
 	float timer = 0;
@@ -53,10 +52,10 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 		float delta = get_delta();
 		timer += delta;
 		position += velocity*delta;
-		set_focus(position);
+		_set_focus(position);
 		yield();
 	}
-	set_focus(initual_position + (velocity*pSeconds));  // Ensure position
+	_set_focus(initual_position + (velocity*pSeconds));  // Ensure position
 }
 
 /// Move in a direction at x distance at y speed

@@ -271,5 +271,32 @@ void wait(float pSeconds)
 	while (!_timer_reached() && yield());
 }
 
+/// Opens the selection menu and allows the user to choose between 2 options.
+option select(const string&in pOption1, const string&in pOption2)
+{
+	option val = option::first;
+	
+	// Create text
+	scoped_entity selection_text = add_text();
+	make_gui(selection_text, 11);
+	set_text(selection_text, "*" + pOption1 + "   " + pOption2);
+	set_position(selection_text, get_position(narrative::priv::box)
+		+ pixel(10, get_size(narrative::priv::box).y - 24));
+	
+	do {
+		if (_is_triggered(control::select_previous)) // First option
+		{
+			val = option::first;
+			set_text(selection_text, "*" + pOption1 + "   " + pOption2);
+		}
+		if (_is_triggered(control::select_next)) // Second option
+		{
+			val = option::second;
+			set_text(selection_text, " " + pOption1 + "  *" + pOption2);
+		}
+	} while (!_is_triggered(control::activate) && yield());
+	return val;
+}
+
 /// \}
 

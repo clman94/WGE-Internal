@@ -22,6 +22,49 @@ void move(vec pPosition, float pSeconds)
 	_set_focus(pPosition); // Ensure position
 }
 
+void move(entity pEntity, vec pTo, speed pSpeed)
+{
+	move(pTo, pSpeed.get_time(get_focus().distance(pTo)));
+}
+
+/// Move in a direction at x distance in y seconds
+void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
+{
+	
+	vec velocity;
+	
+	switch(pDirection)
+	{
+	case direction::left:  velocity = vec(-1, 0); break;
+	case direction::right: velocity = vec(1, 0);  break;
+	case direction::up:    velocity = vec(0, -1); break;
+	case direction::down:  velocity = vec(0, 1);  break;
+	}
+	
+	velocity *= pDistance/pSeconds;
+	
+	const vec initual_position = get_position(pEntity);
+	vec position = initual_position;
+	
+	float timer = 0;
+	
+	while (timer < pSeconds)
+	{
+		float delta = get_delta();
+		timer += delta;
+		position += velocity*delta;
+		set_focus(position);
+		yield();
+	}
+	set_focus(initual_position + (velocity*pSeconds));  // Ensure position
+}
+
+/// Move in a direction at x distance at y speed
+void move(direction pDirection, float pDistance, speed pSpeed)
+{
+	move(pDirection, pDistance, pSpeed.get_time(pDistance));
+}
+
 /// Set position of focus
 /// Set location for camera to focus on.
 /// The camera will automatically stay within the boundaries of the scene.

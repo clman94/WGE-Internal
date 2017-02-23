@@ -294,7 +294,7 @@ option select(const string&in pOption1, const string&in pOption2)
 			val = option::second;
 			set_text(selection_text, " " + pOption1 + "  *" + pOption2);
 		}
-	} while (!_is_triggered(control::activate) && yield());
+	} while (yield() && !_is_triggered(control::activate));
 	return val;
 }
 

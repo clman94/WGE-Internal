@@ -27,6 +27,8 @@
 /// \see add_text
 class entity
 {
+	/// Check if this reference is valid and that the entity exists
+	public bool is_valid() const; 
 };
 
 /// A vector type for representing coordinates.
@@ -128,10 +130,6 @@ void stop_animation(entity&in pEntity);
 /// Set animation/atlas of entity.
 void set_atlas(entity&in pEntity, const string &in pAtlas);
 
-/// Find an entity by its name.
-/// \see set_name
-entity find_entity(const string &in pName);
-
 /// Check if entity is a character type.
 bool is_character(entity&in pEntity);
 
@@ -150,12 +148,6 @@ void set_depth(entity&in pEntity, float pDepth);
 /// Y coordinate changes. This is useful when there are characters walking and they
 /// can "walk through" other character/entities.
 void set_depth_fixed(entity&in pEntity, bool pIs_fixed);
-
-/// Set name of entity.
-/// All entities default at a blank name.
-/// If you need to specify an entity and reference it later,
-/// this might be useful.
-void set_name(entity&in pEntity, const string &in pName);
 
 /// Set rotation of entity.
 void set_rotation(entity&in pEntity, float pDegrees);
@@ -227,16 +219,13 @@ void set_boundary_size(vec pSize);
 void set_boundary_enable(bool pIs_enabled);
 
 /// Load scene
-/// \param pPath Path to XML file
-void load_scene(const string &in pPath);
+void load_scene(const string &in pName);
 
 /// Load scene and move player to door
-/// \param pPath Path to XML file
-void load_scene(const string &in pPath, const string &in pDoor);
+void load_scene(const string &in pName, const string &in pDoor);
 
 /// Load scene and move player to position
-/// \param pPath Path to XML file
-void load_scene(const string &in pPath, vec pPosition);
+void load_scene(const string &in pName, vec pPosition);
 
 /// \}
 

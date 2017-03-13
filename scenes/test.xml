@@ -1,0 +1,21 @@
+<scene name="Test">
+    <boundary w="100" h="100"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="0">
+            <ground x="0" y="0" w="100" h="100"/>
+        </layer>
+        <layer id="1">
+            <flowers x="1" y="6"/>
+            <flowers x="5" y="6"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <wall x="-1" y="0" w="1" h="100"/>
+        <wall x="0" y="-1" w="100" h="1"/>
+        <wall x="0" y="100" w="100" h="1"/>
+        <trigger x="1" y="6" w="1" h="1" group="boonce"/>
+        <wall x="100" y="0" w="1" h="100"/>
+    </collisionboxes>
+    <collisionbaxes/>
+</scene>

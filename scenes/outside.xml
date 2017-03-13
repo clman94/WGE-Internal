@@ -1,0 +1,54 @@
+<scene name="outside">
+    <boundary w="50" h="24"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="0">
+            <ground x="16" y="0" w="5" h="8"/>
+            <ground x="0" y="8" w="50" h="3"/>
+            <ground x="31" y="11" w="6" h="10"/>
+            <ground x="0" y="19" w="27"/>
+            <ground x="0" y="20" w="21"/>
+            <ground x="22" y="20" w="5"/>
+            <ground x="0" y="21" w="50" h="2"/>
+            <ground x="0" y="23" w="50"/>
+        </layer>
+        <layer id="1">
+            <full_wall x="0" y="6" w="16"/>
+            <full_wall x="21" y="6" w="29"/>
+            <full_wall x="-1" y="19" w="32"/>
+            <full_wall x="37" y="19" w="13"/>
+            <full_wall x="-1" y="20" h="2"/>
+            <full_wall x="-1" y="22"/>
+        </layer>
+        <layer id="2">
+            <sign x="14" y="6"/>
+            <door x="7" y="20"/>
+            <door x="23" y="20"/>
+            <door x="44" y="20"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <door x="7" y="20" w="1" h="1" name="inside" destination="outside" scene="hallway" offsetx="0" offsety="1"/>
+        <button x="7" y="20" w="1" h="1" group="funtimes"/>
+        <wall x="0" y="20" w="31" h="1" group="buildawall"/>
+        <wall x="-1" y="21" w="1" h="3"/>
+        <wall x="37" y="20" w="13" h="1"/>
+        <wall x="50" y="8" w="1" h="3"/>
+        <wall x="37" y="11" w="13" h="1"/>
+        <wall x="37" y="12" w="1" h="8"/>
+        <wall x="30" y="11" w="1" h="9"/>
+        <wall x="-1" y="8" w="1" h="3"/>
+        <wall x="0" y="11" w="30" h="1"/>
+        <wall x="21" y="7" w="29" h="1"/>
+        <wall x="0" y="7" w="16" h="1"/>
+        <wall x="15" y="0" w="1" h="7"/>
+        <wall x="21" y="0" w="1" h="7"/>
+        <trigger x="5" y="22" w="1" h="1" group="to_spoop"/>
+        <wall x="0" y="24" w="50" h="1"/>
+        <wall x="50" y="21" w="1" h="3"/>
+        <button x="14" y="7" w="1" h="1" group="magical"/>
+        <trigger x="23" y="8" w="1" h="3" group="alpa"/>
+        <trigger x="16" y="0" w="5" h="1" group="fin"/>
+        <trigger x="9" y="22" w="1" h="1" group="skip_thing"/>
+    </collisionboxes>
+</scene>

@@ -1,0 +1,42 @@
+<scene name="Room 4">
+    <boundary w="6" h="5"/>
+    <map>
+        <texture>dungeon</texture>
+        <layer id="-1">
+            <ground x="0" y="0" w="6" h="2"/>
+            <ground x="-1" y="2" w="7"/>
+            <ground x="0" y="3" w="6"/>
+            <ground x="0" y="4" w="6"/>
+        </layer>
+        <layer id="0">
+            <wall_top_ce x="-1" y="-2" r="2"/>
+            <wall_top x="0" y="-2" w="6" r="2"/>
+            <wall_top_ce x="6" y="-2" r="3"/>
+            <wall_top x="-1" y="-1" r="1"/>
+            <cell_wall x="0" y="-1" w="6"/>
+            <wall_top x="6" y="-1" h="6" r="3"/>
+            <wall_top_c x="-1" y="0" r="2"/>
+            <cell_wall x="-1" y="1"/>
+            <flowers x="3" y="2"/>
+            <wall_top_c x="-1" y="3" r="1"/>
+            <wall_top x="-1" y="4" r="1"/>
+            <wall_top_ce x="-1" y="5" r="1"/>
+            <wall_top x="0" y="5" w="6"/>
+            <wall_top_ce x="6" y="5"/>
+        </layer>
+        <layer id="1">
+            <sign x="3" y="-1"/>
+        </layer>
+    </map>
+    <collisionboxes>
+        <door x="-1.5" y="2" w="1" h="1" name="door_room4" destination="room4_door" scene="hallway" offsetx="1" offsety="0.34999999"/>
+        <wall x="-2" y="2" w="1" h="1"/>
+        <wall x="-1" y="3" w="1" h="2"/>
+        <wall x="0" y="5" w="6" h="1"/>
+        <wall x="-1" y="0" w="1" h="2"/>
+        <wall x="0" y="-1" w="6" h="1"/>
+        <wall x="6" y="0" w="1" h="5"/>
+        <button x="3" y="2" w="1" h="1" group="echo"/>
+        <button x="3" y="-1" w="1" h="1" group="fl_sign"/>
+    </collisionboxes>
+</scene>

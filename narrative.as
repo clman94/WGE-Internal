@@ -68,6 +68,14 @@ namespace priv
 			+ pixel(10, 10)); // 10px margin
 		_set_interval(main_text, 30);
 	}
+	
+	void play_sound_effect()
+	{
+		if (narrative::priv::randomized_dialog_sound)
+			fx::sound(narrative::priv::current_dialog_sound, 100, random(80, 110)*0.01);
+		else
+			fx::sound(narrative::priv::current_dialog_sound);
+	}
 }
 	
 	/// \addtogroup Narrative
@@ -156,6 +164,11 @@ namespace priv
 	/// Set the interval between each character
 	void set_interval(float ms)
 	{
+		if (ms <= 0)
+		{
+			eprint("interval cannot be less than or equal to 0");
+			return;
+		}
 		_set_interval(narrative::priv::main_text, ms);
 	}
 	
@@ -179,12 +192,7 @@ void _wait_dialog_reveal(bool pSkip = false)
 	do {
 		yield();
 		if (_has_displayed_new_character(narrative::priv::main_text))
-		{
-			if (narrative::priv::randomized_dialog_sound)
-				fx::sound(narrative::priv::current_dialog_sound, 100, random(80, 110)*0.01);
-			else
-				fx::sound(narrative::priv::current_dialog_sound);
-		}
+			narrative::priv::play_sound_effect();
 		
 		if (is_triggered(control::activate) && narrative::priv::skip)
 			_skip_reveal(narrative::priv::main_text);

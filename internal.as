@@ -155,10 +155,10 @@ void set_rotation(entity&in pEntity, float pDegrees);
 /// Set color of entity.
 void set_color(entity&in pEntity, int R, int G, int B, int A);
 
-/// Set the visibility of entity.
+/// Set the visibility of an entity.
 void set_visible(entity&in pEntity, bool pIs_visible);
 
-/// Set texture of entity.
+/// Set texture of an entity.
 void set_texture(entity&in pEntity, const string&in pTexture);
 
 /// Add child of entity.
@@ -182,8 +182,8 @@ void detach_parent(entity&in pEntity);
 void make_gui(entity&in pEntity, float pOrder);
 
 /// Get the entity of the player character.
-///
 entity get_player();
+
 /// \}
 
 

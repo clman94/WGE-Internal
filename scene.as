@@ -14,3 +14,17 @@
 #include "flags.as"
 #include "game.as"
 #include "focus.as"
+
+[start]
+void __fadein__()
+{
+	fx::fade_in(0.5);
+}
+
+[door]
+void __door__(const string&in scene, const string&in door)
+{
+	player::lock(true);
+	fx::fade_out(0.5);
+	load_scene(scene, door);
+}

@@ -28,13 +28,13 @@ namespace priv
 	void start_speakers()
 	{
 		for (uint i = 0; i < speakers.length(); i++)
-			start_animation(speakers[i]);
+			animation::start(speakers[i]);
 	}
 	
 	void stop_speakers()
 	{
 		for (uint i = 0; i < speakers.length(); i++)
-			stop_animation(speakers[i]);
+			animation::stop(speakers[i]);
 	}
 	
 	

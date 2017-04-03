@@ -52,13 +52,13 @@ void set_depth(entity pEntity, fixed_depth pDepth)
 	switch (pDepth)
 	{
 	case fixed_depth::overlay:
-		set_depth(pEntity, -100000);
+		_set_depth_direct(pEntity, -100000);
 		break;
 	case fixed_depth::below:
-		set_depth(pEntity, 102);
+		_set_depth_direct(pEntity, 102);
 		break;
 	case fixed_depth::background:
-		set_depth(pEntity, 100000);
+		_set_depth_direct(pEntity, 100000);
 		break;
 	}
 }
@@ -101,7 +101,7 @@ void move(entity pEntity, vec pTo, float pSeconds)
 	float timer = 0;
 	
 	if (is_character(pEntity))
-		start_animation(pEntity);
+		animation::start(pEntity);
 	while (timer < pSeconds)
 	{
 		const float delta = get_delta();
@@ -112,7 +112,7 @@ void move(entity pEntity, vec pTo, float pSeconds)
 	}
 	set_position(pEntity, initual_position + (velocity*pSeconds)); // Ensure position
 	if (is_character(pEntity))
-		stop_animation(pEntity);
+		animation::stop(pEntity);
 }
 
 /// Move an entity to a position at a constant speed.
@@ -148,7 +148,7 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 	float timer = 0;
 	
 	if (is_character(pEntity))
-		start_animation(pEntity);
+		animation::start(pEntity);
 	while (timer < pSeconds)
 	{
 		float delta = get_delta();
@@ -159,7 +159,7 @@ void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
 	}
 	set_position(pEntity, initual_position + (velocity*pSeconds));  // Ensure position
 	if (is_character(pEntity))
-		stop_animation(pEntity);
+		animation::stop(pEntity);
 }
 
 /// Move in a direction at x distance at y speed

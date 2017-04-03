@@ -85,6 +85,21 @@ namespace music
 			{"pVolume" , pVolume }});
 	}
 	
+	/// Fade the current volume to a new volume
+	void fade_volume(float pVolume, float pSeconds)
+	{
+		const float velocity = (pVolume - _music_get_volume())/pSeconds;
+		float timer = 0;
+		while(timer < pSeconds)
+		{
+			const float delta = get_delta();
+			timer += delta;
+			_music_set_volume(_music_get_volume() + (velocity*delta));
+			yield();
+		}
+		_music_set_volume(pVolume);
+	}
+	
 	/// Is the song playing?
 	bool playing()
 	{

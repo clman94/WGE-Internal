@@ -27,8 +27,11 @@
 /// \see add_text
 class entity
 {
-	/// Check if this reference is valid and that the entity exists
-	public bool is_valid() const; 
+	/// Check if this reference is valid and that the entity exists.
+	public bool is_valid() const;
+	
+	/// Check equality of entities. entity1 == entity2
+	public bool opEquals(const entity&in) const;
 };
 
 /// A vector type for representing coordinates.
@@ -74,6 +77,15 @@ class vec
 	/// `vec(2, 0).normalize() == vec(1, 0)`
 	vec& normalize();
 	
+	/// Floor all values in this vector.
+	vec& floor();
+	
+	// Find angle, in degrees, around vec(0, 0).
+	float angle() const;
+	
+	// Find angle, in degrees, around pCenter.
+	float angle(const vec&in pCenter) const;
+	
 	float x; ///< X coordinate
 	float y; ///< Y coordinate
 };
@@ -104,6 +116,7 @@ vec get_position(entity&in pEntity);
 
 /// Get size of sprite-based entity in pixels.
 /// Convert to world coordinates with `pixel()`.
+/// This does include the scale of the entity.
 vec get_size(entity&in pEntity);
 
 /// Set the vertical position of an entity.
@@ -121,11 +134,6 @@ void set_direction(entity&in pEntity, direction pDirection);
 /// Walk cycles are defined in atlases with `name:`.
 void set_cycle(entity&in pEntity, const string &in);
 
-/// Start animation of entity (if there is one)
-void start_animation(entity&in pEntity);
-
-/// Stop animation of entity if it is playing
-void stop_animation(entity&in pEntity);
 
 /// Set animation/atlas of entity.
 void set_atlas(entity&in pEntity, const string &in pAtlas);
@@ -140,7 +148,6 @@ void remove_entity(entity&in pEntity);
 
 /// Set specific depth of entity. Will automatically disable dynamic depth.
 /// A larger value results in the entity being farther behind.
-/// All values are 0-255.
 void set_depth(entity&in pEntity, float pDepth);
 
 /// Set dynamic depth in entity.
@@ -149,10 +156,13 @@ void set_depth(entity&in pEntity, float pDepth);
 /// can "walk through" other character/entities.
 void set_depth_fixed(entity&in pEntity, bool pIs_fixed);
 
-/// Set rotation of entity.
+/// Set rotation of entity. 0-359
 void set_rotation(entity&in pEntity, float pDegrees);
 
-/// Set color of entity.
+/// Get rotation of entity. 0-359
+float get_rotation(entity&in pEntity);
+
+/// Set color of entity. Values are 0-255.
 void set_color(entity&in pEntity, int R, int G, int B, int A);
 
 /// Set the visibility of an entity.
@@ -169,7 +179,7 @@ void add_child(entity&in pEntity, entity&in pChild);
 /// The child entity will "follow" the parent.
 void set_parent(entity&in pEntity, entity&in pParent);
 
-/// Detach all children (if are any).
+/// Detach all children (if there are any).
 void detach_children(entity&in pEntity);
 
 /// Detach parent (if there is one).
@@ -183,6 +193,30 @@ void make_gui(entity&in pEntity, float pOrder);
 
 /// Get the entity of the player character.
 entity get_player();
+
+/// Set scaler for the speed of the animation. Default is 1.
+void animation::set_speed(entity&in pEntity, float pSpeed);
+
+/// Start animation of entity (if there is one)
+void animation::start(entity&in pEntity);
+
+/// Stop animation of entity if it is playing. Restarts the animation.
+void animation::stop(entity&in pEntity);
+
+/// Pause the current animation. Use animation::play() to resume.
+void animation::pause(entity&in pEntity);
+
+/// Check if animation is currently playing
+bool animation::is_playing(entity&in pEntity);
+
+/// Get scaler for the speed of the animation.
+float animation::get_speed(entity&in pEntity);
+
+/// Set scale of entity. Default is vec(1, 1).
+void set_scale(entity&in pEntity, float pScale);
+
+/// Get scale of entity.
+float get_scale(entity&in pEntity);
 
 /// \}
 

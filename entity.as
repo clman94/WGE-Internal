@@ -126,40 +126,19 @@ void move(entity pEntity, vec pTo, speed pSpeed)
 
 /// Move in a direction at x distance in y seconds
 void move(entity pEntity, direction pDirection, float pDistance, float pSeconds)
-{
-	if (is_character(pEntity))
-		set_direction(pEntity, pDirection);
-	
-	vec velocity;
+{	
+	vec direction_vector;
 	
 	switch(pDirection)
 	{
-	case direction::left:  velocity = vec(-1, 0); break;
-	case direction::right: velocity = vec(1, 0);  break;
-	case direction::up:    velocity = vec(0, -1); break;
-	case direction::down:  velocity = vec(0, 1);  break;
+	case direction::left:  direction_vector = vec(-1, 0); break;
+	case direction::right: direction_vector = vec(1, 0);  break;
+	case direction::up:    direction_vector = vec(0, -1); break;
+	case direction::down:  direction_vector = vec(0, 1);  break;
+	default: eprint("wat");
 	}
 	
-	velocity *= pDistance/pSeconds;
-	
-	const vec initual_position = get_position(pEntity);
-	vec position = initual_position;
-	
-	float timer = 0;
-	
-	if (is_character(pEntity))
-		animation::start(pEntity);
-	while (timer < pSeconds)
-	{
-		float delta = get_delta();
-		timer += delta;
-		position += velocity*delta;
-		set_position(pEntity, position);
-		yield();
-	}
-	set_position(pEntity, initual_position + (velocity*pSeconds));  // Ensure position
-	if (is_character(pEntity))
-		animation::stop(pEntity);
+	move(pEntity, get_position(pEntity) + (direction_vector*pDistance), pSeconds);
 }
 
 /// Move in a direction at x distance at y speed

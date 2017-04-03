@@ -194,32 +194,40 @@ void make_gui(entity&in pEntity, float pOrder);
 /// Get the entity of the player character.
 entity get_player();
 
-/// Set scaler for the speed of the animation. Default is 1.
-void animation::set_speed(entity&in pEntity, float pSpeed);
-
-/// Start animation of entity (if there is one)
-void animation::start(entity&in pEntity);
-
-/// Stop animation of entity if it is playing. Restarts the animation.
-void animation::stop(entity&in pEntity);
-
-/// Pause the current animation. Use animation::play() to resume.
-void animation::pause(entity&in pEntity);
-
-/// Check if animation is currently playing
-bool animation::is_playing(entity&in pEntity);
-
-/// Get scaler for the speed of the animation.
-float animation::get_speed(entity&in pEntity);
 
 /// Set scale of entity. Default is vec(1, 1).
-void set_scale(entity&in pEntity, float pScale);
+void set_scale(entity&in pEntity, vec pScale);
 
 /// Get scale of entity.
-float get_scale(entity&in pEntity);
+vec get_scale(entity&in pEntity);
+
 
 /// \}
 
+namespace animation
+{
+/// \weakgroup Entity
+/// \{
+
+/// Start animation of entity (if there is one)
+void start(entity&in pEntity);
+
+/// Stop animation of entity if it is playing. Restarts the animation.
+void stop(entity&in pEntity);
+
+/// Pause the current animation. Use animation::start() to resume.
+void pause(entity&in pEntity);
+
+/// Check if animation is currently playing
+bool is_playing(entity&in pEntity);
+
+/// Set scaler for the speed of the animation. Default is 1.
+void set_speed(entity&in pEntity, float pSpeed);
+
+/// Get scaler for the speed of the animation.
+float get_speed(entity&in pEntity);
+/// \}
+}
 
 /// \weakgroup Scene
 /// \{

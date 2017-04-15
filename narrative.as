@@ -275,8 +275,10 @@ void nl(const string&in msg)
 /// Wait for a specific amount of seconds.
 void wait(float pSeconds)
 {
-	_timer_start(pSeconds);
-	while (!_timer_reached() && yield());
+	util::timer wait_timer;
+	
+	wait_timer.start(pSeconds);
+	while (!wait_timer.is_reached() && yield());
 }
 
 /// Opens the selection menu and allows the user to choose between 2 options.

@@ -29,12 +29,16 @@ namespace priv
 	{
 		for (uint i = 0; i < speakers.length(); i++)
 			animation::start(speakers[i]);
+		if (expression.is_valid())
+			animation::start(expression);
 	}
 	
 	void stop_speakers()
 	{
 		for (uint i = 0; i < speakers.length(); i++)
 			animation::stop(speakers[i]);
+		if (expression.is_valid())
+			animation::stop(expression);
 	}
 	
 	
@@ -49,6 +53,23 @@ namespace priv
 	entity box;
 	entity main_text;
 	
+	entity expression;
+	
+	void position_text_entities()
+	{
+		set_position(box, pixel((get_display_size()*vec(0.5, 1))
+			- (get_size(box)*vec(0.5, 1))
+			- vec(0, 5))); // 5px margin from 
+		if (expression.is_valid())
+		{
+			vec size = get_size(narrative::priv::expression);
+			set_position(narrative::priv::main_text, get_position(box) + pixel(size.x, 10));
+		}
+		else
+			set_position(main_text, get_position(box)
+			+ pixel(10, 10)); // 10px margin
+	}
+	
 	void create_narrative()
 	{
 		// Create box
@@ -56,17 +77,14 @@ namespace priv
 		entity box = narrative::priv::box;
 		make_gui(box, 10);
 		set_anchor(box, anchor::topleft);
-		set_position(box, pixel((get_display_size()*vec(0.5, 1))
-			- (get_size(box)*vec(0.5, 1))
-			- vec(0, 5))); // 5px margin from bottom
 		
 		// Create text
 		narrative::priv::main_text = _add_dialog_text();
 		entity main_text = narrative::priv::main_text;
 		make_gui(main_text, 11);
-		set_position(main_text, get_position(box)
-			+ pixel(10, 10)); // 10px margin
 		_set_interval(main_text, 30);
+		
+		position_text_entities();
 	}
 	
 	void play_sound_effect()
@@ -81,6 +99,27 @@ namespace priv
 	/// \addtogroup Narrative
 	/// \{
 	
+	void set_expression(const string&in pTexture, const string&in pAtlas)
+	{
+		clear_expression();
+		narrative::priv::expression = add_entity(pTexture, pAtlas);
+		set_anchor(narrative::priv::expression, anchor::topleft);
+		set_position(narrative::priv::expression, get_position(box)
+			+ pixel(3, 3));
+		make_gui(narrative::priv::expression, 11);
+		
+		narrative::priv::position_text_entities();
+	}
+	
+	void clear_expression()
+	{
+		if (narrative::priv::expression.is_valid())
+		{
+			remove_entity(narrative::priv::expression);
+			narrative::priv::position_text_entities();
+		}
+	}
+  
 	/// Set the sound effect for reveal text.
 	void set_dialog_sound(const string &in pName)
 	{
@@ -143,6 +182,7 @@ namespace priv
 	{
 		// Reset everything
 		clear_speakers();
+		clear_expression();
 		if (!narrative::priv::player_already_locked)
 			player::lock(!pUnlock_player);
 		narrative::priv::current_dialog_sound = "dialog_sound";
@@ -182,7 +222,7 @@ namespace priv
 	{
 		narrative::priv::skip = pSkip;
 	}
-  
+	
 	/// \}
 }
 

@@ -127,8 +127,6 @@ void set_z(entity&in pEntity, float pZ);
 /// Get Z position of entity.
 float get_z(entity&in pEntity);
 
-/// Set the direction of a character entity.
-void set_direction(entity&in pEntity, direction pDirection);
 
 /// Set walk cycle of character entity.
 /// Walk cycles are defined in atlases with `name:`.

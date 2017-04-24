@@ -1,6 +1,27 @@
 /// \weakgroup Entity
 /// \{
 
+namespace animation
+{
+	void play_wait(entity pEntity)
+	{
+		animation::start(pEntity);
+		while(animation::is_playing(pEntity) && yield());
+	}
+	
+	void play_wait(array<entity> pEntities)
+	{
+		for (uint i = 0; i < pEntities.length(); i++)
+			animation::start(pEntities[i]);
+		bool all_playing = true;
+		do{
+			for (uint i = 0; i < pEntities.length(); i++)
+				if (!animation::is_playing(pEntities[i]))
+					all_playing = false;
+		}while(all_playing && yield());
+	}
+}
+
 /// Basic anchoring of a graphical entity.
 /// Anchoring is the offsetting of a graphical object
 /// from the actual position based on its size. For example,
@@ -84,8 +105,21 @@ direction vector_direction(vec pVec)
 void set_direction(entity pEntity, vec pTowards)
 {
 	vec position = get_position(pEntity);
-	set_direction(pEntity, vector_direction(pTowards - position));
+	_set_direction(pEntity, int(vector_direction(pTowards - position)));
 }
+
+/// Set direction of an entity
+void set_direction(entity pEntity, direction pDirection)
+{
+	_set_direction(pEntity, int(pDirection));
+}
+
+/// Get direction of an entity
+direction get_direction(entity pEntity)
+{
+	return direction(_get_direction(pEntity));
+}
+
 
 /// Move entity to (pTo) position in (pSeconds) seconds
 void move(entity pEntity, vec pTo, float pSeconds)

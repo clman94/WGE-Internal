@@ -142,7 +142,7 @@ namespace music
 	/// \param pQuick Automatically set to play and loop.
 	void open(const string&in pPath, bool pQuick = true)
 	{
-		if (_music_open(pPath) != 0)
+		if (_music_open(pPath) != false)
 			dprint("Could not load music file '" + pPath + "'");
 		
 		if (pQuick)

@@ -192,12 +192,17 @@ void make_gui(entity&in pEntity, float pOrder);
 /// Get the entity of the player character.
 entity get_player();
 
-
 /// Set scale of entity. Default is vec(1, 1).
 void set_scale(entity&in pEntity, vec pScale);
 
 /// Get scale of entity.
 vec get_scale(entity&in pEntity);
+
+
+/// Set parallax. Positive value will make it look like its
+/// in the foreground (closer). Negative values will make it
+/// look like its in the background (farther away).
+void set_parallax(entity&in pEntity, float p);
 
 
 /// \}

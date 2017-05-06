@@ -88,16 +88,26 @@ namespace music
 	/// Fade the current volume to a new volume
 	void fade_volume(float pVolume, float pSeconds)
 	{
-		const float velocity = (pVolume - _music_get_volume())/pSeconds;
-		float timer = 0;
-		while(timer < pSeconds)
-		{
-			const float delta = get_delta();
-			timer += delta;
-			_music_set_volume(_music_get_volume() + (velocity*delta));
-			yield();
-		}
-		_music_set_volume(pVolume);
+		create_thread(
+			function(pArgs)
+			{
+				const float pSeconds = float(pArgs["pSeconds"]);
+				const float pVolume  =  float(pArgs["pVolume"]);
+				
+				const float velocity = (pVolume - _music_get_volume())/pSeconds;
+				float timer = 0;
+				while(timer < pSeconds)
+				{
+					const float delta = get_delta();
+					timer += delta;
+					_music_set_volume(_music_get_volume() + (velocity*delta));
+					yield();
+				}
+				_music_set_volume(pVolume);
+		},
+		dictionary = {
+			{"pSeconds", pSeconds},
+			{"pVolume" , pVolume }});
 	}
 	
 	/// Is the song playing?

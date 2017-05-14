@@ -62,12 +62,17 @@ namespace priv
 			- vec(0, 5))); // 5px margin from 
 		if (expression.is_valid())
 		{
+			_dialog_set_wordwrap(main_text, 20);
 			vec size = get_size(narrative::priv::expression);
-			set_position(narrative::priv::main_text, get_position(box) + pixel(size.x, 10));
+			set_position(narrative::priv::main_text, get_position(box)
+				+ pixel(size.x + get_position(narrative::priv::expression).x, 10));
 		}
 		else
+		{
+			_dialog_set_wordwrap(main_text, 30);
 			set_position(main_text, get_position(box)
-			+ pixel(10, 10)); // 10px margin
+				+ pixel(10, 10)); // 10px margin
+		}
 	}
 	
 	void create_narrative()
@@ -83,7 +88,7 @@ namespace priv
 		entity main_text = narrative::priv::main_text;
 		make_gui(main_text, 11);
 		_set_interval(main_text, 30);
-		
+		_dialog_set_max_lines(main_text, 3);
 		position_text_entities();
 	}
 	

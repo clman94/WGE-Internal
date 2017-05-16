@@ -166,6 +166,10 @@ namespace priv
 		// Ensure visible
 		set_visible(narrative::priv::box, true);
 		set_visible(narrative::priv::main_text, true);
+		
+		if (narrative::priv::expression.is_valid())
+			set_visible(narrative::priv::expression, true);
+			
 		narrative::priv::is_shown = true;
 	}
 	
@@ -177,6 +181,8 @@ namespace priv
 		// Hide the stuff
 		set_visible(narrative::priv::box, false);
 		set_visible(narrative::priv::main_text, false);
+		if (narrative::priv::expression.is_valid())
+			set_visible(narrative::priv::expression, false);
 		narrative::priv::is_shown = false;
 	}
 	

@@ -84,6 +84,11 @@ class scoped_entity
 		return mEntity;
 	}
 	
+	entity get() const
+	{
+		return mEntity;
+	}
+	
 	private entity mEntity;
 };
 

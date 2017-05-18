@@ -257,6 +257,14 @@ void _wait_dialog_reveal(bool pSkip = false)
 /// Wait for key before continuing.
 void keywait(int pControl = control::activate)
 {
+  scoped_entity cursor = add_entity("NarrativeBox", "SelectCursor");
+  make_gui(cursor, 11);
+  set_position(cursor
+    , get_position(narrative::priv::box)
+    + pixel(get_size(narrative::priv::box))
+    - pixel(10, 10));
+  set_anchor(cursor, anchor::bottomright);
+  
 	do { yield(); }
 	while (!_is_triggered(pControl));
 }

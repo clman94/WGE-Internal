@@ -83,13 +83,14 @@ namespace fx
 		const float speed = 255.f / pSeconds;
 		float i = 255;
 		float timer = 0;
+			set_color(pEntity, 255, 255, 255, 255);
 		while (timer < pSeconds)
 		{
+			yield();
 			const float delta = get_delta();
 			timer += delta;
 			i -= speed*delta;
 			set_color(pEntity, 255, 255, 255, int(i));
-			yield();
 		}
 		set_color(pEntity, 255, 255, 255, 0);
 	}
@@ -101,13 +102,14 @@ namespace fx
 		const float speed = 255.f / pSeconds;
 		float i = 0;
 		float timer = 0;
+		set_color(pEntity, 255, 255, 255, 0);
 		while (timer < pSeconds)
 		{
+			yield();
 			const float delta = get_delta();
 			timer += delta;
 			i += speed*delta;
 			set_color(pEntity, 255, 255, 255, int(i));
-			yield();
 		}
 		set_color(pEntity, 255, 255, 255, 255);
 	}

@@ -152,7 +152,7 @@ class box
   {
     set_scale(mParts[1], vec(mMid_size.x / get_size_tiles(mParts[1]).x, 1));
     set_scale(mParts[3], vec(1, mMid_size.y / get_size_tiles(mParts[3]).y));
-    set_scale(mParts[4], vec(mMid_size.x / get_size_tiles(mParts[4]).y, mMid_size.y / get_size_tiles(mParts[4]).y));
+    set_scale(mParts[4], vec(mMid_size.x / get_size_tiles(mParts[4]).x, mMid_size.y / get_size_tiles(mParts[4]).y));
     set_scale(mParts[5], vec(1, mMid_size.y / get_size_tiles(mParts[5]).y));
     set_scale(mParts[7], vec(mMid_size.x / get_size_tiles(mParts[7]).x, 1));
   }

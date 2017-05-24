@@ -85,6 +85,26 @@ class box
     update_parts();
   }
   
+  void shiw() {
+    for(int i = 0; i < 9; i++) {
+      set_visible(mParts[i], true);
+    }
+  }
+   
+  void hide() {
+    for(int i = 0; i < 9; i++) {
+      set_visible(mParts[i], false);
+    }
+  }
+   
+  void remove() {
+    
+    for(int i = 0; i <9; i++) {
+      remove_entity(mParts[i]);
+    }
+   
+  }
+  
   /********
   [0][1][2]
   [3][4][5]

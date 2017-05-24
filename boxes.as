@@ -39,22 +39,21 @@ class box
 {
   
   //pSymmetric doesn't do anything yet
-  box(string pTexture, vec pSize, vec pPos, bool pSymmetric = false) {
-    
+  box(string pTexture, vec pPos, vec pSize, bool pSymmetric = false)
+  {
     mSize = pSize;
     
     prepare_parts(pTexture, pSymmetric);
     
     //this is used for resizing if/when necessary
     //edge_size is the size of the sides of the edge pieces which don't change
-    edge_size = gs(mParts[0]);
-    //mid_size is the sides which do change
-    mid_size = mSize - (edge_size * 2);
+    mEdge_size = get_size_tiles(mParts[0]);
     
+    //mid_size is the sides which do change
+    mMid_size = mSize - (mEdge_size * 2);
     size_parts();
     
     position_parts(pPos);
-    
   }
   
   /*
@@ -65,30 +64,25 @@ class box
   }
   */
   
-  vec get_pos() {
-    
-    return get_position(mParts[1]);
-    
+  vec get_position()
+  {
+    return ::get_position(mParts[1]);
   }
   
-  void set_pos(vec pPos) {
-    
-    set_position(mParts[0], pPos);
-    
+  void set_position(vec pPosition)
+  {
+    ::set_position(mParts[0], pPosition);
   }
   
-  vec size(bool in_pixels = false) {
-    
-    return (in_pixels ? mSize * 32 : mSize);
-    
+  vec get_size(bool pIn_pixels = false)
+  {
+    return (pIn_pixels ? mSize * 32 : mSize);
   }
   
-  void set_size(vec pSize, bool in_pixels = false) {
-    
-    mSize = (in_pixels ? pixel(pSize) : pSize);
-    
+  void set_size(vec pSize, bool pIn_pixels = false)
+  {
+    mSize = (pIn_pixels ? pixel(pSize) : pSize);
     update_parts();
-    
   }
   
   /********
@@ -96,8 +90,8 @@ class box
   [3][4][5]
   [6][7][8]
   ********/
-  private void prepare_parts(string pTexture, bool pSymmetric) {
-    
+  private void prepare_parts(string pTexture, bool pSymmetric)
+  {
     mParts[0] = add_entity(pTexture, "top_left_corner"     );
     mParts[1] = add_entity(pTexture, "top_edge"            );
     mParts[2] = add_entity(pTexture, "top_right_corner"    );
@@ -108,71 +102,60 @@ class box
     mParts[7] = add_entity(pTexture, "bottom_edge"         );
     mParts[8] = add_entity(pTexture, "bottom_right_corner" );
     
-    for(int i = 0; i < 9; i++) {
-      
+    for(int i = 0; i < 9; i++)
       make_gui(mParts[i], 0);
-      
-    }
-    
   }
   
-  private void position_parts(vec pOrigin) {
-    
-    for(int i = 0; i < 9; i++) {
-      
+  private void position_parts(vec pOrigin)
+  {
+    for(int i = 0; i < 9; i++)
+    {
       set_anchor(mParts[i], anchor::topleft);
       
       //because no safeguards
       if(i != 0)
         add_child(mParts[0], mParts[i]);
-      
     }
     
-    vec edge_size = gs(mParts[0]);
+    mEdge_size = get_size_tiles(mParts[0]);
     
-    set_position(mParts[0], pOrigin);
-    set_position(mParts[1], vec(edge_size.x, 0));
-    set_position(mParts[2], vec(edge_size.x + mid_size.x, 0));
-    set_position(mParts[3], vec(0, edge_size.y));
-    set_position(mParts[4], edge_size);                               //not so mmmmmmm
-    set_position(mParts[5], vec(mSize.x - edge_size.x, edge_size.y));
-    set_position(mParts[6], vec(0, mSize.y - edge_size.y));
-    set_position(mParts[7], vec(edge_size.x, mSize.y - edge_size.y));
-    set_position(mParts[8], mSize - edge_size);
-    
+    ::set_position(mParts[0], pOrigin);
+    ::set_position(mParts[1], vec(mEdge_size.x, 0));
+    ::set_position(mParts[2], vec(mEdge_size.x + mMid_size.x, 0));
+    ::set_position(mParts[3], vec(0, mEdge_size.y));
+    ::set_position(mParts[4], mEdge_size);                               //not so mmmmmmm
+    ::set_position(mParts[5], vec(mSize.x - mEdge_size.x, mEdge_size.y));
+    ::set_position(mParts[6], vec(0, mSize.y - mEdge_size.y));
+    ::set_position(mParts[7], vec(mEdge_size.x, mSize.y - mEdge_size.y));
+    ::set_position(mParts[8], mSize - mEdge_size);
   }
   
-  private void size_parts() {
-    
-    set_scale(mParts[1], vec(mid_size.x / gs(mParts[1]).x, 1));
-    set_scale(mParts[3], vec(1, mid_size.y / gs(mParts[3]).y));
-    set_scale(mParts[4], vec(mid_size.x / gs(mParts[4]).y, mid_size.y / gs(mParts[4]).y));
-    set_scale(mParts[5], vec(1, mid_size.y / gs(mParts[5]).y));
-    set_scale(mParts[7], vec(mid_size.x / gs(mParts[7]).x, 1));
-    
+  private void size_parts()
+  {
+    set_scale(mParts[1], vec(mMid_size.x / get_size_tiles(mParts[1]).x, 1));
+    set_scale(mParts[3], vec(1, mMid_size.y / get_size_tiles(mParts[3]).y));
+    set_scale(mParts[4], vec(mMid_size.x / get_size_tiles(mParts[4]).y, mMid_size.y / get_size_tiles(mParts[4]).y));
+    set_scale(mParts[5], vec(1, mMid_size.y / get_size_tiles(mParts[5]).y));
+    set_scale(mParts[7], vec(mMid_size.x / get_size_tiles(mParts[7]).x, 1));
   }
   
-  private void update_parts() {
-    
-    mid_size = mSize - (edge_size * 2);
-    
-    position_parts(get_pos());
-    
+  private void update_parts()
+  {
+    mMid_size = mSize - (mEdge_size * 2);
+    position_parts(get_position());
     size_parts();
-    
   }
   
-  private vec gs(entity e) {
-    
-    return pixel(get_size(e));
-    
+  private vec get_size_tiles(entity e)
+  {
+    return pixel(::get_size(e));
   }
   
   private array<entity> mParts(9);
   
   private vec mSize;
-  private vec edge_size;
-  private vec mid_size;
+  private vec mEdge_size;
+  private vec mMid_size;
   
 }
 

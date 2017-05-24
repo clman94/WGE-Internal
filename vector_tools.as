@@ -24,4 +24,10 @@ vec midpoint(vec a, vec b) {
   return (a + b)/2;
 }
 
+string vtos(vec v) {
+  
+  return "(" + v.x + ", " + v.y + ")";
+  
+}
+
 /// \}

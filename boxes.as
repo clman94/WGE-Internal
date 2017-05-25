@@ -21,12 +21,19 @@ Create the texture which will be used to create the box (it doesn't need to be a
   
   - Additionally, opposite edges should be the same width/height 
 
+If you're feeling a bit lazy, call it with pSymmetric = true (doesn't work yet)
+  
+  - You can make only one corner, one edge (top-left and top, respectively), and the center
+  - label them 'corner' 'edge' and 'center'
+  - you probably want to have square corners in this case
+
 Actually making the box
 
   - If you want some sort of fancy pattern to your box, you probably want to use make_box_tiled,
     as make_box will stretch the textures used. This will be more performance-costly, however.
+    - don't do this I havent implemented a way to do this yet
 
-  - Position is from the top-right corner and the size should be in game units (use the pixel funtion)
+  - Position is from the top-right corner and the size should be in game/tile units (use the pixel funtion)
  *****************************************************************************************/
 
 /********
@@ -56,13 +63,21 @@ class box
     position_parts(pPos);
   }
   
-  /*
-  void make_box_tiled(string pTexture, vec pSize, vec pPos) {
-    
-    
+  box() {
     
   }
-  */
+  
+  bool is_valid() {
+    
+    bool valid = true;
+    
+    for(int i = 0; i < 9; i++)
+      if(!mParts[i].is_valid())
+        valid = false;
+    
+    return valid;
+    
+  }
   
   vec get_position()
   {
@@ -110,15 +125,46 @@ class box
   ********/
   private void prepare_parts(string pTexture, bool pSymmetric)
   {
-    mParts[0] = add_entity(pTexture, "top_left_corner"     );
-    mParts[1] = add_entity(pTexture, "top_edge"            );
-    mParts[2] = add_entity(pTexture, "top_right_corner"    );
-    mParts[3] = add_entity(pTexture, "left_edge"           );
-    mParts[4] = add_entity(pTexture, "center"              ); //mmmmmmmmm
-    mParts[5] = add_entity(pTexture, "right_edge"          );
-    mParts[6] = add_entity(pTexture, "bottom_left_corner"  );
-    mParts[7] = add_entity(pTexture, "bottom_edge"         );
-    mParts[8] = add_entity(pTexture, "bottom_right_corner" );
+    
+    //this didn't quite work and i don't feel like fixing it right now
+    /*if(pSymmetric) {
+      
+      for(int i = 0; i < 9; i++) {
+        
+        switch(i % 2) {
+          
+          case 0:
+            if(i == 4)
+              mParts[i] = add_entity(pTexture, "center");
+            else {
+            
+              mParts[i] = add_entity(pTexture, "corner");
+              set_rotation(mParts[i], i/2 * 90);
+              
+            }
+            break;
+          
+          case 1:
+            mParts[i] = add_entity(pTexture, "edge");
+            set_rotation(mParts[i], (i - 1)/2 * 90);
+            break;
+        }
+        
+      }
+      
+    } else {*/
+      
+      mParts[0] = add_entity(pTexture, "top_left_corner"     );
+      mParts[1] = add_entity(pTexture, "top_edge"            );
+      mParts[2] = add_entity(pTexture, "top_right_corner"    );
+      mParts[3] = add_entity(pTexture, "left_edge"           );
+      mParts[4] = add_entity(pTexture, "center"              ); //mmmmmmmmm
+      mParts[5] = add_entity(pTexture, "right_edge"          );
+      mParts[6] = add_entity(pTexture, "bottom_left_corner"  );
+      mParts[7] = add_entity(pTexture, "bottom_edge"         );
+      mParts[8] = add_entity(pTexture, "bottom_right_corner" );
+      
+    //}
     
     for(int i = 0; i < 9; i++)
       make_gui(mParts[i], 0);

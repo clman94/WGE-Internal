@@ -45,6 +45,8 @@ Actually making the box
 class box
 {
   
+  box() {}
+  
   //pSymmetric doesn't do anything yet
   box(string pTexture, vec pPos, vec pSize, bool pSymmetric = false)
   {
@@ -63,20 +65,13 @@ class box
     position_parts(pPos);
   }
   
-  box() {
-    
-  }
   
-  bool is_valid() {
-    
-    bool valid = true;
-    
+  bool is_valid()
+  {
     for(int i = 0; i < 9; i++)
       if(!mParts[i].is_valid())
-        valid = false;
-    
-    return valid;
-    
+        return false;
+    return true;
   }
   
   vec get_position()

@@ -245,7 +245,7 @@ void _wait_dialog_reveal(bool pSkip = false)
 		if (_has_displayed_new_character(narrative::priv::main_text))
 			narrative::priv::play_sound_effect();
 		
-		if (is_triggered(control::activate) && narrative::priv::skip)
+		if (is_triggered("activate") && narrative::priv::skip)
 			_skip_reveal(narrative::priv::main_text);
 	} while (_is_revealing(narrative::priv::main_text));
 	narrative::priv::stop_speakers();
@@ -255,7 +255,7 @@ void _wait_dialog_reveal(bool pSkip = false)
 /// \{
 
 /// Wait for key before continuing.
-void keywait(int pControl = control::activate)
+void keywait(const string&in pKey = "activate")
 {
   scoped_entity cursor = add_entity("NarrativeBox", "SelectCursor");
   make_gui(cursor, 11);
@@ -266,7 +266,7 @@ void keywait(int pControl = control::activate)
   set_anchor(cursor, anchor::bottomright);
   
 	do { yield(); }
-	while (!_is_triggered(pControl));
+	while (!is_triggered(pKey));
 }
 
 /// Open and reveal text without waiting for key to continue.
@@ -353,17 +353,17 @@ option select(const string&in pOption1, const string&in pOption2)
 		+ pixel(10, get_size(narrative::priv::box).y - 24));
 	
 	do {
-		if (_is_triggered(control::select_previous)) // First option
+		if (is_triggered("select_left")) // First option
 		{
 			val = option::first;
 			set_text(selection_text, "*" + pOption1 + "   " + pOption2);
 		}
-		if (_is_triggered(control::select_next)) // Second option
+		if (is_triggered("select_right")) // Second option
 		{
 			val = option::second;
 			set_text(selection_text, " " + pOption1 + "  *" + pOption2);
 		}
-	} while (yield() && !_is_triggered(control::activate));
+	} while (yield() && !is_triggered("activate"));
 	return val;
 }
 

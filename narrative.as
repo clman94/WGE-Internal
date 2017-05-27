@@ -304,14 +304,14 @@ void append(const string&in msg)
 /// The dialogue is required to be open for this to work properly.
 void fnewline(const string&in msg)
 {
-	fappend("\n" + msg);
+	fappend("<br/>" + msg);
 }
 
 /// Append and newline of text to the narrative and wait for key.
 /// The dialogue is required to be open for this to work properly.
 void newline(const string&in msg)
 {
-	append("\n" + msg);
+	append("<br/>" + msg);
 }
 
 /// Append and newline of text to the narrative without waiting for key.

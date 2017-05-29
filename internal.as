@@ -277,6 +277,13 @@ void load_scene(const string &in pName, vec pPosition);
 /// \weakgroup Game
 /// \{
 
+/// Values are specific data you want
+/// to organize and SAVE.
+/// It works similar to a filesystem except that
+/// directories only exists when a file is inside it.
+/// Directories can also double as entries with a value.
+/// In order to create an entry that holds the value you want to save,
+/// use one of the "set" functions.
 namespace values
 {
   /// \weakgroup Game
@@ -291,7 +298,7 @@ namespace values
   /// Get a string value
   string get_string(const string &in pPath);
   
-  /// Set an integer value 
+  /// Set an integer value
   void set(const string &in pPath, int pValue);
   
   /// Set a floating point value
@@ -305,6 +312,9 @@ namespace values
   
   /// Remove an entry
   bool remove(const string &in pPath);
+  
+  /// Check if entry exists
+  bool exists(const string &in pPath);
   
   /// \}
 }

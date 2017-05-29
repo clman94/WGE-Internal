@@ -277,6 +277,38 @@ void load_scene(const string &in pName, vec pPosition);
 /// \weakgroup Game
 /// \{
 
+namespace values
+{
+  /// \weakgroup Game
+  /// \{
+  
+  /// Get an integer value
+  int get_int(const string &in pPath);
+  
+  /// Get a floating point value
+  float get_float(const string &in pPath);
+  
+  /// Get a string value
+  string get_string(const string &in pPath);
+  
+  /// Set an integer value 
+  void set(const string &in pPath, int pValue);
+  
+  /// Set a floating point value
+  void set(const string &in pPath, float pValue);
+  
+  /// Get a string value
+  void set(const string &in pPath, const string&in pValue);
+  
+  /// Get list of entries in a directory
+  array<string>@ get_entries(const string &in pPath);
+  
+  /// Remove an entry
+  bool remove(const string &in pPath);
+  
+  /// \}
+}
+
 /// Print debug message.
 void dprint(const string &in pMessage);
 

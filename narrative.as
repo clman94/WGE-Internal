@@ -95,7 +95,7 @@ namespace priv
 	void play_sound_effect()
 	{
 		if (narrative::priv::randomized_dialog_sound)
-			fx::sound(narrative::priv::current_dialog_sound, 100, random(80, 110)*0.01);
+			fx::sound(narrative::priv::current_dialog_sound, 100, random(90, 110)*0.01);
 		else
 			fx::sound(narrative::priv::current_dialog_sound);
 	}

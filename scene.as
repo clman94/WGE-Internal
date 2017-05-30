@@ -14,6 +14,7 @@
 #include "flags.as"
 #include "game.as"
 #include "focus.as"
+#include "collision.as"
 
 [start]
 void __fadein__()

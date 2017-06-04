@@ -350,7 +350,8 @@ option select(const string&in pOption1, const string&in pOption2)
 	make_gui(selection_text, 11);
 	set_text(selection_text, "*" + pOption1 + "   " + pOption2);
 	set_position(selection_text, get_position(narrative::priv::box)
-		+ pixel(10, get_size(narrative::priv::box).y - 24));
+		+ pixel(10, get_size(narrative::priv::box).y - 24)
+    + (narrative::priv::expression.is_valid() ? pixel(get_size(narrative::priv::expression).x, 0) : vec()));
 	
 	do {
 		if (is_triggered("select_left")) // First option

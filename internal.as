@@ -299,13 +299,13 @@ namespace values
   string get_string(const string &in pPath);
   
   /// Set an integer value
-  void set(const string &in pPath, int pValue);
+  bool set(const string &in pPath, int pValue);
   
   /// Set a floating point value
-  void set(const string &in pPath, float pValue);
+  bool set(const string &in pPath, float pValue);
   
   /// Get a string value
-  void set(const string &in pPath, const string&in pValue);
+  bool set(const string &in pPath, const string&in pValue);
   
   /// Get list of entries in a directory
   array<string>@ get_entries(const string &in pPath);
@@ -318,6 +318,9 @@ namespace values
   
   /// \}
 }
+
+/// Get the size of the screen in pixels.
+vec get_display_size();
 
 /// Print debug message.
 void dprint(const string &in pMessage);

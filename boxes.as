@@ -67,7 +67,8 @@ class box
   
   ~box()
   {
-    this.remove();
+    if(this.is_valid())
+      this.remove();
   }
   
   bool is_valid()

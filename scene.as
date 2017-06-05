@@ -15,6 +15,7 @@
 #include "game.as"
 #include "focus.as"
 #include "collision.as"
+#include "menu.as"
 
 [start]
 void __fadein__()

@@ -65,6 +65,10 @@ class box
     position_parts(pPos);
   }
   
+  ~box()
+  {
+    this.remove();
+  }
   
   bool is_valid()
   {

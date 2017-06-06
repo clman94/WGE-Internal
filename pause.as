@@ -55,7 +55,7 @@ void open_menu()
         break;
     }
     
-  } while(!exit);
+  } while(yield() && !exit);
   
   pause_menu.set_visible(false);
   player::lock(false);
@@ -99,7 +99,7 @@ void open_stats()
         break;
     }
     
-  } while(!exit);
+  } while(yield() && !exit);
 }
 
 void open_inv()
@@ -137,6 +137,6 @@ void open_inv()
         break;
     }
     
-  } while(!exit);
+  } while(yield() && !exit);
 }
 

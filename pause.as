@@ -8,7 +8,7 @@ void check_pause() {
   
   do {
     
-    if(is_triggered(control::activate))
+    if(is_triggered("menu"));
       open_menu();
     
   } while(yield());

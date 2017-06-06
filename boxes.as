@@ -67,8 +67,7 @@ class box
   
   ~box()
   {
-    if(this.is_valid())
-      this.remove();
+    this.remove();
   }
   
   bool is_valid()
@@ -115,7 +114,8 @@ class box
   void remove()
   {
     for(int i = 0; i <9; i++)
-      remove_entity(mParts[i]);
+      if(mParts[i].is_valid())
+        remove_entity(mParts[i]);
   }
   
   /********

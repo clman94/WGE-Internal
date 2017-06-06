@@ -12,6 +12,8 @@ const vec border_padding = pixel(3, 3);
 class menu
 {
   
+  menu() {}
+  
   menu(array<string> pOptions, vec pPosition, uint pColumns = 1, vec pOp_size = pixel(60, 20), bool pBox = true)
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
@@ -35,7 +37,6 @@ class menu
     mCurrent_selection = 0;
     
     update_positions();
-    
   }
   
   ~menu()
@@ -70,7 +71,7 @@ class menu
     if(is_triggered("select_right") && floor(mCurrent_selection / mSize.y) != mSize.x - 1 && mOptions[mCurrent_selection + int(mSize.y)].is_valid())
       mCurrent_selection += int(mSize.y);
     
-    update_cursor();
+    update_positions();
     
     if(is_triggered("activate"))
       return mCurrent_selection;
@@ -111,14 +112,22 @@ class menu
     ::set_visible(mCursor, true);
   }
   
+  bool is_valid()
+  {
+    return !(mOptions.length() == 0)
+  }
+  
   //Removes the box, text, and cursor permanently
   void remove()
   {
     for(uint i = 0; i < mOptions.length(); i++)
-      remove_entity(mOptions[i]);
-    remove_entity(mCursor);
-    if(mBox.is_valid())
-      mBox.remove();
+      if(mOptions[i].is_valid())
+        remove_entity(mOptions[i]);
+    if(mCursor.is_valid())
+      remove_entity(mCursor);
+    mBox.remove();
+    while (mOptions.length() != 0)
+      mOptions.removeLast();
   }
   
   //Appends and option to the option list
@@ -155,6 +164,12 @@ class menu
     mSize = pSize;
   }
   
+  void set_position(vec pPosition)
+  {
+    mPosition = pPosition;
+    update_positions();
+  }
+  
   private void update_size(uint pColumns)
   {
     
@@ -168,14 +183,14 @@ class menu
   
   private void update_cursor()
   {
-    set_position(mCursor, get_position(mOptions[mCurrent_selection]));
+    ::set_position(mCursor, get_position(mOptions[mCurrent_selection]));
   }
   
   private void update_positions()
   {
     
     for(uint i = 0; i < mOptions.length(); i++)
-      set_position(mOptions[i], mPosition + border_padding + (mOp_size * vec(floor(i / mSize.y), i % mSize.y)));
+      ::set_position(mOptions[i], mPosition + border_padding + (mOp_size * vec(floor(i / mSize.y), i % mSize.y)));
       
     update_cursor();
     

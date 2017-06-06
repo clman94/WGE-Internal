@@ -80,22 +80,13 @@ void open_stats()
   do
   {
     
-    switch(pause_menu.tick())
+    switch(stat_thing.tick())
     {
       case -2:
         exit = true;
         break;
       
       case -1:
-        break;
-      
-      // Stats
-      case 0:
-        open_stats();
-        break;
-      
-      case 1:
-        open_inv();
         break;
     }
     
@@ -118,7 +109,7 @@ void open_inv()
   do
   {
     
-    switch(pause_menu.tick())
+    switch(inv.tick())
     {
       case -2:
         exit = true;
@@ -127,13 +118,8 @@ void open_inv()
       case -1:
         break;
       
-      // Stats
-      case 0:
-        open_stats();
-        break;
-      
-      case 1:
-        open_inv();
+      default:
+        //say descrioption or something
         break;
     }
     

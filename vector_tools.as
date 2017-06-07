@@ -32,10 +32,4 @@ string vtos(const vec&in v)
   return "(" + v.x + ", " + v.y + ")";
 }
 
-/// String to vector
-vec parse_vec(const string&in s)
-{
-  return vec(0, 0);
-}
-
 /// \}

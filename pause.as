@@ -8,7 +8,7 @@ void check_pause() {
   
   do {
     
-    if(is_triggered("menu"));
+    if(is_triggered("menu"))
       open_menu();
     
   } while(yield());
@@ -16,18 +16,13 @@ void check_pause() {
 }
 
 
-menu pause_menu;
-
-const vec pause_menu_position = pixel(27, 27);
-const vec pause_option_size   = pixel(80, 20);
-
+const vec pause_menu_position = pixel(35, 27);
+const vec pause_option_size   = pixel(60, 20);
 
 void open_menu()
 {
-  if(!pause_menu.is_valid())
-    _make_menu();
-  else
-    pause_menu.set_visible(true);
+  array<string> pause_options = {"Stats", "Items"};
+  list_menu pause_menu (pause_options, pause_menu_position, 1, pause_option_size);
   
   player::lock(true);
   
@@ -38,55 +33,57 @@ void open_menu()
     
     switch(pause_menu.tick())
     {
-      case -2:
+      case menu_command::back:
         exit = true;
         break;
       
-      case -1:
+      case menu_command::nothing:
         break;
       
       // Stats
       case 0:
+        pause_menu.hide();
         open_stats();
+        pause_menu.show();
         break;
       
       case 1:
+        pause_menu.hide();
         open_inv();
+        pause_menu.show();
         break;
     }
     
   } while(yield() && !exit);
   
-  pause_menu.set_visible(false);
   player::lock(false);
 }
 
-void _make_menu()
-{
-  array<string> pause_options = {"Stats", "Items"};
-  pause_menu = menu(pause_options, pause_menu_position, 1, pause_option_size);
-}
 
 void open_stats()
 {
   array<string> stats;
   
-  stats.insertLast(formatInt(user_data.get_hp()));
-  stats.insertLast(formatInt(user_data.get_atk()));
-  stats.insertLast(formatInt(user_data.get_def()));
+  stats.insertLast("HP:"  + formatInt(user_data::get_hp()));
+  stats.insertLast("ATK:" + formatInt(user_data::get_atk()));
+  stats.insertLast("DEF:" + formatInt(user_data::get_def()));
   
-  menu stat_thing (stats, pause_menu_position, 1, pause_option_size);
+  list_menu stat_thing (stats, pause_menu_position, 1, pause_option_size);
+  
+  stat_thing.hide_cursor();
+  
+  bool exit = false;
   
   do
   {
     
     switch(stat_thing.tick())
     {
-      case -2:
+      case menu_command::back:
         exit = true;
         break;
       
-      case -1:
+      case menu_command::nothing:
         break;
     }
     
@@ -95,27 +92,32 @@ void open_stats()
 
 void open_inv()
 {
-  array<string> inv_list = user_data.get_inventory_items();
+  array<string> inv_list = user_data::get_inventory_items();
   array<entity> inv_sprites(inv_list.length());
   
-  for(int i = 0; i < inv_sprites.length(); i++)
+  for(uint i = 0; i < inv_sprites.length(); i++)
   {
-    array<string> info = get_item_sprite(inv_list[i]);
-    inv_sprites[i] = add_entity(info [0], info[1]);
+    array<string> info = user_data::get_item_sprite(inv_list[i]);
+    inv_sprites[i] = add_entity(info[0], info[1]);
   }
   
-  menu inv (inv_list, puase_menu_position, 1, pause_option_size + pixel(26, 0));
+  list_menu inv ((inv_list.length() != 0 ? inv_list : array<string> = {"Empty", "Like", "Your", "Soul"}), pause_menu_position, 1, pause_option_size + pixel(26, 0));
+  
+  if(inv_list.length() == 0)
+    inv.hide_cursor();
+  
+  bool exit = false;
   
   do
   {
     
     switch(inv.tick())
     {
-      case -2:
+      case menu_command::back:
         exit = true;
         break;
       
-      case -1:
+      case menu_command::nothing:
         break;
       
       default:

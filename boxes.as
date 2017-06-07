@@ -70,6 +70,23 @@ class box
     this.remove();
   }
   
+  void make_box(string pTexture, vec pPos, vec pSize, bool pSymmetric = false)
+  {
+    mSize = pSize;
+    
+    prepare_parts(pTexture, pSymmetric);
+    
+    //this is used for resizing if/when necessary
+    //edge_size is the size of the sides of the edge pieces which don't change
+    mEdge_size = get_size_tiles(mParts[0]);
+    
+    //mid_size is the sides which do change
+    mMid_size = mSize - (mEdge_size * 2);
+    size_parts();
+    
+    position_parts(pPos);
+  }
+  
   bool is_valid()
   {
     for(int i = 0; i < 9; i++)

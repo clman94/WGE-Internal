@@ -16,6 +16,7 @@
 #include "focus.as"
 #include "collision.as"
 #include "menu.as"
+#include "pause.as"
 
 [start]
 void __fadein__()

@@ -5,16 +5,22 @@ TODO: make the sizing of the menu more robust, allow changing/setting of rows an
 make options a 2-d array?
 */
 
+//Return values
+enum menu_command
+{
+  back = -2,
+  nothing = -1,
+};
 
 //may change/make chaneable
-const vec border_padding = pixel(3, 3);
+const vec border_padding = pixel(6, 6);
 
-class menu
+class list_menu
 {
   
-  menu() {}
+  list_menu() {}
   
-  menu(array<string> pOptions, vec pPosition, uint pColumns = 1, vec pOp_size = pixel(60, 20), bool pBox = true)
+  list_menu(array<string> pOptions, vec pPosition, uint pColumns = 1, vec pOp_size = pixel(60, 20), bool pBox = true)
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
     set_anchor(mCursor, anchor::topright);
@@ -29,23 +35,29 @@ class menu
     
     update_size(pColumns);
     
-    if(pBox) //                                     pemdas
-      mBox = box("bawks", mPosition, mSize * pOp_size + border_padding * 2);
+    if(pBox)    //                                     pemdas
+    {
+      dprint("Hello. I am here.");
+      dprint(vtos(mSize * pOp_size + border_padding * 2));
+      dprint(vtos(mPosition));
+      mBox.make_box("bawks", mPosition - pixel(get_size(mCursor).x, 0), mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
+    }
     else
       mBox = box();
     
     mCurrent_selection = 0;
     
     update_positions();
+    update_box();
   }
   
-  ~menu()
+  ~list_menu()
   {
     this.remove();
   }
   
   //The 'main' function of the menu class
-  //returns -1 if no selection has been made, -2 is the "back" control is triggered, or the selection number
+  //returns -1 if no selection has been made, -2 if the "back" control is triggered, or the selection number
   //usage will probably look like this: `
   //menu menuthing();
   //  //add stuff
@@ -77,9 +89,9 @@ class menu
       return mCurrent_selection;
     
     if(is_triggered("back"))
-      return -2;
+      return menu_command::back;
     
-    return -1;
+    return menu_command::nothing;
   }
   
   //Set visibility
@@ -88,6 +100,8 @@ class menu
     for(uint i = 0; i < mOptions.length(); i++)
       ::set_visible(mOptions[i], pVisible);
     
+    ::set_visible(mCursor, pVisible);
+    
     if(mBox.is_valid())
     {
       if(pVisible)
@@ -95,6 +109,16 @@ class menu
       else
         mBox.hide();
     }
+  }
+  
+  void show()
+  {
+    this.set_visible(true);
+  }
+  
+  void hide()
+  {
+    this.set_visible(false);
   }
   
   array<entity>@ get_options()
@@ -114,7 +138,7 @@ class menu
   
   bool is_valid()
   {
-    return !(mOptions.length() == 0)
+    return !(mOptions.length() == 0);
   }
   
   //Removes the box, text, and cursor permanently
@@ -136,6 +160,13 @@ class menu
     entity text = add_text();
     set_text(text, pText);
     set_anchor(text, anchor::topleft);
+    
+    if(get_size(text).x > mOp_size.x)
+      mOp_size.x = get_size(text).x;
+    if(get_size(text).y > mOp_size.y)
+      mOp_size.y = get_size(text).y;
+    
+    update_box();
     
     mOptions.insertAt(pIndex, text);
     make_gui(mOptions[pIndex], 1);
@@ -172,13 +203,11 @@ class menu
   
   private void update_size(uint pColumns)
   {
-    
     int y = int(ceil(mOptions.length() / pColumns));
     
     int x = pColumns;
     
     mSize = vec(x, y);
-    
   }
   
   private void update_cursor()
@@ -190,10 +219,18 @@ class menu
   {
     
     for(uint i = 0; i < mOptions.length(); i++)
-      ::set_position(mOptions[i], mPosition + border_padding + (mOp_size * vec(floor(i / mSize.y), i % mSize.y)));
-      
-    update_cursor();
+    {
+      const vec pos_offset (mOp_size * vec(floor(i / mSize.y), i % mSize.y));
+      const vec centering  (0, (mOp_size.y - pixel(get_size(mOptions[i])).y) / 4);
+      ::set_position(mOptions[i], mPosition + border_padding + pos_offset + centering);
+    }
     
+    update_cursor();
+  }
+  
+  private void update_box()
+  {
+    mBox.set_size(mSize * mOp_size + border_padding * 2);
   }
   
   private uint mCurrent_selection;

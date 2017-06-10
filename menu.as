@@ -220,7 +220,7 @@ class list_menu
     {
       const vec pos_offset (mOp_size * vec(floor(i / mSize.y), i % mSize.y));
       const vec centering  (0, (mOp_size.y - pixel(get_size(mOptions[i])).y) / 4);
-      ::set_position(mOptions[i], mPosition + pixel(get_size(mCursor).x, 0) + border_padding + pos_offset /*+ centering*/);
+      ::set_position(mOptions[i], mPosition + pixel(get_size(mCursor).x, 0) + border_padding + pos_offset + centering);
     }
     
     update_cursor();

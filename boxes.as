@@ -56,13 +56,24 @@ class box
     
     //this is used for resizing if/when necessary
     //edge_size is the size of the sides of the edge pieces which don't change
-    mEdge_size = get_size_tiles(mParts[0]);
+    mEdge_size = get_size(mParts[0]);
     
     //mid_size is the sides which do change
     mMid_size = mSize - (mEdge_size * 2);
     size_parts();
     
-    position_parts(pPos);
+    mPos = pPos;
+    
+    for(int i = 0; i < 9; i++)
+    {
+      set_anchor(mParts[i], anchor::topleft);
+      
+      //because no safeguards
+      if(i != 0)
+        add_child(mParts[0], mParts[i]);
+    }
+    
+    position_parts();
   }
   
   ~box()
@@ -78,13 +89,24 @@ class box
     
     //this is used for resizing if/when necessary
     //edge_size is the size of the sides of the edge pieces which don't change
-    mEdge_size = get_size_tiles(mParts[0]);
+    mEdge_size = get_size(mParts[0]);
     
     //mid_size is the sides which do change
     mMid_size = mSize - (mEdge_size * 2);
     size_parts();
     
-    position_parts(pPos);
+    mPos = pPos;
+    
+    for(int i = 0; i < 9; i++)
+    {
+      set_anchor(mParts[i], anchor::topleft);
+      
+      //because no safeguards
+      if(i != 0)
+        add_child(mParts[0], mParts[i]);
+    }
+    
+    position_parts();
   }
   
   bool is_valid()
@@ -97,7 +119,7 @@ class box
   
   vec get_position()
   {
-    return ::get_position(mParts[1]);
+    return mPos;
   }
   
   void set_position(vec pPosition)
@@ -187,20 +209,9 @@ class box
       make_gui(mParts[i], 0);
   }
   
-  private void position_parts(vec pOrigin)
+  private void position_parts()
   {
-    for(int i = 0; i < 9; i++)
-    {
-      set_anchor(mParts[i], anchor::topleft);
-      
-      //because no safeguards
-      if(i != 0)
-        add_child(mParts[0], mParts[i]);
-    }
-    
-    mEdge_size = get_size_tiles(mParts[0]);
-    
-    ::set_position(mParts[0], pOrigin);
+    ::set_position(mParts[0], mPos);
     ::set_position(mParts[1], vec(mEdge_size.x, 0));
     ::set_position(mParts[2], vec(mEdge_size.x + mMid_size.x, 0));
     ::set_position(mParts[3], vec(0, mEdge_size.y));
@@ -213,21 +224,21 @@ class box
   
   private void size_parts()
   {
-    set_scale(mParts[1], vec(mMid_size.x / get_size_tiles(mParts[1]).x, 1));
-    set_scale(mParts[3], vec(1, mMid_size.y / get_size_tiles(mParts[3]).y));
-    set_scale(mParts[4], vec(mMid_size.x / get_size_tiles(mParts[4]).x, mMid_size.y / get_size_tiles(mParts[4]).y));
-    set_scale(mParts[5], vec(1, mMid_size.y / get_size_tiles(mParts[5]).y));
-    set_scale(mParts[7], vec(mMid_size.x / get_size_tiles(mParts[7]).x, 1));
+    set_scale(mParts[1], vec(mMid_size.x / get_size(mParts[1]).x, 1));
+    set_scale(mParts[3], vec(1, mMid_size.y / get_size(mParts[3]).y));
+    set_scale(mParts[4], vec(mMid_size.x / get_size(mParts[4]).x, mMid_size.y / get_size(mParts[4]).y));
+    set_scale(mParts[5], vec(1, mMid_size.y / get_size(mParts[5]).y));
+    set_scale(mParts[7], vec(mMid_size.x / get_size(mParts[7]).x, 1));
   }
   
   private void update_parts()
   {
     mMid_size = mSize - (mEdge_size * 2);
-    position_parts(get_position());
+    position_parts();
     size_parts();
   }
   
-  private vec get_size_tiles(entity e)
+  private vec get_size(entity e)
   {
     return pixel(::get_size(e));
   }
@@ -237,6 +248,7 @@ class box
   private vec mSize;
   private vec mEdge_size;
   private vec mMid_size;
+  private vec mPos;
   
 }
 

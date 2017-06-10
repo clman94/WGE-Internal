@@ -3,25 +3,47 @@
 //i kinda don't want to do this...but stats
 #include "../scenes/backend/user_data.as"
 
+
+namespace pause
+{
+
+  namespace priv
+  {
+    bool pause_locked;
+    
+    [start]
+    void pause_on()
+    {
+      pause_locked = false;
+    }
+  }
+  
+  void lock(bool pLock)
+  {
+    yield();
+    pause::priv::pause_locked = pLock;
+  }
+  
+};
+
 [start]
 void check_pause() {
   
   do {
     
-    if(is_triggered("menu"))
+    if(!pause::priv::pause_locked && is_triggered("menu"))
       open_menu();
     
   } while(yield());
   
-}
-
+};
 
 const vec pause_menu_position = pixel(35, 27);
 const vec pause_option_size   = pixel(60, 20);
 
 void open_menu()
 {
-  array<string> pause_options = {"Stats", "Items"};
+  array<string> pause_options = {"Stats", "Items", "Gifts"};
   list_menu pause_menu (pause_options, pause_menu_position, 1, pause_option_size);
   
   player::lock(true);
@@ -47,6 +69,7 @@ void open_menu()
         pause_menu.show();
         break;
       
+      //inventory
       case 1:
         pause_menu.hide();
         open_inv();

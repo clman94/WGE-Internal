@@ -35,20 +35,18 @@ class list_menu
     
     update_size(pColumns);
     
-    if(pBox)    //                                     pemdas
+    if(pBox)
     {
-      dprint("Hello. I am here.");
-      dprint(vtos(mSize * pOp_size + border_padding * 2));
+      dprint(vtos(mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0)));
       dprint(vtos(mPosition));
-      mBox.make_box("bawks", mPosition - pixel(get_size(mCursor).x, 0), mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
+      mBox.make_box("bawks", mPosition, mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
+      dprint(vtos(mBox.get_size()));
     }
-    else
-      mBox = box();
     
     mCurrent_selection = 0;
     
     update_positions();
-    update_box();
+    //update_box();
   }
   
   ~list_menu()
@@ -161,12 +159,12 @@ class list_menu
     set_text(text, pText);
     set_anchor(text, anchor::topleft);
     
-    if(get_size(text).x > mOp_size.x)
-      mOp_size.x = get_size(text).x;
-    if(get_size(text).y > mOp_size.y)
-      mOp_size.y = get_size(text).y;
-    
-    update_box();
+    /*
+    if(pixel(get_size(text)).x > mOp_size.x)
+      mOp_size.x = pixel(get_size(text)).x;
+    if(pixel(get_size(text)).y > mOp_size.y)
+      mOp_size.y = pixel(get_size(text)).y;
+    */
     
     mOptions.insertAt(pIndex, text);
     make_gui(mOptions[pIndex], 1);
@@ -222,15 +220,17 @@ class list_menu
     {
       const vec pos_offset (mOp_size * vec(floor(i / mSize.y), i % mSize.y));
       const vec centering  (0, (mOp_size.y - pixel(get_size(mOptions[i])).y) / 4);
-      ::set_position(mOptions[i], mPosition + border_padding + pos_offset + centering);
+      ::set_position(mOptions[i], mPosition + pixel(get_size(mCursor).x, 0) + border_padding + pos_offset /*+ centering*/);
     }
     
     update_cursor();
   }
   
+  //TODO: look into the set_size funciton in boxes.as
   private void update_box()
   {
-    mBox.set_size(mSize * mOp_size + border_padding * 2);
+    if(mBox.is_valid())
+      mBox.set_size(mSize * mOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
   }
   
   private uint mCurrent_selection;

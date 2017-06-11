@@ -13,7 +13,7 @@ enum menu_command
 };
 
 //may change/make chaneable
-const vec border_padding = pixel(6, 6);
+const vec border_padding = pixel(8, 3);
 
 class list_menu
 {
@@ -30,23 +30,17 @@ class list_menu
     
     mPosition = pPosition;
     
-    for(uint i = 0; i < pOptions.length(); i++)
-      this.add_option(pOptions[i], i);
-    
-    update_size(pColumns);
+    mSize = vec(pColumns, 0);
     
     if(pBox)
-    {
-      dprint(vtos(mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0)));
-      dprint(vtos(mPosition));
       mBox.make_box("bawks", mPosition, mSize * pOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
-      dprint(vtos(mBox.get_size()));
-    }
+    
+    for(uint i = 0; i < pOptions.length(); i++)
+      this.add_option(pOptions[i], i);
     
     mCurrent_selection = 0;
     
     update_positions();
-    //update_box();
   }
   
   ~list_menu()
@@ -56,8 +50,8 @@ class list_menu
   
   //The 'main' function of the menu class
   //returns -1 if no selection has been made, -2 if the "back" control is triggered, or the selection number
-  //usage will probably look like this: `
-  //menu menuthing();
+  //usage will probably look like this:
+  //menu menuthing(things);
   //  //add stuff
   //do
   //{
@@ -159,15 +153,17 @@ class list_menu
     set_text(text, pText);
     set_anchor(text, anchor::topleft);
     
-    /*
+    mOptions.insertAt(pIndex, text);
+    make_gui(mOptions[pIndex], 1);
+    
+    update_size();
+    
     if(pixel(get_size(text)).x > mOp_size.x)
       mOp_size.x = pixel(get_size(text)).x;
     if(pixel(get_size(text)).y > mOp_size.y)
       mOp_size.y = pixel(get_size(text)).y;
-    */
     
-    mOptions.insertAt(pIndex, text);
-    make_gui(mOptions[pIndex], 1);
+    update_box();
   }
   
   //Removes an option
@@ -199,11 +195,11 @@ class list_menu
     update_positions();
   }
   
-  private void update_size(uint pColumns)
+  private void update_size()
   {
-    int y = int(ceil(mOptions.length() / pColumns));
+    int y = int(ceil(mOptions.length() / uint(mSize.x)));
     
-    int x = pColumns;
+    int x = uint(mSize.x);
     
     mSize = vec(x, y);
   }
@@ -219,7 +215,7 @@ class list_menu
     for(uint i = 0; i < mOptions.length(); i++)
     {
       const vec pos_offset (mOp_size * vec(floor(i / mSize.y), i % mSize.y));
-      const vec centering  (0, (mOp_size.y - pixel(get_size(mOptions[i])).y) / 4);
+      const vec centering  (0, (mOp_size.y - pixel(get_size(mOptions[i])).y) / 2);
       ::set_position(mOptions[i], mPosition + pixel(get_size(mCursor).x, 0) + border_padding + pos_offset + centering);
     }
     
@@ -230,7 +226,7 @@ class list_menu
   private void update_box()
   {
     if(mBox.is_valid())
-      mBox.set_size(mSize * mOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0));
+      mBox.set_size(mSize * mOp_size + border_padding * 2 + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);
   }
   
   private uint mCurrent_selection;

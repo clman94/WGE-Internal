@@ -39,7 +39,7 @@ void check_pause() {
 };
 
 const vec pause_menu_position = pixel(35, 27);
-const vec pause_option_size   = pixel(60, 20);
+const vec pause_option_size   = pixel(20, 20);
 
 void open_menu()
 {
@@ -124,7 +124,7 @@ void open_inv()
     inv_sprites[i] = add_entity(info[0], info[1]);
   }
   
-  list_menu inv ((inv_list.length() != 0 ? inv_list : array<string> = {"Empty", "Like", "Your", "Soul"}), pause_menu_position, 1, pause_option_size + pixel(26, 0));
+  list_menu inv ((inv_list.length() != 0 ? inv_list : array<string> = {"Empty", "Like", "Your", "Soul"}), pause_menu_position, 1, pause_option_size);
   
   if(inv_list.length() == 0)
     inv.hide_cursor();
@@ -149,5 +149,10 @@ void open_inv()
     }
     
   } while(yield() && !exit);
+}
+
+void open_gifts()
+{
+  //Similar to inventory list, but display a sprite next to each, and have more specialized functions (possibly not defined here)
 }
 

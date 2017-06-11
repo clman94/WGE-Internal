@@ -41,7 +41,7 @@ Actually making the box
 [3][4][5]
 [6][7][8]
 ********/
- 
+
 class box
 {
   
@@ -138,18 +138,23 @@ class box
     update_parts();
   }
   
+  vec get_border_size()
+  {
+    return mEdge_size;
+  }
+  
   void show()
   {
     for(int i = 0; i < 9; i++)
       set_visible(mParts[i], true);
   }
-   
+  
   void hide()
   {
     for(int i = 0; i < 9; i++)
       set_visible(mParts[i], false);
   }
-   
+  
   void remove()
   {
     for(int i = 0; i <9; i++)
@@ -216,14 +221,17 @@ class box
     ::set_position(mParts[2], vec(mEdge_size.x + mMid_size.x, 0));
     ::set_position(mParts[3], vec(0, mEdge_size.y));
     ::set_position(mParts[4], mEdge_size);                               //not so mmmmmmm
-    ::set_position(mParts[5], vec(mSize.x - mEdge_size.x, mEdge_size.y));
-    ::set_position(mParts[6], vec(0, mSize.y - mEdge_size.y));
-    ::set_position(mParts[7], vec(mEdge_size.x, mSize.y - mEdge_size.y));
-    ::set_position(mParts[8], mSize - mEdge_size);
+    ::set_position(mParts[5], vec(mEdge_size.x + mMid_size.x, mEdge_size.y));
+    ::set_position(mParts[6], vec(0, mEdge_size.y + mMid_size.y));
+    ::set_position(mParts[7], vec(mEdge_size.x, mEdge_size.y + mMid_size.y));
+    ::set_position(mParts[8], mEdge_size + mMid_size);
   }
   
   private void size_parts()
   {
+    //reset scales
+    for(uint i = 0; i < 9; i++)
+      set_scale(mParts[i], vec(1, 1));
     set_scale(mParts[1], vec(mMid_size.x / get_size(mParts[1]).x, 1));
     set_scale(mParts[3], vec(1, mMid_size.y / get_size(mParts[3]).y));
     set_scale(mParts[4], vec(mMid_size.x / get_size(mParts[4]).x, mMid_size.y / get_size(mParts[4]).y));

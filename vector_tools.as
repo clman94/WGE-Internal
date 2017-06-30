@@ -14,6 +14,18 @@ vec pixel(const vec&in pVec)
 	return pVec/32;
 }
 
+/// Convert in-game coordinate to pixel coordinates
+vec unpixel(float pX = 0, float pY = 0)
+{
+  return vec(pX, pY) * 32;
+}
+
+/// Convert in-game coordinate to pixel coordinates
+vec unpixel(const vec&in pVec)
+{
+  return pVec * 32;
+}
+
 /// Convenience function for moving a vector towards another at a specific speed.
 vec move_towards(const vec&in pTarget, const vec&in pFollower, float pSpeed = 1)
 {

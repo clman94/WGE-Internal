@@ -21,6 +21,7 @@ class menu
   menu() {}
   
   //pVertical determines whether columns or rows are prioritized when arranging the menu, and also some size priority
+  //TODO: ^doesn't quite work (look at tick() and update_size() for issues)
   menu(array<menu_item@> pOptions, vec pPosition, vec pOp_padding, bool pBox = true, bool pVertical = true, uint pCount = 1)
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
@@ -36,7 +37,8 @@ class menu
     mOp_size = vec(0, 0);
     mOp_padding = pOp_padding;
     
-    mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
+    if(pBox)
+      mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
     
     for(uint i = 0; i < pOptions.length(); i++)
       this.add_option(pOptions[i], i);

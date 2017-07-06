@@ -22,6 +22,10 @@ class menu
   
   //pVertical determines whether columns or rows are prioritized when arranging the menu, and also some size priority
   //TODO: ^doesn't quite work (look at tick() and update_size() for issues)
+  
+  // In the future avoid having long constructor definitions.
+  // Split each parameter up into separate set/get functions for extended flexibility
+  // and readability.
   menu(array<menu_item@> pOptions, vec pPosition, vec pOp_padding, bool pBox = true, bool pVertical = true, uint pCount = 1)
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
@@ -41,7 +45,7 @@ class menu
       mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
     
     for(uint i = 0; i < pOptions.length(); i++)
-      this.add_option(pOptions[i], i);
+      insert_option(pOptions[i], i);
     
     mCurrent_selection = 0;
     
@@ -146,13 +150,18 @@ class menu
     if(mCursor.is_valid())
       remove_entity(mCursor);
     
-    mBox.remove();
+    mBox.hide();
     
     while(mOptions.length != 0)
       mOptions.removeLast();
   }
   
-  void add_option(menu_item@ pItem, uint pIndex = mOptions.length())
+  void add_option(menu_item@ pItem)
+  {
+    insert_option(pItem, mOptions.length());
+  }
+  
+  void insert_option(menu_item@ pItem, uint pIndex)
   {
     mOptions.insertAt(pIndex, pItem);
     
@@ -200,7 +209,7 @@ class menu
     mPosition = pPosition;
   }
   
-  vec get_position()
+  vec get_position() const
   {
     return mPosition;
   }
@@ -208,21 +217,9 @@ class menu
   private void update_size()
   {
     if(mVertical)
-    {
-      int y = int(ceil(mOptions.length() / uint(mSize.x)));
-      
-      int x = uint(mSize.x);
-      
-      mSize = vec(x, y);
-    }
+      mSize.y = ceil(float(mOptions.length()) / mSize.x);
     else
-    {
-      int x = int(ceil(mOptions.length() / uint(mSize.y)));
-      
-      int y = uint(mSize.y);
-      
-      mSize = vec(x, y);
-    }
+      mSize.x = ceil(float(mOptions.length()) / mSize.y);
   }
   
   private void update_cursor()
@@ -264,14 +261,13 @@ class menu
 //generic menu item thing, implement it to create a new 'menu type' (generally) (ish) - see text_entry and sprite_entry below
 interface menu_item
 {
-  bool is_valid();
+  bool is_valid() const;
   
-  vec get_size();
+  vec get_size() const;
   
   void set_visible(bool);
   
-  vec get_position();
-  
+  vec get_position() const;
   void set_position(vec);
   
   void remove();
@@ -293,15 +289,15 @@ class text_entry : menu_item
   
   ~text_entry()
   {
-    this.remove();
+    remove();
   }
   
-  bool is_valid()
+  bool is_valid() const
   {
     return mText.is_valid();
   }
   
-  vec get_size()
+  vec get_size() const
   {
     return ::get_size(mText);
   }
@@ -311,7 +307,7 @@ class text_entry : menu_item
     ::set_visible(mText, pVisible);
   }
   
-  vec get_position()
+  vec get_position() const
   {
     return ::get_position(mText);
   }
@@ -364,15 +360,15 @@ class text_sprite_entry : menu_item
   
   ~text_sprite_entry()
   {
-    this.remove();
+    remove();
   }
   
-  bool is_valid()
+  bool is_valid() const
   {
     return mText.is_valid() && mSprite.is_valid();
   }
   
-  vec get_size()
+  vec get_size() const
   {
     const vec t_size = ::get_size(mText);
     const vec s_size = ::get_size(mSprite);
@@ -385,7 +381,7 @@ class text_sprite_entry : menu_item
     ::set_visible(mSprite, pVisible);
   }
   
-  vec get_position()
+  vec get_position() const
   {
     return ::get_position(mSprite);
   }

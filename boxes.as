@@ -48,32 +48,9 @@ class box
   box() {}
   
   //pSymmetric doesn't do anything yet
-  box(string pTexture, vec pPos, vec pSize, bool pSymmetric = false)
+  box(const string&in pTexture, vec pPos, vec pSize, bool pSymmetric = false)
   {
-    mSize = pSize;
-    
-    prepare_parts(pTexture, pSymmetric);
-    
-    //this is used for resizing if/when necessary
-    //edge_size is the size of the sides of the edge pieces which don't change
-    mEdge_size = get_size(mParts[0]);
-    
-    //mid_size is the sides which do change
-    mMid_size = mSize - (mEdge_size * 2);
-    size_parts();
-    
-    mPos = pPos;
-    
-    for(int i = 0; i < 9; i++)
-    {
-      set_anchor(mParts[i], anchor::topleft);
-      
-      //because no safeguards
-      if(i != 0)
-        add_child(mParts[0], mParts[i]);
-    }
-    
-    position_parts();
+    make_box(pTexture, pPos, pSize, pSymmetric);
   }
   
   ~box()
@@ -81,7 +58,7 @@ class box
     this.remove();
   }
   
-  void make_box(string pTexture, vec pPos, vec pSize, bool pSymmetric = false)
+  void make_box(const string&in pTexture, vec pPos, vec pSize, bool pSymmetric = false)
   {
     mSize = pSize;
     
@@ -91,8 +68,6 @@ class box
     //edge_size is the size of the sides of the edge pieces which don't change
     mEdge_size = get_size(mParts[0]);
     
-    //mid_size is the sides which do change
-    mMid_size = mSize - (mEdge_size * 2);
     size_parts();
     
     mPos = pPos;
@@ -109,15 +84,15 @@ class box
     position_parts();
   }
   
-  bool is_valid()
+  bool is_valid() const
   {
-    for(int i = 0; i < 9; i++)
+    for(uint i = 0; i < mParts.length(); i++)
       if(!mParts[i].is_valid())
         return false;
     return true;
   }
   
-  vec get_position()
+  vec get_position() const
   {
     return mPos;
   }
@@ -127,7 +102,7 @@ class box
     ::set_position(mParts[0], pPosition);
   }
   
-  vec get_size(bool pIn_pixels = false)
+  vec get_size(bool pIn_pixels = false) const
   {
     return (pIn_pixels ? mSize * 32 : mSize);
   }
@@ -145,19 +120,25 @@ class box
   
   void show()
   {
-    for(int i = 0; i < 9; i++)
+    for(uint i = 0; i < mParts.length(); i++)
+    {
       set_visible(mParts[i], true);
+    }
   }
   
   void hide()
   {
-    for(int i = 0; i < 9; i++)
+    for(uint i = 0; i < mParts.length(); i++)
       set_visible(mParts[i], false);
   }
   
-  void remove()
+  // This will leave the box in an invalid state.
+  // hide() should be called instead.
+  // Let the destructor do the clean-up, the engine
+  // is very good about handling invisible entities.
+  private void remove()
   {
-    for(int i = 0; i <9; i++)
+    for(uint i = 0; i < mParts.length(); i++)
       if(mParts[i].is_valid())
         remove_entity(mParts[i]);
   }
@@ -216,32 +197,35 @@ class box
   
   private void position_parts()
   {
+    const vec mid_size(mSize - (mEdge_size * 2));
     ::set_position(mParts[0], mPos);
     ::set_position(mParts[1], vec(mEdge_size.x, 0));
-    ::set_position(mParts[2], vec(mEdge_size.x + mMid_size.x, 0));
+    ::set_position(mParts[2], vec(mEdge_size.x + mid_size.x, 0));
     ::set_position(mParts[3], vec(0, mEdge_size.y));
     ::set_position(mParts[4], mEdge_size);                               //not so mmmmmmm
-    ::set_position(mParts[5], vec(mEdge_size.x + mMid_size.x, mEdge_size.y));
-    ::set_position(mParts[6], vec(0, mEdge_size.y + mMid_size.y));
-    ::set_position(mParts[7], vec(mEdge_size.x, mEdge_size.y + mMid_size.y));
-    ::set_position(mParts[8], mEdge_size + mMid_size);
+    ::set_position(mParts[5], vec(mEdge_size.x + mid_size.x, mEdge_size.y));
+    ::set_position(mParts[6], vec(0, mEdge_size.y + mid_size.y));
+    ::set_position(mParts[7], vec(mEdge_size.x, mEdge_size.y + mid_size.y));
+    ::set_position(mParts[8], mEdge_size + mid_size);
   }
   
   private void size_parts()
   {
+    const vec mid_size(mSize - (mEdge_size * 2));
+    
     //reset scales
     for(uint i = 0; i < 9; i++)
       set_scale(mParts[i], vec(1, 1));
-    set_scale(mParts[1], vec(mMid_size.x / get_size(mParts[1]).x, 1));
-    set_scale(mParts[3], vec(1, mMid_size.y / get_size(mParts[3]).y));
-    set_scale(mParts[4], vec(mMid_size.x / get_size(mParts[4]).x, mMid_size.y / get_size(mParts[4]).y));
-    set_scale(mParts[5], vec(1, mMid_size.y / get_size(mParts[5]).y));
-    set_scale(mParts[7], vec(mMid_size.x / get_size(mParts[7]).x, 1));
+      
+    set_scale(mParts[1], vec(mid_size.x / get_size(mParts[1]).x, 1));
+    set_scale(mParts[3], vec(1, mid_size.y / get_size(mParts[3]).y));
+    set_scale(mParts[4], vec(mid_size.x / get_size(mParts[4]).x, mid_size.y / get_size(mParts[4]).y));
+    set_scale(mParts[5], vec(1, mid_size.y / get_size(mParts[5]).y));
+    set_scale(mParts[7], vec(mid_size.x / get_size(mParts[7]).x, 1));
   }
   
   private void update_parts()
   {
-    mMid_size = mSize - (mEdge_size * 2);
     position_parts();
     size_parts();
   }
@@ -255,7 +239,6 @@ class box
   
   private vec mSize;
   private vec mEdge_size;
-  private vec mMid_size;
   private vec mPos;
   
 }

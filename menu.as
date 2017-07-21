@@ -232,7 +232,7 @@ class menu
     for(uint i = 0; i < mOptions.length(); i++)
     {
       const vec pos_offset (mOp_size * (mVertical ? vec(floor(i / mSize.y), i % mSize.y) : vec(i % mSize.y, floor(i / mSize.y))));
-      const vec centering = mOp_padding;
+      const vec centering = mOp_padding * 1.5; //something's not quite right here
       mOptions[i].set_position(mPosition + pixel(get_size(mCursor).x, 0) + pos_offset + centering);
     }
     update_cursor();
@@ -319,7 +319,8 @@ class text_entry : menu_item
   
   void remove()
   {
-    remove_entity(mText);
+    if(mText.is_valid())
+      remove_entity(mText);
   }
   
   entity opConv()
@@ -340,9 +341,14 @@ class text_sprite_entry : menu_item
     mText = add_text();
     set_text(mText, pText);
     set_anchor(mText, anchor::topleft);
+    make_gui(mText, 1);
     
     mSprite = pSprite;
     set_anchor(mSprite, anchor::topleft);
+    make_gui(mSprite, 1);
+    
+    add_child(mSprite, mText);
+    ::set_position(mText, vec(pixel(::get_size(mSprite)).x, (pixel(::get_size(mSprite)).y - pixel(::get_size(mText)).y) / 2));
   }
   
   text_sprite_entry(string pText, string pTexture, string pAtlas = "default:default")
@@ -350,12 +356,14 @@ class text_sprite_entry : menu_item
     mText = add_text();
     set_text(mText, pText);
     set_anchor(mText, anchor::topleft);
+    make_gui(mText, 1);
     
     mSprite = add_entity(pTexture, pAtlas);
     set_anchor(mSprite, anchor::topleft);
+    make_gui(mSprite, 1);
     
-    add_child(mText, mSprite);
-    ::set_position(mSprite, vec(pixel(::get_size(mSprite)).x, (pixel(::get_size(mSprite)).y - pixel(::get_size(mText)).y) / 2));
+    add_child(mSprite, mText);
+    ::set_position(mText, vec(pixel(::get_size(mSprite)).x, (pixel(::get_size(mSprite)).y - pixel(::get_size(mText)).y) / 2));
   }
   
   ~text_sprite_entry()
@@ -372,7 +380,7 @@ class text_sprite_entry : menu_item
   {
     const vec t_size = ::get_size(mText);
     const vec s_size = ::get_size(mSprite);
-    return vec(t_size.y > s_size.y ? t_size.y : s_size.y, t_size.x + s_size.x);
+    return vec(t_size.x + s_size.x, (t_size.y > s_size.y ? t_size.y : s_size.y));
   }
   
   void set_visible(bool pVisible)
@@ -393,14 +401,14 @@ class text_sprite_entry : menu_item
   
   void remove()
   {
-    remove_entity(mText);
-    remove_entity(mSprite);
+    if(mText.is_valid())
+      remove_entity(mText);
+    if(mSprite.is_valid())
+      remove_entity(mSprite);
   }
   
   entity opConv()
   {
-    //bad programming 101:
-    //return (random(0,1) == 1 ? mSprite : mText);
     return mText;
   }
   

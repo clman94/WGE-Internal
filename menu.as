@@ -26,23 +26,25 @@ class menu
   // In the future avoid having long constructor definitions.
   // Split each parameter up into separate set/get functions for extended flexibility
   // and readability.
-  menu(array<menu_item@> pOptions, vec pPosition, vec pOp_padding, bool pBox = true, bool pVertical = true, uint pCount = 1)
+  menu(array<menu_item@> pOptions, vec pPosition, vec pOp_padding, vec pSize, bool pBox = true, bool pVertical = true)
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
-    set_anchor(mCursor, anchor::topright);
+    set_anchor(mCursor, anchor::right);
     make_gui(mCursor, 1);
     
     mPosition = pPosition;
     
     mVertical = pVertical;
     
-    mSize = (pVertical ? vec(pCount, 0) : vec(0, pCount));
+    mSize = pSize;
     
     mOp_size = vec(0, 0);
     mOp_padding = pOp_padding;
     
-    if(pBox)
-      mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
+    mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
+    
+    if(!pBox)
+      hide_box();
     
     for(uint i = 0; i < pOptions.length(); i++)
       insert_option(pOptions[i], i);
@@ -119,6 +121,21 @@ class menu
   void hide()
   {
     this.set_visible(false);
+  }
+  
+  void show_box()
+  {
+    mBox.show();
+  }
+  
+  void hide_box()
+  {
+    mBox.hide();
+  }
+  
+  void set_vertical(bool pVertical)
+  {
+    mVertical = pVertical;
   }
   
   array<menu_item@> get_options()
@@ -232,7 +249,7 @@ class menu
     for(uint i = 0; i < mOptions.length(); i++)
     {
       const vec pos_offset (mOp_size * (mVertical ? vec(floor(i / mSize.y), i % mSize.y) : vec(i % mSize.y, floor(i / mSize.y))));
-      const vec centering = mOp_padding * 1.5; //something's not quite right here
+      const vec centering = mOp_padding * 2;
       mOptions[i].set_position(mPosition + pixel(get_size(mCursor).x, 0) + pos_offset + centering);
     }
     update_cursor();
@@ -283,7 +300,7 @@ class text_entry : menu_item
   {
     mText = add_text();
     set_text(mText, pText);
-    set_anchor(mText, anchor::topleft);
+    set_anchor(mText, anchor::left);
     make_gui(mText, 1);
   }
   
@@ -340,30 +357,30 @@ class text_sprite_entry : menu_item
   {
     mText = add_text();
     set_text(mText, pText);
-    set_anchor(mText, anchor::topleft);
+    set_anchor(mText, anchor::left);
     make_gui(mText, 1);
     
     mSprite = pSprite;
-    set_anchor(mSprite, anchor::topleft);
+    set_anchor(mSprite, anchor::left);
     make_gui(mSprite, 1);
     
     add_child(mSprite, mText);
-    ::set_position(mText, vec(pixel(::get_size(mSprite)).x, (pixel(::get_size(mSprite)).y - pixel(::get_size(mText)).y) / 2));
+    ::set_position(mText, pixel(::get_size(mSprite)) * vec(1, 0));
   }
   
   text_sprite_entry(string pText, string pTexture, string pAtlas = "default:default")
   {
     mText = add_text();
     set_text(mText, pText);
-    set_anchor(mText, anchor::topleft);
+    set_anchor(mText, anchor::left);
     make_gui(mText, 1);
     
     mSprite = add_entity(pTexture, pAtlas);
-    set_anchor(mSprite, anchor::topleft);
+    set_anchor(mSprite, anchor::left);
     make_gui(mSprite, 1);
     
     add_child(mSprite, mText);
-    ::set_position(mText, vec(pixel(::get_size(mSprite)).x, (pixel(::get_size(mSprite)).y - pixel(::get_size(mText)).y) / 2));
+    ::set_position(mText, pixel(::get_size(mSprite)) * vec(1, 0));
   }
   
   ~text_sprite_entry()

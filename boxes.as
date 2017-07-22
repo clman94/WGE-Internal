@@ -29,10 +29,6 @@ If you're feeling a bit lazy, call it with pSymmetric = true (doesn't work yet)
 
 Actually making the box
 
-  - If you want some sort of fancy pattern to your box, you probably want to use make_box_tiled,
-    as make_box will stretch the textures used. This will be more performance-costly, however.
-    - don't do this I havent implemented a way to do this yet
-
   - Position is from the top-right corner and the size should be in game/tile units (use the pixel funtion)
  *****************************************************************************************/
 

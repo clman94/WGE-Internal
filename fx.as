@@ -7,9 +7,9 @@ namespace fx
 	/// \{
 
 	/// Play sound.
-	int sound(const string&in pName, float pVolume = 100, float pPitch = 1)
+	void sound(const string&in pName, float pVolume = 100, float pPitch = 1)
 	{
-		return _spawn_sound(pName, pVolume, pPitch);
+    _spawn_sound(pName, pVolume, pPitch);
 	}
 	
 	/// Stop all sound effects that might be playing.

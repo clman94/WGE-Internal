@@ -62,14 +62,14 @@ namespace priv
 			- vec(0, 5))); // 5px margin from 
 		if (expression.is_valid())
 		{
-			_dialog_set_wordwrap(main_text, 20);
+			_dialog_set_wordwrap(main_text, 20); // Readjust wordwrap to fit
 			vec size = get_size(narrative::priv::expression);
 			set_position(narrative::priv::main_text, get_position(box)
 				+ pixel(size.x + get_position(narrative::priv::expression).x, 10));
 		}
 		else
 		{
-			_dialog_set_wordwrap(main_text, 30);
+			_dialog_set_wordwrap(main_text, 30); // Readjust wordwrap to fit
 			set_position(main_text, get_position(box)
 				+ pixel(10, 10)); // 10px margin
 		}
@@ -95,7 +95,7 @@ namespace priv
 	void play_sound_effect()
 	{
 		if (narrative::priv::randomized_dialog_sound)
-			fx::sound(narrative::priv::current_dialog_sound, 100, random(90, 110)*0.01);
+			fx::sound(narrative::priv::current_dialog_sound, 1, random(90, 110)*0.01);
 		else
 			fx::sound(narrative::priv::current_dialog_sound);
 	}

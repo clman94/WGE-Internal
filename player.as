@@ -17,5 +17,6 @@ namespace player
 	{
 		return _get_player_locked();
 	}
+  
 	/// \}
 }

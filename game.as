@@ -2,6 +2,5 @@
 /// \weakgroup Game
 /// \{
 
-// Nothing here anymore....
-
+class threaded{};
 /// \}

@@ -43,8 +43,13 @@ namespace fx
 	}
 		
 	/// Fade in to scene
-	void fade_in(float pSeconds = 1)
+	void fade_in(float pSeconds)
 	{
+		if (pSeconds <= 0)
+		{
+			eprint("Seconds <= 0");
+			return;
+		}
 		const float speed = 255.f / pSeconds;
 		float i = 255;
 		float timer = 0;
@@ -58,10 +63,26 @@ namespace fx
 		}
 		set_overlay_opacity(0);
 	}
+	
+	void fade_in(float pSeconds, threaded)
+	{
+		create_thread(
+		function(pArgs)
+		{
+			const float pSeconds = float(pArgs["pSeconds"]);
+			fade_in(pSeconds);
+		}, dictionary = {
+			{"pSeconds", pSeconds}});
+	}
 
 	/// Fade out from scene
-	void fade_out(float pSeconds = 1)
+	void fade_out(float pSeconds)
 	{
+		if (pSeconds <= 0)
+		{
+			eprint("Seconds <= 0");
+			return;
+		}
 		const float speed = 255.f / pSeconds;
 		float i = 0;
 		float timer = 0;
@@ -74,6 +95,17 @@ namespace fx
 			yield();
 		}
 		set_overlay_opacity(255);
+	}
+	
+	void fade_out(float pSeconds, threaded)
+	{
+			create_thread(
+			function(pArgs)
+			{
+				const float pSeconds = float(pArgs["pSeconds"]);
+				fade_out(pSeconds);
+			}, dictionary = {
+				{"pSeconds", pSeconds}});
 	}
 
 	/// Slowly decrease the opacity of the entity to

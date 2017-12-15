@@ -125,7 +125,7 @@ namespace music
 	
 	/// Set volume of music.
 	/// \param pVolume A value from 0-100.
-	void volume(float pVolume)
+	void set_volume(float pVolume)
 	{
 		_music_set_volume(pVolume);
 	}

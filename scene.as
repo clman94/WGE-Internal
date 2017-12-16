@@ -16,6 +16,7 @@
 #include "focus.as"
 #include "collision.as"
 #include "menu.as"
+#include "thread.as"
 #include "../scenes/_global.as"
 
 [start]

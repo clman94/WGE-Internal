@@ -120,7 +120,6 @@ direction get_direction(entity pEntity)
 	return direction(_get_direction(pEntity));
 }
 
-
 /// Move entity to (pTo) position in (pSeconds) seconds
 void move(entity pEntity, vec pTo, float pSeconds)
 {
@@ -147,6 +146,22 @@ void move(entity pEntity, vec pTo, float pSeconds)
 	set_position(pEntity, initual_position + (velocity*pSeconds)); // Ensure position
 	if (is_character(pEntity))
 		animation::stop(pEntity);
+}
+
+void move(entity pEntity, vec pTo, float pSeconds, thread@ pThread)
+{
+	pThread.thread_start();
+	
+	create_thread(
+	function(pArgs)
+	{
+		move(entity(pArgs["pEntity"]), vec(pArgs["pTo"]), float(pArgs["pSeconds"]));
+		cast<thread@>(pArgs["pThread"]).thread_end();
+	}, dictionary = {
+		{"pEntity", pEntity},
+		{"pTo", pTo},
+		{"pSeconds", pSeconds},
+		{"pThread", pThread}});
 }
 
 /// Move an entity to a position at a constant speed.

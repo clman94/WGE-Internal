@@ -2,5 +2,4 @@
 /// \weakgroup Game
 /// \{
 
-class threaded{};
 /// \}

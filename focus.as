@@ -30,7 +30,6 @@ void move(entity pEntity, vec pTo, speed pSpeed)
 /// Move in a direction at x distance in y seconds
 void move(direction pDirection, float pDistance, float pSeconds)
 {
-	
 	vec velocity;
 	
 	switch(pDirection)

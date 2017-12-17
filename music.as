@@ -88,26 +88,31 @@ namespace music
 	/// Fade the current volume to a new volume
 	void fade_volume(float pVolume, float pSeconds)
 	{
+		const float velocity = (pVolume - _music_get_volume())/pSeconds;
+		float timer = 0;
+		while(timer < pSeconds)
+		{
+			const float delta = get_delta();
+			timer += delta;
+			_music_set_volume(_music_get_volume() + (velocity*delta));
+			yield();
+		}
+		_music_set_volume(pVolume);
+	}
+	
+	void fade_volume(float pVolume, float pSeconds, thread@ pThread)
+	{
+		pThread.thread_start();
+		
 		create_thread(
 			function(pArgs)
 			{
-				const float pSeconds = float(pArgs["pSeconds"]);
-				const float pVolume  =  float(pArgs["pVolume"]);
-				
-				const float velocity = (pVolume - _music_get_volume())/pSeconds;
-				float timer = 0;
-				while(timer < pSeconds)
-				{
-					const float delta = get_delta();
-					timer += delta;
-					_music_set_volume(_music_get_volume() + (velocity*delta));
-					yield();
-				}
-				_music_set_volume(pVolume);
-		},
-		dictionary = {
-			{"pSeconds", pSeconds},
-			{"pVolume" , pVolume }});
+				fade_volume(float(pArgs["pVolume"]), float(pArgs["pSeconds"]));
+				cast<thread@>(pArgs["pThread"]).thread_end();
+			}, dictionary = {
+				{"pVolume", pVolume},
+				{"pSeconds", pSeconds},
+				{"pThread", pThread}});
 	}
 	
 	/// Is the song playing?
@@ -124,10 +129,15 @@ namespace music
 	}
 	
 	/// Set volume of music.
-	/// \param pVolume A value from 0-100.
+	/// \param pVolume A value from 0-1.
 	void set_volume(float pVolume)
 	{
 		_music_set_volume(pVolume);
+	}
+	
+	float get_volume()
+	{
+		return _music_get_volume();
 	}
 	
 	/// Get duration of music in seconds.

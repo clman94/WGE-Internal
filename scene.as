@@ -19,16 +19,29 @@
 #include "thread.as"
 #include "../scenes/_global.as"
 
+namespace priv_scene
+{
+	float previous_volume = 1;
+}
+
 [start]
 void __fadein__()
 {
-	fx::fade_in(0.5);
+	music::fade_volume(priv_scene::previous_volume, 0.5, thread());
+	fx::fade_in(0.5, thread());
 }
 
 [door]
 void __door__(const string&in scene, const string&in door)
 {
 	player::lock(true);
-	fx::fade_out(0.5);
+	
+	priv_scene::previous_volume = music::get_volume();
+	
+	thread thread_fadeout;
+	fx::fade_out(0.5, thread_fadeout);
+	music::fade_volume(0, 0.5, thread_fadeout);
+	thread_fadeout.wait();
+	
 	load_scene(scene, door);
 }

@@ -12,10 +12,7 @@ enum type
 
 box create(vec pPosition, vec pSize)
 {
-  box new_box = _create_box(int(type::wall));
-  set_size(new_box, pSize);
-  set_position(new_box, pPosition);
-  return new_box;
+  return create(type::wall, pPosition, pSize);
 }
 
 box create(type pType, vec pPosition, vec pSize)

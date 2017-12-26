@@ -154,6 +154,14 @@ void fade_in(entity pEntity, float pSeconds)
 	set_color(pEntity, 255, 255, 255, 255);
 }
 
+void scene_fade_out()
+{
+	thread thread_fadeout;
+	fx::fade_out(0.5, thread_fadeout);
+	music::fade_volume(0, 0.5, thread_fadeout);
+	thread_fadeout.wait();
+}
+
 /// \}
 
 }

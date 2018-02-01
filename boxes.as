@@ -116,16 +116,18 @@ class box
   
   void show()
   {
-    for(uint i = 0; i < mParts.length(); i++)
-    {
-      set_visible(mParts[i], true);
-    }
+    set_visible(true);
   }
   
   void hide()
   {
+    set_visible(false);
+  }
+  
+  void set_visible(bool pVisible)
+  {
     for(uint i = 0; i < mParts.length(); i++)
-      set_visible(mParts[i], false);
+      ::set_visible(mParts[i], pVisible);
   }
   
   // This will leave the box in an invalid state.

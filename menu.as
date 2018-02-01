@@ -20,13 +20,7 @@ class menu
 {
   menu() {}
   
-  //pVertical determines whether columns or rows are prioritized when arranging the menu, and also some size priority
-  //TODO: ^doesn't quite work (look at tick() and update_size() for issues)
-  
-  // In the future avoid having long constructor definitions.
-  // Split each parameter up into separate set/get functions for extended flexibility
-  // and readability.
-  menu(array<menu_item@> pOptions, vec pPosition, vec pOp_padding, vec pSize, bool pBox = true, bool pVertical = true)
+  menu(vec pPosition, vec pSize = vec(0, 0))
   {
     mCursor = add_entity("NarrativeBox", "SelectCursor");
     set_anchor(mCursor, anchor::right);
@@ -34,24 +28,20 @@ class menu
     
     mPosition = pPosition;
     
-    mVertical = pVertical;
-    
     mSize = pSize;
     
+    mVertical = true;
+    
     mOp_size = vec(0, 0);
-    mOp_padding = pOp_padding;
+    mOp_padding = vec(0, 0);
     
-    mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);    
+    mBox.make_box("bawks", mPosition - mBox.get_border_size(), mOp_size * mSize + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);
     
-    if(!pBox)
-      hide_box();
-    
-    for(uint i = 0; i < pOptions.length(); i++)
-      insert_option(pOptions[i], i);
+    mBox.set_visible(false);
     
     mCurrent_selection = 0;
     
-    update_positions();
+    update_visuals();
   }
   
   ~menu()
@@ -86,7 +76,7 @@ class menu
     if(is_triggered("select_right") && floor(mCurrent_selection / mSize.y) != mSize.x - 1 && mOptions[mCurrent_selection + int(mSize.y)].is_valid())
       mCurrent_selection += int(mSize.y);
     
-    update_positions();
+    update_visuals();
     
     if(is_triggered("activate"))
       return mCurrent_selection;
@@ -173,12 +163,18 @@ class menu
       mOptions.removeLast();
   }
   
-  void add_option(menu_item@ pItem)
+  void add(menu_item@ pItem)
   {
-    insert_option(pItem, mOptions.length());
+    insert(pItem, mOptions.length());
   }
   
-  void insert_option(menu_item@ pItem, uint pIndex)
+  void add(array<menu_item@> pItems)
+  {
+    for(uint i = 0; i < pItems.length(); i++)
+      add(pItems[i]);
+  }
+  
+  void insert(menu_item@ pItem, uint pIndex)
   {
     mOptions.insertAt(pIndex, pItem);
     
@@ -192,7 +188,7 @@ class menu
     update_box();
   }
   
-  void remove_option(uint pIndex)
+  void remove(uint pIndex)
   {
     if(pIndex < mOptions.length())
       mOptions.removeAt(pIndex);
@@ -216,6 +212,12 @@ class menu
     mOptions.removeRange(0, mOptions.length());
   }
   
+  void set_padding(vec pPadding)
+  {
+    mOp_padding = pPadding;
+    update_visuals();
+  }
+  
   void set_size(vec pSize)
   {
     mSize = pSize;
@@ -224,11 +226,17 @@ class menu
   void set_position(vec pPosition)
   {
     mPosition = pPosition;
+    update_visuals();
   }
   
   vec get_position() const
   {
     return mPosition;
+  }
+  
+  void show_box(bool pShow)
+  {
+    mBox.set_visible(pShow);
   }
   
   private void update_size()
@@ -241,24 +249,26 @@ class menu
   
   private void update_cursor()
   {
-    ::set_position(mCursor, mOptions[mCurrent_selection].get_position());
+    if(mOptions.length() != 0)
+      ::set_position(mCursor, mOptions[mCurrent_selection].get_position());
   }
   
-  private void update_positions()
+  private void update_visuals()
   {
     for(uint i = 0; i < mOptions.length(); i++)
     {
       const vec pos_offset (mOp_size * (mVertical ? vec(floor(i / mSize.y), i % mSize.y) : vec(i % mSize.y, floor(i / mSize.y))));
-      const vec centering = mOp_padding * 2;
-      mOptions[i].set_position(mPosition + pixel(get_size(mCursor).x, 0) + pos_offset + centering);
+      const vec centering = mOp_padding;
+      mOptions[i].set_position(mPosition + pixel(get_size(mCursor).x, 0) + pos_offset * 2 + centering);
     }
     update_cursor();
+    update_box();
   }
   
   private void update_box()
   {
-    if(mBox.is_valid())
-      mBox.set_size(mSize * mOp_size + pixel(get_size(mCursor).x, 0) + mOp_padding / 2 + mBox.get_border_size() * 2);
+    mBox.set_size(mSize * (mOp_size + mOp_padding * 2) + pixel(get_size(mCursor).x, 0) + mBox.get_border_size() * 2);
+    mBox.set_position(mPosition - mOp_padding);
   }
   
   private uint mCurrent_selection;
@@ -272,6 +282,7 @@ class menu
   private array<menu_item@> mOptions;
   
   private entity mCursor;
+  
   private box mBox;
 }
 

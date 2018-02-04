@@ -53,8 +53,8 @@ enum direction
 enum fixed_depth
 {
 	overlay,   ///< Above all world entities
-	below,     ///< Below ALL world entities
-	background ///< Below The tilemap
+	below,     ///< Below all world entities
+	background ///< Below the tilemap
 };
 
 /// Set the anchor of an object.

@@ -152,6 +152,12 @@ namespace priv
 		add_speaker(pEntity);
 	}
 	
+	void start()
+	{
+		show();
+		hide();
+	}
+	
 	/// Make the narrative show/reappear.
 	void show()
 	{

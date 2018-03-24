@@ -58,8 +58,8 @@ namespace math
 		if (t >= 1)
 			return p[p.length() - 1];
 		vec sum(0, 0); // Summation of the parts
-		for (int i = 0; i < p.length(); i++)
-			sum += p[i] * pow(t, i) * pow(1 - t, p.length() - i - 1);
+		for (uint i = 0; i < p.length(); i++)
+			sum += p[i] * pow(t, float(i)) * pow(1 - t, float(p.length()) - i - 1.f);
 		return sum;
 	}
 	

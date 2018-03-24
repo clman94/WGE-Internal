@@ -104,8 +104,7 @@ direction vector_direction(vec pVec)
 /// Set direction of an entity based on a vector
 void set_direction(entity pEntity, vec pTowards)
 {
-	vec position = get_position(pEntity);
-	_set_direction(pEntity, int(vector_direction(pTowards - position)));
+	_set_direction(pEntity, int(vector_direction(pTowards - get_position(pEntity))));
 }
 
 /// Set direction of an entity
@@ -123,27 +122,27 @@ direction get_direction(entity pEntity)
 /// Move entity to (pTo) position in (pSeconds) seconds
 void move(entity pEntity, vec pTo, float pSeconds)
 {
-	if (is_character(pEntity))
-		set_direction(pEntity, pTo);
-		
-	const vec initual_position = get_position(pEntity);
-	const vec velocity = ((pTo - initual_position))/pSeconds;
-	
-	vec position = initual_position;
-	
-	float timer = 0;
-	
-	if (is_character(pEntity))
-		animation::start(pEntity);
-	while (timer < pSeconds)
+	if (pSeconds <= 0)
 	{
-		const float delta = get_delta();
-		timer += delta;
-		position += velocity*delta;
-		set_position(pEntity, position);
+		eprint("pSeconds should be > 0");
+		return;
+	}
+	
+	if (is_character(pEntity))
+	{
+		set_direction(pEntity, pTo);
+		animation::start(pEntity);
+	}
+	
+	const vec orig = get_position(pEntity);
+	float t = 0;
+	while (t < 1)
+	{
+		t += get_delta()/pSeconds;
+		set_position(pEntity, math::lerp(orig, pTo, t));
 		yield();
 	}
-	set_position(pEntity, initual_position + (velocity*pSeconds)); // Ensure position
+	
 	if (is_character(pEntity))
 		animation::stop(pEntity);
 }
@@ -240,21 +239,25 @@ void pathfind_move(entity pEntity, vec pDestination, float pSpeed, float pWait_f
 
 /// Move entity up or down at a specific speed
 void move_z(entity pEntity, float pToZ, float pSpeed) // TODO: Separate speed and duration like the other moves.
-{
-	const float distance = abs(pToZ - get_z(pEntity));
-	const float duration = distance / pSpeed;
-	
-	const float velocity = (pToZ < get_z(pEntity) ? -pSpeed : pSpeed);
-	
-	float timer = 0;
-	while (timer <= duration)
+{	
+	if (pSpeed <= 0)
 	{
-		yield();
-		const float delta = get_delta();
-		timer += delta;
-		set_z(pEntity, get_z(pEntity) + (velocity*delta));
+		eprint("pSpeed should be > 0");
+		return;
 	}
-	set_z(pEntity, pToZ);
+	
+	const float orig = get_z(pEntity);
+	if (orig == pToZ)
+		return; // Already at that position
+		
+	const float seconds = abs(pToZ - orig)/pSpeed;
+	
+	float t = 0;
+	while (t < 1 && yield())
+	{
+		t += get_delta()/seconds;
+		set_z(pEntity, math::lerp(orig, pToZ, t));
+	}
 }
 
 void move_z(entity pEntity, float pToZ, float pSpeed, thread@ pThread)
@@ -280,12 +283,11 @@ void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds)
 		float t = 0;
 		while(t < 1)
 		{
-			t += get_delta()*(1/pSeconds);
-			set_z(pEntity, math::quad_bezier_curve(vec(0, 0), vec(0.5, pHeight*2), vec(1, 0), t).y); // Use a bezier curve for funs
+			t += get_delta()/pSeconds;
+			set_z(pEntity, math::quad_bezier_curve(vec(0, 0), vec(0, pHeight*2), vec(0, 0), t).y); // Use a bezier curve for funs
 			set_position(pEntity, math::lerp(p0, pTo, t));
 			yield();
 		}
-		set_position(pEntity, pTo); // Ensure position
 }
 
 /// \}

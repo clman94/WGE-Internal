@@ -239,7 +239,7 @@ void pathfind_move(entity pEntity, vec pDestination, float pSpeed, float pWait_f
 
 
 /// Move entity up or down at a specific speed
-void move_z(entity pEntity, float pToZ, float pSpeed)
+void move_z(entity pEntity, float pToZ, float pSpeed) // TODO: Separate speed and duration like the other moves.
 {
 	const float distance = abs(pToZ - get_z(pEntity));
 	const float duration = distance / pSpeed;
@@ -255,6 +255,37 @@ void move_z(entity pEntity, float pToZ, float pSpeed)
 		set_z(pEntity, get_z(pEntity) + (velocity*delta));
 	}
 	set_z(pEntity, pToZ);
+}
+
+void move_z(entity pEntity, float pToZ, float pSpeed, thread@ pThread)
+{
+	pThread.thread_start();
+	
+	create_thread(
+	function(pArgs)
+	{
+		move_z(entity(pArgs["pEntity"]), float(pArgs["pToZ"]), float(pArgs["pSpeed"]));
+		cast<thread@>(pArgs["pThread"]).thread_end();
+	}, dictionary = {
+		{"pEntity", pEntity},
+		{"pToZ", pToZ},
+		{"pSpeed", pSpeed},
+		{"pThread", pThread}});
+}
+
+void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds)
+{
+		vec p0 = get_position(pEntity);
+		vec p1 = p0 + (pTo - p0)/2 - vec(0, pHeight);
+		float t = 0;
+		while(t < 1)
+		{
+			t += get_delta()*(1/pSeconds);
+			set_z(pEntity, math::quad_bezier_curve(vec(0, 0), vec(0.5, pHeight*2), vec(1, 0), t).y); // Use a bezier curve for funs
+			set_position(pEntity, math::lerp(p0, pTo, t));
+			yield();
+		}
+		set_position(pEntity, pTo); // Ensure position
 }
 
 /// \}

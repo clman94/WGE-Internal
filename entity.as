@@ -289,5 +289,21 @@ void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds)
 			yield();
 		}
 }
+void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds, thread@ pThread)
+{
+	pThread.thread_start();
+	
+	create_thread(
+	function(pArgs)
+	{
+		move_hop(entity(pArgs["pEntity"]), vec(pArgs["pTo"]), float(pArgs["pHeight"]), float(pArgs["pSeconds"]));
+		cast<thread@>(pArgs["pThread"]).thread_end();
+	}, dictionary = {
+		{"pEntity", pEntity},
+		{"pTo", pTo},
+		{"pHeight", pHeight},
+		{"pSeconds", pSeconds},
+		{"pThread", pThread}});
+}
 
 /// \}

@@ -197,10 +197,10 @@ void move(entity pEntity, direction pDirection, float pDistance, speed pSpeed)
 
 /// Set color of entity with A at 100%
 /// Just a convenience function.
-/// All values are 0-255.
-void set_color(entity pEntity, int r, int g, int b)
+/// All values are [0, 1].
+void set_color(entity pEntity, float r, float g, float b)
 {
-	set_color(pEntity, r, g, b, 255);
+	set_color(pEntity, r, g, b, 1);
 }
 
 /// Use path-finding to move a character to a position.
@@ -289,10 +289,10 @@ void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds)
 			yield();
 		}
 }
+
 void move_hop(entity pEntity, vec pTo, float pHeight, float pSeconds, thread@ pThread)
 {
 	pThread.thread_start();
-	
 	create_thread(
 	function(pArgs)
 	{

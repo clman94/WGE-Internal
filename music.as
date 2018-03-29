@@ -88,16 +88,13 @@ namespace music
 	/// Fade the current volume to a new volume
 	void fade_volume(float pVolume, float pSeconds)
 	{
-		const float velocity = (pVolume - _music_get_volume())/pSeconds;
-		float timer = 0;
-		while(timer < pSeconds)
+		float t = 0;
+		float orig = _music_get_volume();
+		while(t < 1 && yield())
 		{
-			const float delta = get_delta();
-			timer += delta;
-			_music_set_volume(_music_get_volume() + (velocity*delta));
-			yield();
+			t += get_delta();
+			_music_set_volume(math::lerp(orig, pVolume, t));
 		}
-		_music_set_volume(pVolume);
 	}
 	
 	void fade_volume(float pVolume, float pSeconds, thread@ pThread)

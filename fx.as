@@ -51,18 +51,12 @@ void fade_in(float pSeconds)
 		eprint("Seconds <= 0");
 		return;
 	}
-	const float speed = 255.f / pSeconds;
-	float i = 255;
-	float timer = 0;
-	while (timer < pSeconds)
+	float t = 0;
+	while (t < 1 && yield())
 	{
-		const float delta = get_delta();
-		timer += delta;
-		i -= speed*delta;
-		set_overlay_opacity(int(i));
-		yield();
+		t += get_delta()/pSeconds;
+		set_overlay_opacity(math::lerp(1, 0, t));
 	}
-	set_overlay_opacity(0);
 }
 
 void fade_in(float pSeconds, thread@ pThread)
@@ -73,7 +67,6 @@ void fade_in(float pSeconds, thread@ pThread)
 	{
 		const float pSeconds = float(pArgs["pSeconds"]);
 		fade_in(pSeconds);
-		
 		cast<thread@>(pArgs["pThread"]).thread_end();
 	}, dictionary = {
 		{"pSeconds", pSeconds},
@@ -88,18 +81,12 @@ void fade_out(float pSeconds)
 		eprint("Seconds <= 0");
 		return;
 	}
-	const float speed = 255.f / pSeconds;
-	float i = 0;
-	float timer = 0;
-	while (timer < pSeconds)
+	float t = 0;
+	while (t < 1 && yield())
 	{
-		const float delta = get_delta();
-		timer += delta;
-		i += speed*delta;
-		set_overlay_opacity(int(i));
-		yield();
+		t += get_delta()/pSeconds;
+		set_overlay_opacity(math::lerp(0, 1, t));
 	}
-	set_overlay_opacity(255);
 }
 
 void fade_out(float pSeconds, thread@ pThread)
@@ -120,38 +107,24 @@ void fade_out(float pSeconds, thread@ pThread)
 /// "fade" it out.
 void fade_out(entity pEntity, float pSeconds)
 {
-	const float speed = 255.f / pSeconds;
-	float i = 255;
-	float timer = 0;
-		set_color(pEntity, 255, 255, 255, 255);
-	while (timer < pSeconds)
+	float t = 0;
+	while (t < 1 && yield())
 	{
-		yield();
-		const float delta = get_delta();
-		timer += delta;
-		i -= speed*delta;
-		set_color(pEntity, 255, 255, 255, int(i));
+		t += get_delta()/pSeconds;
+		set_color(pEntity, 1, 1, 1, math::lerp(1, 0, t));
 	}
-	set_color(pEntity, 255, 255, 255, 0);
 }
 
 /// Slowly increase the opacity of the entity to
 /// "fade" it in.
 void fade_in(entity pEntity, float pSeconds)
 {
-	const float speed = 255.f / pSeconds;
-	float i = 0;
-	float timer = 0;
-	set_color(pEntity, 255, 255, 255, 0);
-	while (timer < pSeconds)
+	float t = 0;
+	while (t < 1 && yield())
 	{
-		yield();
-		const float delta = get_delta();
-		timer += delta;
-		i += speed*delta;
-		set_color(pEntity, 255, 255, 255, int(i));
+		t += get_delta()/pSeconds;
+		set_color(pEntity, 1, 1, 1, math::lerp(0, 1, t));
 	}
-	set_color(pEntity, 255, 255, 255, 255);
 }
 
 void scene_fade_out()

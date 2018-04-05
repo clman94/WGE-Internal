@@ -85,7 +85,7 @@ void set_depth(entity pEntity, fixed_depth pDepth)
 }
 
 /// Calculate direction based on a vector.
-direction vector_direction(vec pVec)
+direction vector_direction(const vec&in pVec)
 {
 	if (abs(pVec.x) > abs(pVec.y))
 	{
@@ -222,10 +222,10 @@ void pathfind_move(entity pEntity, vec pDestination, float pSpeed, float pWait_f
 	{
 		if (pWait_for_player != 0)
 		{
-			const vec player_position = get_position(get_player());
+			const vec player_position = get_position(player::get());
 			const vec position = get_position(pEntity);
 			
-			while (get_position(get_player()).distance(position) >= pWait_for_player)
+			while (get_position(player::get()).distance(position) >= pWait_for_player)
 			{
 				set_direction(pEntity, player_position);
 				yield();

@@ -7,13 +7,13 @@ void do_character_follow(dictionary@ args)
 	array<vec> path;
 	while (pCharacter.is_following())
 	{
-		if (get_position(pCharacter).manhattan(get_position(get_player())) <= 1)
+		if (get_position(pCharacter).manhattan(get_position(player::get())) <= 1)
 		{
 			yield();
 			continue;
 		}
 		
-		find_path_partial(path, get_position(pCharacter).floor(), get_position(get_player()).floor(), 5);
+		find_path_partial(path, get_position(pCharacter).floor(), get_position(player::get()).floor(), 5);
 		
 		
 		//dprint(formatFloat(path[i].x) + " " +  formatFloat(path[i].y));
@@ -93,7 +93,7 @@ class follow_character
 	bool check()
 	{
 		array<vec> path;
-		return find_path(path, get_position(mEntity).floor(), get_position(get_player()).floor());
+		return find_path(path, get_position(mEntity).floor(), get_position(player::get()).floor());
 	}
 	
 	private bool mIs_following;

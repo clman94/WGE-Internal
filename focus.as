@@ -1,6 +1,22 @@
 
 namespace focus
 {
+
+namespace priv
+{
+	bool focus_player = true;
+	[start]
+	void player_focus_thread()
+	{
+		do{
+			if (focus_player)
+			{
+				focus::set(get_position(player::get()));
+			}
+		} while (yield());
+	}
+}
+
 /// \weakgroup Scene
 /// \{
 
@@ -82,7 +98,7 @@ vec get()
 /// Focus on player
 void player(bool pFocus_player = true)
 {
-	_focus_player(pFocus_player);
+	focus::priv::focus_player = pFocus_player;
 }
 /// \}
 }

@@ -39,7 +39,7 @@ vec midpoint(const vec&in a, const vec&in b)
 }
 
 /// Vector to string
-string vtos(const vec&in v)
+string to_string(const vec&in v)
 {
   return "(" + v.x + ", " + v.y + ")";
 }

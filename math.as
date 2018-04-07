@@ -15,6 +15,16 @@ namespace math
 {
 	const float pi = 3.14159265;
 	
+	float binomial_coeff(float n, float k)
+	{
+		if (k > n)
+			eprint("n > k");
+		float mul = 1;
+		for (uint i = 1; i <= k; i++)
+			mul *= (n + 1 - i)/float(i);
+		return mul;
+	}
+	
 	/// Simple linear interpolation
 	float lerp(float p0, float p1, float t)
 	{
@@ -59,7 +69,7 @@ namespace math
 			return p[p.length() - 1];
 		vec sum(0, 0); // Summation of the parts
 		for (uint i = 0; i < p.length(); i++)
-			sum += p[i] * pow(t, float(i)) * pow(1 - t, float(p.length() - i) - 1);
+			sum +=  p[i] * binomial_coeff(p.length() - 1, i) * pow(t, float(i)) * pow(1 - t, float(p.length() - i) - 1);
 		return sum;
 	}
 	

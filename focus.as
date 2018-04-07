@@ -5,17 +5,24 @@ namespace focus
 namespace priv
 {
 	bool focus_player = true;
+	
+	
+	// Use this if changing the player position doesn't update the focus
+	void update_player_focus()
+	{
+		if (focus_player)
+			_set_focus(get_position(player::get()));
+	}
+	
 	[start]
 	void player_focus_thread()
 	{
 		do{
-			if (focus_player)
-			{
-				focus::set(get_position(player::get()));
-			}
+			update_player_focus();
 		} while (yield());
 	}
 }
+
 
 /// \weakgroup Scene
 /// \{
@@ -32,10 +39,10 @@ void move(vec pPosition, float pSeconds)
 		const float delta = get_delta();
 		timer += delta;
 		focus += velocity*delta;
-		_set_focus(focus);
+		focus::set(focus);
 		yield();
 	}
-	_set_focus(pPosition); // Ensure position
+	focus::set(pPosition); // Ensure position
 }
 
 void move(entity pEntity, vec pTo, speed pSpeed)
@@ -68,10 +75,10 @@ void move(direction pDirection, float pDistance, float pSeconds)
 		float delta = get_delta();
 		timer += delta;
 		position += velocity*delta;
-		set(position);
+		focus::set(position);
 		yield();
 	}
-	set(initual_position + (velocity*pSeconds));  // Ensure position
+	focus::set(initual_position + (velocity*pSeconds));  // Ensure position
 }
 
 /// Move in a direction at x distance at y speed
@@ -86,6 +93,7 @@ void move(direction pDirection, float pDistance, speed pSpeed)
 /// Player will lose focus when called.
 void set(vec pPosition)
 {
+	focus::priv::focus_player = false;
 	_set_focus(pPosition);
 }
 

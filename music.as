@@ -58,7 +58,7 @@ namespace music
 				float first_volume  = _music_get_volume();
 				float second_volume = 0;
 				
-		        // Smoothly fade the main music out and fade the seconds one in
+		    // Smoothly fade the main music out and fade the seconds one in
 				while (timer < pSeconds)
 				{
 					yield();
@@ -93,7 +93,7 @@ namespace music
 		while(t < 1 && yield())
 		{
 			t += get_delta();
-			_music_set_volume(math::lerp(orig, pVolume, t));
+			_music_set_volume(math::lerp(orig, pVolume, pow(t, 2))); // Exponential
 		}
 	}
 	

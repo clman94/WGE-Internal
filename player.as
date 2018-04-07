@@ -125,6 +125,11 @@ namespace priv
 				handle_player_movement();
 				handle_player_interactions();
 			}
+			else if (is_walking)
+			{ // Make sure animations are stopped
+				animation::stop(player_entity);
+				is_walking = false;
+			}
 		} while(yield());
 	}
 	

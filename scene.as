@@ -70,5 +70,6 @@ void handle_load_scene_request()
 		player::priv::ensure_player_entity();
 		set_direction(player::get(), vector_direction(collision::get_door_offset(door)));
 		set_position(player::get(), collision::get_door_absolute_offset(door));
+		focus::priv::update_player_focus();
 	}
 }

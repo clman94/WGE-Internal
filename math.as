@@ -11,17 +11,30 @@ int abs(int val)
 	return val < 0 ? -val : val;
 }
 
+float max(float a, float b)
+{
+	return a > b ? a : b;
+}
+
+float min(float a, float b)
+{
+	return a > b ? b : a;
+}
+
 namespace math
 {
 	const float pi = 3.14159265;
 	
-	float binomial_coeff(float n, float k)
+	float binomial_coeff(uint n, uint k)
 	{
 		if (k > n)
+		{
 			eprint("n > k");
+			return 1;
+		}
 		float mul = 1;
 		for (uint i = 1; i <= k; i++)
-			mul *= (n + 1 - i)/float(i);
+			mul *= float(n + 1 - i)/float(i);
 		return mul;
 	}
 	
@@ -69,8 +82,18 @@ namespace math
 			return p[p.length() - 1];
 		vec sum(0, 0); // Summation of the parts
 		for (uint i = 0; i < p.length(); i++)
-			sum +=  p[i] * binomial_coeff(p.length() - 1, i) * pow(t, float(i)) * pow(1 - t, float(p.length() - i) - 1);
+			sum += p[i] * binomial_coeff(p.length() - 1, i) * pow(t, float(i)) * pow(1 - t, float(p.length() - i) - 1);
 		return sum;
 	}
 	
+	vec ramp_curve(const vec&in p0, const vec&in p1, float steepness, float t)
+	{
+		steepness = max(steepness, 0.f);
+		steepness = min(steepness, 1.f);
+		array<vec> points = 
+		{
+			p0, vec(lerp(p0.x,p1.x, steepness), p0.y), vec(lerp(p1.x, p0.x, steepness), p1.y), p1
+		};
+		return bezier_curve(points, t);
+	}
 }

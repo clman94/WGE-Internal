@@ -137,7 +137,7 @@ namespace priv
 	{
 		if (!player_entity.is_valid())
 		{
-			player_entity = add_character("mc");
+			player_entity = add_character(player::texture);
 		}
 	}
 }

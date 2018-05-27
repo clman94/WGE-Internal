@@ -51,8 +51,7 @@ void fade_in(float pSeconds)
 		eprint("Seconds <= 0");
 		return;
 	}
-	float t = 0;
-	while (t < 1 && yield())
+	for (float t = 0; t < 1; yield())
 	{
 		t += get_delta()/pSeconds;
 		set_overlay_opacity(math::lerp(1, 0, t));
